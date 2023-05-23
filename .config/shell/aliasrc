@@ -1,0 +1,64 @@
+#!/bin/sh
+
+
+# sudo not required for some system commands
+for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
+	alias $command="sudo $command"
+done; unset command
+
+# Temporary/project related aliases
+alias \
+	mem="vimd ~pr/Memento/memento/lib" 
+
+
+# Verbosity and settings that you pretty much just always are going to want.
+alias \
+	cp="cp -iv" \
+	mv="mv -iv" \
+	rm="rm -vI" \
+	bc="bc -ql" \
+	mkd="mkdir -pv" \
+	yt="yt-dlp --embed-metadata -i" \
+	yta="yt -x -f bestaudio/best" \
+	ffmpeg="ffmpeg -hide_banner"
+
+# Colorize commands when possible.
+alias \
+	ls="ls -hN --color=auto --group-directories-first" \
+	grep="grep --color=auto" \
+	diff="diff --color=auto" \
+	ip="ip -color=auto"
+
+# These common commands are just too long! Abbreviate them.
+alias \
+	ka="killall" \
+	g="git" \
+	trem="transmission-remote" \
+	ytf="ytfzf" \
+	sdn="shutdown -h now" \
+	e="$EDITOR" \
+	v="$EDITOR" \
+	p="pacman" \
+	z="zathura" \
+	img="imv" \
+	bs="brightnessctl set " \
+	neomutt="ESCDELAY=0 neomutt"
+
+#Usually some settings related stuff
+alias \
+	lf="lfrun" \
+	magit="nvim -c MagitOnly" \
+	ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \
+	weath="less -S ${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport" \
+	arduino-cli='arduino-cli --config-file ${XDG_CONFIG_HOME:-$HOME/.config}/arduino15/arduino-cli.yaml' \
+	markdown-pdf='export OPENSSL_CONF=/etc/ssl/ && markdown-pdf' \
+	mbsync="mbsync -c "$XDG_CONFIG_HOME"/isync/mbsyncrc"
+
+# System stuff
+alias \
+	s="sudo systemctl" \
+	j="sudo journalctl" \
+	sysa="systemctl start" \
+  	startx="export GDK_BACKEND=x11 DISPLAY=:2 GDK_DPI_SCALE=1 QT_AUTO_SCREEN_SCALE_FACTOR=1 && startx -display :2" \
+  	gpg-refresh="gpg-connect-agent updatestartuptty /bye" 
+

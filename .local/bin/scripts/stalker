@@ -1,0 +1,14 @@
+#!/bin/sh
+
+files_count=$(ls -1 "$1" | wc -l)
+new_arrival() {		
+	new_count=$(ls -1 "$1" | wc -l)
+	echo "$new_count and $files_count"
+	[ "$new_count" -gt "$files_count" ] && flatpak run com.github.flxzt.rnote $(ls -t "$1" | head -1)
+	files_count=$new_count
+}
+
+while sleep 0.3; do 
+	ls -d "$1" | entr -pdz -s 'kill $PPID' > /dev/null 2>&1 
+	new_arrival "$1"
+done

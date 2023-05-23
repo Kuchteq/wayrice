@@ -1,0 +1,28 @@
+# config for when the you use lf through the xdg file chooser portal, remember to include in your main config:
+
+map <enter>
+map <enter> savehere
+
+cmd open ${{
+  echo "WARNING, you are about to replace the file: $f"
+  echo "Are you sure? (y)es (n)o: "
+  read ans
+  if [[ "$ans" == "y" ]]; then
+	  printf '%s' "$f" > "/tmp/termfilechooser.portal"
+	  lf -remote "send $id quit"
+  fi
+}}
+
+cmd savehere ${{
+  printf '%s' "$PWD/$(basename "$LF_PORTAL_ARG")" > "/tmp/termfilechooser.portal"
+   lf -remote "send $id quit"
+}}
+
+cmd saveundername ${{
+	echo "What is the name you would like to save it as: "
+	read ans
+	printf '%s' "$PWD/$ans" > "/tmp/termfilechooser.portal"
+	lf -remote "send $id quit"
+}}
+
+map i saveundername

@@ -1,0 +1,18 @@
+# You can add comments to these files with #
+cac ${XDG_CACHE_HOME:-$HOME/.cache}
+cf  ${XDG_CONFIG_HOME:-$HOME/.config}
+D   ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
+d   ${XDG_DOCUMENTS_DIR:-$HOME/Documents}
+n   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/Notes/}
+nli   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/Notes/Linux}
+bb   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/Library}
+h   $HOME
+mu   ${XDG_MUSIC_DIR:-$HOME/Music}
+mn  /mnt
+pp  ${XDG_PICTURES_DIR:-$HOME/Pictures}
+pr  ${XDG_PROJECTS_DIR:-$HOME/Projects}
+ss  ${XDG_PICTURES_DIR:-$HOME/Pictures/Screenshots}
+se  $HOME/.local/bin # ex as in executables and s as in source
+src $HOME/.local/src
+lo $HOME/.local
+vv  ${XDG_VIDEOS_DIR:-$HOME/Videos}

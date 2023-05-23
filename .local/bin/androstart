@@ -1,0 +1,2 @@
+#!/bin/sh
+setsid -f /opt/android-sdk/Sdk/emulator/emulator @Pixel64 -netspeed full -accel on -engine qemu2 >/dev/null 2>&1

@@ -1,0 +1,9 @@
+[binds]
+
+n = next
+p = prev
+
+<Ctrl+r> = rotate by 90
+
+a = zoom actual
+r = reset

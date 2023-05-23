@@ -1,0 +1,88 @@
+#!/bin/sh
+
+# some fetched from from https://github.com/horriblename/lfimg-sixel
+
+image() {
+	geometry="$(($2-2))x$3"
+	method="sixel"
+	#if lf is in neovim 
+	if [ -n "$NVSERVER" ]; then
+		method="symbols"
+	fi
+	chafa "$1" -f "$method" -s "$geometry" --animate false | fold -w 65535
+}
+
+batorcat() {
+	file="$1"
+	shift
+	if command -v bat > /dev/null 2>&1
+	then
+		bat --color=always --style=plain --pager=never "$file" "$@"
+	else
+		cat "$file"
+	fi
+}
+
+glowormdcat() {
+	file="$1"
+	shift
+	if command -v glow > /dev/null 2>&1
+	then
+		glow "$file"
+	else
+		mdcat "$file"
+	fi
+}
+
+CACHE="$HOME/.cache/lf/thumbnail.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | awk '{print $1}'))"
+
+
+case "$(file --dereference --brief --mime-type -- "$1")" in
+	image/avif) CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/lf/thumb.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | cut -d' ' -f1)"
+		[ ! -f "$CACHE" ] && convert "$1" "$CACHE.jpg"
+		image "$CACHE.jpg" "$2" "$3" "$4" "$5" "$1" ;;
+	image/svg*) 
+	    [ ! -f "${CACHE}.jpg" ] && \
+	      convert "$1" "${CACHE}.jpg"
+	    image "${CACHE}.jpg" "$2" "$3" "$4" "$5" ;;
+	image/*) 
+		image "$1" "$2" "$3" "$4" "$5" ;;
+	text/html) lynx -width="$4" -display_charset=utf-8 -dump "$1" ;;
+	text/troff) man ./ "$1" | col -b ;;
+	text/* | */xml) 
+		case "$1" in 
+			.md) glowormdcat "$1";;
+			*) batorcat "$1" ;;
+		esac
+		;;
+	application/json) jq "." --color-output "$1" ;;
+	audio/* | application/octet-stream) exiftool "$1" ;;
+	video/* )
+		[ ! -f "${CACHE}.jpg" ] && \
+			ffmpegthumbnailer -i "$1" -o "${CACHE}.jpg" -s 0 -q 5
+		image "${CACHE}.jpg" "$2" "$3" "$4" "$5"	;;
+	*/pdf)
+		[ ! -f "${CACHE}.jpg" ] && \
+			pdftoppm -jpeg -f 1 -singlefile "$1" "$CACHE"
+		image "${CACHE}.jpg" "$2" "$3" "$4" "$5"
+		;;
+	*/epub+zip|*/mobi*)
+		[ ! -f "$CACHE" ] && \
+			epub-thumbnailer "$1" "$CACHE" 1024
+		image "$CACHE" "$2" "$3" "$4" "$5"
+		;;
+	application/gzip) tar tzf "$1" ;;
+	application/x-tar) tar tf "$1" ;;
+	application/*zip | application/java-archive) unzip -l "$1" ;;
+	application/*iso*-image) iso-info --no-header -l "$1" ;;
+	application/x-pie-executable) nm "$1";;
+	application/*torrent) transmission-show "$1" ;;
+	*opendocument*) odt2txt "$1" ;;
+	application/pgp-encrypted) gpg -d -- "$1" ;;
+	inode/directory) tree -C --filelimit=9 $1;;# && lf -remote "send $id reload";;
+	*)
+
+		batorcat "$1"
+		;;
+esac
+exit 1

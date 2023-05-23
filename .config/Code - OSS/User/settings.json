@@ -1,0 +1,35 @@
+{
+  "editor.inlineSuggest.enabled": true,
+  "terminal.integrated.sendKeybindingsToShell": true,
+  "testMyCode.downloadOldSubmission": true,
+  "testMyCode.hideMetaFiles": true,
+  "testMyCode.updateExercisesAutomatically": true,
+  "testMyCode.insiderVersion": false,
+  "testMyCode.logLevel": "errors",
+  "vim.useSystemClipboard": true,
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["ə"],
+      "commands": [":bn"]
+    },
+    {
+      "before": ["…"],
+      "commands": [":bp"]
+    },
+    {
+      "before": ["ź"],
+      "commands": [":bd"]
+    },
+    {
+      "before": ["→"],
+      "commands": [":vsplit"]
+    }
+  ],
+  "terminal.integrated.sendKeybindingsToShell": true,
+  "window.zoomLevel": 3,
+  "telemetry.telemetryLevel": "off",
+  "editor.formatOnSave": true,
+  "window.menuBarVisibility": "toggle",
+  "editor.lineNumbers": "relative",
+  "explorer.confirmDelete": false
+}

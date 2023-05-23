@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+if [ -n $WAYLAND_DISPLAY ]; then 
+	# slurp has cool keybindings
+	# hold space to move the box
+	# hold shift to make a 1:1 screenshot
+	# esc to cancel
+	selection=$(slurp -d)
+	grim -g "$selection" - | wl-copy
+	sb-screenshot -m
+else
+	selection=$(hacksaw -f "-i %i -g %g")
+	shotgun $selection - | xclip -t 'image/png' -selection clipboard
+fi
+

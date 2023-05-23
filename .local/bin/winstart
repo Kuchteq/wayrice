@@ -1,0 +1,9 @@
+sudo systemctl start libvirtd
+sudo virsh net-start default
+sudo virsh start win11
+virt-viewer -c qemu:///system win11 --hotkeys=release-cursor=Menu,toggle-fullscreen=win+shift+f --auto-resize never -d &
+sudo systemctl start smb
+sudo systemctl start nmb
+sudo systemctl start wsdd
+exit
+

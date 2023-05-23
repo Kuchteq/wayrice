@@ -1,0 +1,8 @@
+#!/bin/sh
+
+EXECS="$HOME/.local/bin"
+
+for file in $EXECS/*; do
+	[[ -f $file ]] && [[ $(head -n 1 $file)  == *"/bin/python"* ]] && mv $file $EXECS/pipex
+done
+	

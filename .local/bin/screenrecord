@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if pidof -q wf-recorder; then
+	ps -p $(pidof wf-recorder) -o command | grep -o "\-f .*\.mp4" | sed  "s/\-f //" | wl-copy
+	killall -s 2 wf-recorder >/dev/null 2>&1 
+	tail --pid=$(pidof wf-recorder) -f /dev/null && kill -46 $(pidof someblocks)
+else
+	date=$(date +%d-%m-%YT%H:%M:%S)
+	path=$HOME/Videos/Screenrecordings/recording_$date.mp4
+	dimensions=$(slurp -d)
+	wf-recorder -g "$dimensions" -f $path >/dev/null 2>&1 &
+fi
+kill -46 $(pidof someblocks)
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+theme=light
+[ -s /tmp/theme ] && theme=$(< /tmp/theme)
+swaylock -i "~/Pictures/Wallpapers/lock_wallpaper_$theme.jpg" | sudo systemctl suspend

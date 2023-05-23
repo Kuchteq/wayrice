@@ -1,0 +1,25 @@
+#!/bin/sh
+
+selection=$1
+map=$2
+seltype="bm-dirs"
+[[ -f $selection ]] && seltype="bm-files"
+bmpath="${XDG_CONFIG_HOME:-$HOME/.config}/shell/$seltype"
+topath=$selection
+
+# make the path somewhat universal
+if [[ $selection =~ "/home/$USER/" ]]; then
+	topath=$(echo "$topath" | sed "s/\/home\/$USER\//\$HOME\//g")
+fi
+
+if grep -q "$topath" "$bmpath"; then 
+	echo "Bookmark already exists"
+	exit 1
+fi
+echo "Entry to be added is: $topath"
+# check if variable is set i.e. if user provided another argument -z is check if variable is empty and the " " make it so that it also checks for existance
+[ -z "${map}" ] && read -p "Enter the mapping: " map
+echo "$map $topath" >> "$bmpath" && shortcuts
+
+	
+

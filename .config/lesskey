@@ -1,0 +1,5 @@
+#line-edit
+\e\e abort
+^W word-backspace
+^P up
+^N down

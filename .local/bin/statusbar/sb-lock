@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if ps -e | grep -q swayidle; then
+  setsid -f killall swayidle > /dev/null
+  echo ""
+else
+  setsid -f swayidle timeout 240 sus > /dev/null 
+  #echo 
+fi
+

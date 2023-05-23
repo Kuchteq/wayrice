@@ -1,0 +1,19 @@
+#!/bin/sh
+
+max=$(ls $HOME/Pictures/Screenshots | grep -o '_[0-9]*_' | sort -n -r | grep -o '[0-9]*' | head -n 1)
+((max+=1))
+date=$(date +%d-%m-%YT%H:%M:%S)
+shotspath="$HOME/Pictures/Screenshots"
+
+if [ -n $WAYLAND_DISPLAY ]; then 
+    #output just the path if you want it to be returned
+    if [[ "$1" == "-s" ]]; then
+	pictpath="$shotspath/.Sent/screenshot_$date.png"
+	wl-paste > "$pictpath"
+	echo "$pictpath"
+    else
+	wl-paste > $shotspath"/screenshot_$date.png"
+	sb-screenshot -s
+    fi	
+fi
+

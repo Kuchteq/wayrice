@@ -1,0 +1,5 @@
+#!/bin/sh
+
+flatpak run com.github.flxzt.rnote &
+stalker $HOME/Public/Received &
+sudo tabletpadon &

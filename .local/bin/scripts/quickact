@@ -1,0 +1,15 @@
+#!/bin/zsh
+text="i - Note \\nw - Word lookup \\nh - Htop\\nt - Tmux"
+width=$(($(echo -e $text | wc -m) * 17))
+selected=${$(printf $text | tofi --width "$width" -c "$XDG_CONFIG_HOME/tofi/quickact.ini"):0:1}
+#caje "$selected"
+DATE=$(date +%Y-%m-%dT%H:%M:%S)
+
+echo $width
+case "$selected" in
+     i) $TERMINAL -o "main.pad=20x20 center" -a "floatermid" -T "Float Note on $DATE" -W "60x14" primvi -c 'startinsert' ;;
+     w) linguee ;;
+     h) $TERMINAL htop ;;
+     t) $TERMINAL tmux a 
+esac
+#so times 16 it's the width

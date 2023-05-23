@@ -1,0 +1,3 @@
+#!/bin/sh
+
+keyd input $(grep -v '^#' $HOME/.local/share/snippets | bemenu -i -l 50 | cut -d' ' -f1)

@@ -1,0 +1,8 @@
+[virt-viewer]
+share-clipboard=true
+ask-quit=true
+
+#win11
+
+[6140f37b-ecc8-410f-97fd-e0bf61362ae8]
+monitor-mapping=1:1;

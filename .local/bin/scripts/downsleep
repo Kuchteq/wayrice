@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+if echo $TR_TORRENT_LABELS | grep -q "sleepafter"; then
+	sleep 2 && sus
+fi
+

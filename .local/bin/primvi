@@ -1,0 +1,2 @@
+#!/bin/sh
+exec nvim -u $XDG_CONFIG_HOME/primvi.lua $@

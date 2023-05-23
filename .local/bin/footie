@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# a foot wrapper which determines which theme the window should use
+read -r theme < /tmp/theme
+if [[ $theme == light ]]; then
+	overrideString='
+	--override colors.alpha=0.99
+	--override colors.background=ffffff
+	--override colors.foreground=000000
+	--override colors.regular0=000000
+	--override colors.regular1=d73a49
+	--override colors.regular2=28a745
+	--override colors.regular3=E96A05
+	--override colors.regular4=00a0e4
+	--override colors.regular5=a06994
+	--override colors.regular6=36A3D9
+	--override colors.regular7=494542
+	--override colors.bright0=959da5
+	--override colors.bright1=cb2431
+	--override colors.bright2=2caf4c
+	--override colors.bright3=b08800
+	--override colors.bright4=005cc5
+	--override colors.bright5=5a32a3
+	--override colors.bright6=3192aa
+	--override colors.bright7=d1d5da'
+	exec footclient $overrideString "$@"
+else
+	exec footclient "$@"
+fi

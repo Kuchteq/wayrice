@@ -1,0 +1,9 @@
+#!/bin/sh
+
+dwl -s 'somebar | \
+someblocks <&- | \
+themeset <&- | \
+systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP <&- | \
+kanshi <&- | \
+deactivateBtIfNoKeyboard <&- | \
+foot --server <&-'

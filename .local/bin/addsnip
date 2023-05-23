@@ -1,0 +1,11 @@
+#!/bin/sh
+
+snipath="$HOME/.local/share/snippets"
+if [[ $1 == "-t" ]]; then
+	toadd="$2"
+else
+	toadd="$(wl-paste)"
+fi
+if ! grep -q "$toadd" "$snipath"; then 
+	echo "$toadd" >> "$snipath"
+fi

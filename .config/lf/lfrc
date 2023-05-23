@@ -1,0 +1,163 @@
+# user previews require the chafa program, lf sixel supported fork (for now):
+# https://github.com/horriblename/lfimg-sixel
+# and lfrun command (included in ~/.local/bin)
+# if you want to look up what some keybindings do, use :maps command
+
+set shellopts '-eu'
+set ifs "\n"
+set scrolloff 10
+set icons
+set period 1
+set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
+set previewer '~/.config/lf/preview'
+set ratios 1:2:3
+
+# make sure changing directories updates the titlebar
+cmd on-cd &{{
+    printf "\033]0; $PWD\007" > /dev/tty
+}}
+on-cd
+
+cmd open ${{
+    case $(file --mime-type "$(readlink -f $f)" -b) in
+	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
+	image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+        text/*|application/json|inode/x-empty) $EDITOR $fx;;
+	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
+	image/svg+xml) display -- $f ;;
+	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|tif\|ico\)\(_large\)*$" |
+		setsid -f imv 2>/dev/null | while read -r file; do
+			[ -z "$file" ] && continue
+			lf -remote "send select \"$file\""
+			lf -remote "send toggle"
+		done &
+		;;
+	audio/*) mpv --audio-display=no $f ;;
+	video/*|application/vnd.rn-realmedia) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
+	application/pdf|application/vnd.djvu|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
+	application/pgp-encrypted) $EDITOR $fx ;;
+	application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text) setsid -f lowriter $fx >/dev/null 2>&1 ;;
+	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/octet-stream|application/vnd.oasis.opendocument.spreadsheet|application/vnd.oasis.opendocument.spreadsheet-template) setsid -f localc $fx >/dev/null 2>&1 ;;
+	application/vnd.openxmlformats-officedocument.presentationml.presentation|application/vnd.oasis.opendocument.presentation-template|application/vnd.oasis.opendocument.presentation|application/vnd.ms-powerpoint) setsid -f loimpress $fx >/dev/null 2>&1 ;;
+	application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template) setsid -f lodraw $fx >/dev/null 2>&1 ;;
+	application/vnd.oasis.opendocument.formula) setsid -f lomath $fx >/dev/null 2>&1 ;;
+	application/vnd.oasis.opendocument.database) setsid -f lobase $fx >/dev/null 2>&1 ;;
+        *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
+    esac
+}}
+
+cmd mkdir ${{
+  printf "Directory Name: "
+  read ans
+  mkdir $ans
+}}
+
+cmd mkfile ${{
+  printf "File Name: "
+  read ans
+  $EDITOR $ans
+}}
+
+# Archive bindings
+cmd unarchive ${{
+  case "$f" in
+      *.zip) unzip "$f" ;;
+      *.tar.gz) tar -xzvf "$f" ;;
+      *.tar.bz2) tar -xjvf "$f" ;;
+      *.tar) tar -xvf "$f" ;;
+      *) echo "Unsupported format" ;;
+  esac
+}}
+
+# Trash bindings
+cmd trash ${{
+  files=$(printf "$fx" | tr '\n' ';')
+  while [ "$files" ]; do
+    file=${files%%;*}
+
+    trash-put "$(basename "$file")"
+    if [ "$files" = "$file" ]; then
+      files=''
+    else
+      files="${files#*;}"
+    fi
+  done
+}}
+
+cmd restore_trash ${{
+  trash-restore
+}}
+
+cmd open_terminal_here ${{ 
+  if [ -z ${TMUX+x} ]; then 
+  	setsid -f foot >/dev/null 2>&1
+  else
+	tmux split-window -c $PWD 
+  fi
+}}
+
+cmd watchInPlaylistSelected ${{
+	mpv $fs
+}}
+
+cmd clipputfile ${{
+  echo $f | wl-copy
+}}
+
+cmd clipputfolder ${{
+  echo $PWD | wl-copy
+}}
+
+cmd tag-clear :tag; tag-toggle
+
+# two command which get called externally
+cmd invim source "~/.config/lf/invim"
+cmd inportal source "~/.config/lf/inportal"
+
+
+
+# Binds mapped to the commands
+map M
+map Md mkdir
+map Mf mkfile
+map Me $chmod u+x $f && lf -remote "send :reload" # make executable
+map au unarchive
+map DD trash
+map Dr restore_trash
+map <c-t> open_terminal_here
+map W watchInPlaylistSelected
+map Yf clipputfile
+map Yd clipputfolder
+map V $lf -remote "send $id cd $(wl-paste)" # cd into the copied path
+map T tag-clear 
+
+# Other less complex binds
+
+map w # Don't really need to enter shell on w, I usually just quit lf
+# Instead, make w chose some predefined filters
+map wc setfilter 
+map wp setfilter ".pdf"
+map wi filter
+
+map O :set dirpreviews!; reload # O as in overview, this turns the third column into tree output
+
+# Basic Functions
+map . set hidden!
+map <enter> open
+map R push :rename<enter><c-k>.
+map zz middle
+map am $addshortcut $f
+map o $mimeopen --ask "$f"
+
+# call qr sharing in the current folder
+map Us $setsid -f qrshare "$fx" >/dev/null 2>&1
+map Ur $setsid -f qrshare -r >/dev/null 2>&1
+
+map <c-f> $lf -remote "send $id select \"$(fzf)\"" # fuzzy find files
+map <c-g> $nvim -c ":lua startInTelescopeOnly()" # live grep files
+
+# Other tips
+# Remember ' is a special mark which saves the previous path , so by pressing double '' you get back to the previous folder, i.e. using mark-load
+
+
+source "~/.config/lf/shortcutrc"

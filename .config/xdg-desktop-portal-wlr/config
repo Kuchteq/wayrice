@@ -1,0 +1,9 @@
+[filechooser]
+cmd=/home/yourusertoreplace/.config/xdg-desktop-portal-wlr/lf-wrapper.sh
+default_dir=/home/yourusertoreplace
+
+[screencast]
+output_name=
+max_fps=30
+chooser_cmd=slurp -f %o -or
+chooser_type=simple

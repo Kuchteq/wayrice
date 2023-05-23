@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Specify the input file
+input_file="/dev/stdin"
+output_file=""
+to_input=false
+# Read the input file line by line
+while read -r line; do
+
+  # Check if the line contains a URL
+  if [[ "$line" == ".ds [U "* ]]; then
+    url=$(echo $line | cut -d' ' -f3)
+    to_input=true
+  elif [[ $to_input == true && "$line" =~ ^".][ "[0-9] ]]; then
+	output_file+="$line\n"
+	output_file+=".pdfhref W -D $url $url\n"
+	to_input=false
+  else
+	output_file+="$line\n"
+  fi
+
+done < "$input_file"
+echo -e "$output_file"
+

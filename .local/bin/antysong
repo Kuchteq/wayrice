@@ -1,0 +1,4 @@
+#!/bin/sh
+
+curl -Ls https://rds.eurozet.pl/reader/var/antyradio.json | grep -oE '"title":"[^"]+"|"artist":"[^"]+"'
+
