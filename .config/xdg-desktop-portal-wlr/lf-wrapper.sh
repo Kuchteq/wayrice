@@ -37,7 +37,7 @@ save="$3"
 path="$4"
 out="$5"
 cmd="/usr/bin/lf"
-termcmd="/home/yourusertoreplace/.local/bin/footie"
+termcmd="/home/maniu/.local/bin/footie"
 
 if [ "$save" = "1" ]; then
 	set --

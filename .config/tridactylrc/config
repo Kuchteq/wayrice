@@ -171,13 +171,13 @@ bind <C-j> hint.focusNextHint
 bind --mode input|normal|input ə tabprev
 
 " Make the better integrated searx keybindings work
-unbindurl searx.tiekoetter.com j
-unbindurl searx.tiekoetter.com d
-unbindurl searx.tiekoetter.com k
-unbindurl searx.tiekoetter.com u
-unbindurl searx.tiekoetter.com n
-unbindurl searx.tiekoetter.com i
-unbindurl searx.tiekoetter.com r
+unbindurl searchy.markuch.me j
+unbindurl searchy.markuch.me d
+unbindurl searchy.markuch.me k
+unbindurl searchy.markuch.me u
+unbindurl searchy.markuch.me n
+unbindurl searchy.markuch.me i
+unbindurl searchy.markuch.me r
 
 bind ə tabnext
 bind … tabprev

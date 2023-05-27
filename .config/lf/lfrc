@@ -90,7 +90,7 @@ cmd restore_trash ${{
 
 cmd open_terminal_here ${{ 
   if [ -z ${TMUX+x} ]; then 
-  	setsid -f foot >/dev/null 2>&1
+  	setsid -f $TERMINAL >/dev/null 2>&1
   else
 	tmux split-window -c $PWD 
   fi

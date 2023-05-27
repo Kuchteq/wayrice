@@ -3,5 +3,4 @@
 if ps -e | grep -q swayidle; then
   kill -45 $(pidof someblocks)
 fi
-#sudo openvt -f -c 2 -u maniu
 xinit /usr/bin/steam steam -- :1 vt2 
