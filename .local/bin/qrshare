@@ -1,0 +1,10 @@
+#!/bin/sh
+
+[ $# = 0 ] && echo "Error: file share requires at least one argument" && exit 1
+title="Sending ${*//$'\n'/ }"
+foot -c "$XDG_CONFIG_HOME/foot/qrshower.ini" -T "$title" -a "floatermid"  qrcp -q send --keep-alive $@
+
+if [[ "$1" == "-r" ]]; then
+	title="Receiving"
+	foot -c "$XDG_CONFIG_HOME/foot/qrshower.ini" -T "$title" -a "floatermid"  qrcp receive 
+fi

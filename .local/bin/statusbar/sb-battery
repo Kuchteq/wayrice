@@ -6,14 +6,14 @@ for battery in /sys/class/power_supply/BAT?*; do
 		"Full") fin="󱊦 " ;;
 		"Discharging") status="d" ;;
 		"Charging") fin="🔌 " ;;
-		"Not charging") status="🛑 " ;;
-		"Unknown") status="♻️ " ;;
+		"Not charging") fin="󰏝 " ;;
+		"Unknown") fin="󰂑 " ;;
 		*) exit 1 ;;
 	esac
 	capacity="$(cat "$battery/capacity" 2>&1)"
 	# Will make a warn variable if discharging and low
-	[ "$status" = "d" ] && [ "$capacity" -gt 85 ] && fin="  "
-	[ "$status" = "d" ] && [ "$capacity" -le 66 ] && fin="  "
+	[ "$status" = "d" ] && fin="  "
+	[ "$status" = "d" ] && [ "$capacity" -le 75 ] && fin="  "
 	[ "$status" = "d" ] && [ "$capacity" -le 50 ] && fin="  "
 	[ "$status" = "d" ] && [ "$capacity" -le 33 ] && fin="  "
 	[ "$status" = "d" ] && [ "$capacity" -le 12 ] && warn="❗ "

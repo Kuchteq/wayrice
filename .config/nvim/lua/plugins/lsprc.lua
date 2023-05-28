@@ -1,7 +1,8 @@
 local function setUpLsp()
 	require("mason").setup()
 	require("mason-lspconfig").setup({
-		ensure_installed = { "ltex", "pyright", "bash" }
+		ensure_installed = { "ltex", "pyright", "bashls" },
+		automatic_installation = true
 	})
 
 
