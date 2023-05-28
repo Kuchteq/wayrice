@@ -37,12 +37,11 @@ save="$3"
 path="$4"
 out="$5"
 cmd="/usr/bin/lf"
-termcmd="/home/maniu/.local/bin/footie"
+termcmd="/usr/bin/foot"
 
 if [ "$save" = "1" ]; then
 	set --
 LF_PORTAL_ARG="$path" $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd -command inportal "$@"
-
 elif [ "$directory" = "1" ]; then
 	set -- -selection-path "$out" "$default_dir"
 $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd "$@"

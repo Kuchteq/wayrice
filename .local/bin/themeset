@@ -15,6 +15,9 @@ setup() {
  	echo $theme > /tmp/theme
  	setsid -f swaybg --image "$HOME/Pictures/Wallpapers/wallpaper_$theme.jpg" >/dev/null 2>&1
  	ln -sf "$XDG_CONFIG_HOME/bat/config_$theme" "$XDG_CONFIG_HOME/bat/config"
+	# though we use footserver, we still link the theme because regular foot is used for xdg-desktop-portal. 
+	# Unfortunately that means we need to change the light theme in two places :\\
+ 	ln -sf "$XDG_CONFIG_HOME/foot/foot_$theme.ini" "$XDG_CONFIG_HOME/foot/foot.ini"
  	# if it is the first time, it won't kill anything since there's nothing
  	[ -n "$currentBgInstance" ] && kill $currentBgInstance
  	pkill -USR1 zsh
