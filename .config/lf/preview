@@ -17,7 +17,7 @@ batorcat() {
 	shift
 	if command -v bat > /dev/null 2>&1
 	then
-		bat --color=always --style=plain --pager=never "$file" "$@"
+		bat --terminal-width "$1"  --line-range ":$2" --color=always --style=plain --pager=never "$file" "$@"
 	else
 		cat "$file"
 	fi
@@ -52,7 +52,7 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
 	text/* | */xml) 
 		case "$1" in 
 			.md) glowormdcat "$1";;
-			*) batorcat "$1" ;;
+			*) batorcat "$1" "$2" "$3" ;;
 		esac
 		;;
 	application/json) jq "." --color-output "$1" ;;
@@ -82,7 +82,7 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
 	inode/directory) tree -C --filelimit=9 $1;;# && lf -remote "send $id reload";;
 	*)
 
-		batorcat "$1"
+		batorcat "$1" "$2" "$3"
 		;;
 esac
 exit 1

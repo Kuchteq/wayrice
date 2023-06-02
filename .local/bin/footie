@@ -25,5 +25,25 @@ if [[ $theme == light ]]; then
 	-o colors.bright7=d1d5da'
 	exec footclient $overrideString "$@"
 else
-	exec footclient "$@"
+	overrideString='
+	-o colors.alpha=0.85
+	-o colors.background=000000
+	-o colors.foreground=ffffff
+	-o colors.regular0=000000
+	-o colors.regular1=ff0000
+	-o colors.regular2=00ff00
+	-o colors.regular3=ffff00
+	-o colors.regular4=5c5cff
+	-o colors.regular5=ff00ff
+	-o colors.regular6=00ffff
+	-o colors.regular7=e5e5e5
+	-o colors.bright0=7f7f7f 
+	-o colors.bright1=ff0000 
+	-o colors.bright2=00ff00 
+	-o colors.bright3=ffff00 
+	-o colors.bright4=5c5cff 
+	-o colors.bright5=ff00ff 
+	-o colors.bright6=00ffff 
+	-o colors.bright7=ffffff'
+	exec footclient $overrideString "$@"
 fi

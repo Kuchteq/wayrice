@@ -1,7 +1,7 @@
 local function setUpLsp()
 	require("mason").setup()
 	require("mason-lspconfig").setup({
-		ensure_installed = { "ltex", "pyright", "bashls" },
+		ensure_installed = { "ltex", "pyright", "bashls", "tsserver"},
 		automatic_installation = true
 	})
 
@@ -80,6 +80,7 @@ local function setUpLsp()
 	require("lspconfig").pyright.setup { on_attach = on_attach_base, capabilities = capabilities }
 	require("lspconfig").clangd.setup { on_attach = on_attach_base, capabilities = capabilities }
 	require("lspconfig").bashls.setup { on_attach = on_attach_base, capabilities = capabilities }
+	require("lspconfig").tsserver.setup { on_attach = on_attach_base, capabilities = capabilities }
 	require("flutter-tools").setup { lsp = {
 		on_attach = on_attach_base,
 		settings = {

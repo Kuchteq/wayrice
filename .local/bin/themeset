@@ -26,6 +26,7 @@ setup() {
 	    # Perform actions on each file here
 	done >/dev/null 2>&1
 	gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-$theme"
+	gsettings set org.gnome.desktop.interface color-scheme "prefer-$theme"
 	lf -remote "send \$colormodeset $theme"
 
 }

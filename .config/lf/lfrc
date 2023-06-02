@@ -128,7 +128,7 @@ map <c-t> open_terminal_here
 map W watchInPlaylistSelected
 map Yf clipputfile
 map Yd clipputfolder
-map V $lf -remote "send $id cd $(wl-paste)" # cd into the copied path
+map <c-v> $lf -remote "send $id cd $(wl-paste)" # cd into the copied path
 map T tag-clear 
 
 # Other less complex binds
@@ -148,6 +148,7 @@ map R push :rename<enter><c-k>.
 map zz middle
 map am $addshortcut $f
 map o $mimeopen --ask "$f"
+map Ya $wl-copy < $f #yank all
 
 # call qr sharing in the current folder
 map Us $setsid -f qrshare "$fx" >/dev/null 2>&1

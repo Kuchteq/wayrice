@@ -1,0 +1,306 @@
+{
+  "youtube": {
+    "enabled": true,
+    "redirectType": "both",
+    "frontend": "invidious",
+    "unsupportedUrls": "bypass"
+  },
+  "invidious": [
+    "https://invidious.snopyta.org"
+  ],
+  "piped": [
+    "https://pipedapi-libre.kavin.rocks"
+  ],
+  "pipedMaterial": [
+    "https://piped-material.xn--17b.net"
+  ],
+  "poketube": [
+    "https://poketube.fun"
+  ],
+  "cloudtube": [
+    "https://tube.cadence.moe"
+  ],
+  "youtubeMusic": {
+    "enabled": false,
+    "frontend": "beatbump",
+    "unsupportedUrls": "bypass"
+  },
+  "beatbump": [
+    "https://beatbump.ml"
+  ],
+  "hyperpipe": [
+    "https://hyperpipe.surge.sh"
+  ],
+  "twitter": {
+    "enabled": true,
+    "redirectType": "main_frame",
+    "unsupportedUrls": "bypass",
+    "frontend": "nitter",
+    "instance": "public"
+  },
+  "nitter": [
+    "https://nitter.net"
+  ],
+  "tiktok": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "proxiTok",
+    "instance": "public"
+  },
+  "proxiTok": [
+    "https://proxitok.pabloferreiro.es"
+  ],
+  "reddit": {
+    "enabled": true,
+    "frontend": "libreddit",
+    "unsupportedUrls": "bypass",
+    "instance": "public"
+  },
+  "libreddit": [
+    "https://libreddit.tiekoetter.com"
+  ],
+  "teddit": [
+    "https://teddit.net"
+  ],
+  "imgur": {
+    "enabled": true,
+    "redirectType": "main_frame",
+    "unsupportedUrls": "bypass",
+    "frontend": "rimgo",
+    "instance": "public"
+  },
+  "rimgo": [
+    "https://rimgo.pussthecat.org"
+  ],
+  "medium": {
+    "frontend": "scribe",
+    "enabled": true,
+    "unsupportedUrls": "bypass"
+  },
+  "scribe": [
+    "https://scribe.rip"
+  ],
+  "libMedium": [
+    "https://libmedium.batsense.net"
+  ],
+  "quora": {
+    "enabled": true,
+    "unsupportedUrls": "bypass",
+    "frontend": "quetre",
+    "instance": "public"
+  },
+  "quetre": [
+    "https://quetre.lunar.icu"
+  ],
+  "imdb": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "libremdb",
+    "instance": "public"
+  },
+  "libremdb": [
+    "https://libremdb.iket.me"
+  ],
+  "fandom": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "instance": "public",
+    "frontend": "breezeWiki"
+  },
+  "breezeWiki": [
+    "https://breezewiki.com"
+  ],
+  "lbry": {
+    "enabled": false,
+    "redirectType": "main_frame",
+    "unsupportedUrls": "bypass",
+    "frontend": "lbryDesktop"
+  },
+  "librarian": [
+    "https://lbry.vern.cc"
+  ],
+  "search": {
+    "enabled": false,
+    "frontend": "searxng",
+    "unsupportedUrls": "bypass",
+    "instance": "public"
+  },
+  "searxng": [
+    "https://search.bus-hit.me"
+  ],
+  "searx": [],
+  "whoogle": [],
+  "librex": [],
+  "translate": {
+    "enabled": false,
+    "frontend": "simplyTranslate",
+    "unsupportedUrls": "bypass",
+    "instance": "public"
+  },
+  "simplyTranslate": [
+    "https://simplytranslate.org"
+  ],
+  "lingva": [
+    "https://lingva.ml"
+  ],
+  "libreTranslate": [],
+  "maps": {
+    "enabled": false,
+    "frontend": "osm",
+    "unsupportedUrls": "bypass"
+  },
+  "facil": [
+    " https://facilmap.org "
+  ],
+  "osm": [
+    "https://www.openstreetmap.org"
+  ],
+  "sendFiles": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "send"
+  },
+  "send": [
+    "https://send.vis.ee"
+  ],
+  "textStorage": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "privateBin"
+  },
+  "privateBin": [],
+  "reuters": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "neuters"
+  },
+  "neuters": [
+    "https://neuters.de"
+  ],
+  "genius": {
+    "enabled": true,
+    "unsupportedUrls": "bypass",
+    "frontend": "dumb",
+    "instance": "public"
+  },
+  "dumb": [
+    "https://dumb.lunar.icu"
+  ],
+  "urbanDictionary": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "ruralDictionary"
+  },
+  "ruralDictionary": [
+    "https://rd.vern.cc"
+  ],
+  "stackOverflow": {
+    "enabled": true,
+    "unsupportedUrls": "bypass",
+    "frontend": "anonymousOverflow",
+    "instance": "public"
+  },
+  "anonymousOverflow": [
+    "https://overflow.smnz.de"
+  ],
+  "goodreads": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "biblioReads",
+    "instance": "public"
+  },
+  "biblioReads": [
+    "https://biblioreads.ml"
+  ],
+  "wikipedia": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "wikiless"
+  },
+  "wikiless": [
+    "https://wikiless.org"
+  ],
+  "snopes": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "suds"
+  },
+  "suds": [
+    "https://sd.vern.cc"
+  ],
+  "waybackMachine": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "waybackClassic"
+  },
+  "waybackClassic": [
+    "https://wayback-classic.net"
+  ],
+  "github": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "gothub"
+  },
+  "gothub": [
+    "https://gh.odyssey346.dev"
+  ],
+  "bilibili": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "mikuInvidious"
+  },
+  "mikuInvidious": [
+    "https://mikuinv.resrv.org"
+  ],
+  "bandcamp": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "tent"
+  },
+  "tent": [
+    "https://tent.sny.sh"
+  ],
+  "wolframAlpha": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "wolfreeAlpha"
+  },
+  "wolfreeAlpha": [
+    "https://gqq.gitlab.io",
+    "https://uqq.gitlab.io"
+  ],
+  "exceptions": {
+    "url": [],
+    "regex": []
+  },
+  "theme": "detect",
+  "popupServices": [
+    "youtube",
+    "twitter",
+    "imgur",
+    "quora",
+    "translate",
+    "maps",
+    "reddit",
+    "stackOverflow"
+  ],
+  "fetchInstances": "github",
+  "speedTest": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "libreSpeed"
+  },
+  "libreSpeed": [
+    "https://librespeed.org"
+  ],
+  "meet": {
+    "enabled": false,
+    "unsupportedUrls": "bypass",
+    "frontend": "jitsi"
+  },
+  "jitsi": [
+    "https://meet.jit.si",
+    "https://8x8.vc"
+  ],
+  "version": "2.6.2"
+}

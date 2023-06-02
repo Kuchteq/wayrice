@@ -1,0 +1,21 @@
+bind ə tabnext
+bind … tabprev
+bind X undo
+bind / fillcmdline find
+bind ? fillcmdline find --reverse
+unbindurl ^https://sear j --mode=ignore
+unbindurl ^https://sear d --mode=ignore 
+unbindurl ^https://sear k --mode=ignore
+unbindurl ^https://sear u --mode=ignore
+unbindurl ^https://sear n --mode=ignore
+unbindurl ^https://sear p --mode=ignore
+unbindurl ^https://sear i --mode=ignore
+unbindurl ^https://sear r --mode=ignore
+unbindurl ^https://sear g --mode=ignore
+bind --mode=browser <C-p> tabprev;
+bind --mode=input ə tabnext
+bind --mode=input … tabprev
+bind --mode=insert ə tabnext
+bind --mode=insert … tabprev
+set newtab about:blank
+unbind <c-f>

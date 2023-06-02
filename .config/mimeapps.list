@@ -18,3 +18,4 @@ video/x-matroska=video.desktop
 x-scheme-handler/lbry=lbry.desktop
 inode/directory=file.desktop
 x-scheme-handler/postman=Postman.desktop
+text/html=librewolf.desktop
