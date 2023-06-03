@@ -25,7 +25,8 @@ setup() {
 		nvim --server "$file" --remote-send "<cmd>:lua themeset('$theme')<CR>"
 	    # Perform actions on each file here
 	done >/dev/null 2>&1
-	gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-$theme"
+	newGtkTheme=$PREFERRED_GTK_THEME_LIGHT && [[ $theme == "dark" ]] && newGtkTheme=$PREFERRED_GTK_THEME_DARK
+	gsettings set org.gnome.desktop.interface gtk-theme "$newGtkTheme"
 	gsettings set org.gnome.desktop.interface color-scheme "prefer-$theme"
 	lf -remote "send \$colormodeset $theme"
 

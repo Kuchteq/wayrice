@@ -41,7 +41,7 @@ termcmd="/usr/bin/foot"
 
 if [ "$save" = "1" ]; then
 	set --
-LF_PORTAL_ARG="$path" $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd -command inportal "$@"
+LF_PORTAL_ARG="$path" $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd -command inportalsave "$@"
 elif [ "$directory" = "1" ]; then
 	set -- -selection-path "$out" "$default_dir"
 $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd "$@"

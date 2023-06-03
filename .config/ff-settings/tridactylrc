@@ -1,5 +1,6 @@
 bind ə tabnext
 bind … tabprev
+bind x tabclose
 bind X undo
 bind / fillcmdline find
 bind ? fillcmdline find --reverse
@@ -17,5 +18,8 @@ bind --mode=input ə tabnext
 bind --mode=input … tabprev
 bind --mode=insert ə tabnext
 bind --mode=insert … tabprev
+bind d scrollpage 0.5
+bind u scrollpage -0.5
+bind i focusinput -l
 set newtab about:blank
 unbind <c-f>

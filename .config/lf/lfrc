@@ -112,7 +112,7 @@ cmd tag-clear :tag; tag-toggle
 
 # two command which get called externally
 cmd invim source "~/.config/lf/invim"
-cmd inportal source "~/.config/lf/inportal"
+cmd inportalsave source "~/.config/lf/inportalsave"
 
 
 

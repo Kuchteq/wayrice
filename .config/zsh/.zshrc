@@ -69,15 +69,17 @@ lfcd () {
         [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
     fi
 }
-bindkey -s '^o' '^ulfcd\n'
+bindkey -s '^o' '^ulfcd\n' # ctrl+o to open lf and move easily
 
-bindkey -s '^a' '^ubc -lq\n'
+bindkey -s '^a' '^ubc -lq\n' # open bc calculator
 
-bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n'
+bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n' # use fzf and move there
 
-
-
-bindkey '^[[P' delete-char
+# make home, end and del work again
+bindkey  "^[[H"   vi-beginning-of-line
+bindkey  "^[[F"   vi-end-of-line
+bindkey -a "^[[H"   vi-beginning-of-line
+bindkey -a "^[[F"   vi-end-of-line
 
 bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search

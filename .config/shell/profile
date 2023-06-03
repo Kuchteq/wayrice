@@ -61,10 +61,13 @@ export MOZ_ENABLE_WAYLAND=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=1.5
 export QT_SCALE_FACTOR=1.5
 export GDK_DPI_SCALE=1.5
+export GDK_SCALE=2
 export MOZ_USE_XINPUT2="1" # Mozilla smooth scrolling/touchpads.
 
 # Colors
 export PRIMARY_COLOR="B400B4"
+export PREFERRED_GTK_THEME_LIGHT="Arc"
+export PREFERRED_GTK_THEME_DARK="Arc-Dark"
 
 # Start graphical server on user's current tty if not already running.
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s dwl >/dev/null 2>&1 && exec startw
