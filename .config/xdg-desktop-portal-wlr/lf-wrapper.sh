@@ -25,12 +25,6 @@
 # one path per line.
 # If nothing is printed, then the operation is assumed to have been canceled.
 
-# Set default folder when download.
-if [ -s "/tmp/last_saved_in_portal_folder" ]; then	
-	read -r default_dir < "/tmp/last_saved_in_portal_folder"
-else
-	default_dir= "$HOME"
-fi
 multiple="$1"
 directory="$2"
 save="$3"
@@ -40,20 +34,16 @@ cmd="/usr/bin/lf"
 termcmd="/usr/bin/foot"
 
 if [ "$save" = "1" ]; then
-	set --
-LF_PORTAL_ARG="$path" $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd -command inportalsave "$@"
+	#make the saving appear in the last path
+	set -- "$(dirname "$path")"
+	LF_PORTAL_ARG="$path" $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd -command inportalsave "$@"
 elif [ "$directory" = "1" ]; then
-	set -- -selection-path "$out" "$default_dir"
+	set -- -selection-path "$out" "$path"
 $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd "$@"
 elif [ "$multiple" = "1" ]; then
-	set -- -selection-path "$out" "$default_dir"
+	set -- -selection-path "$out" "$path"
 $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd "$@"
 else
-	set -- -selection-path "$out" "$default_dir"
+	set -- -selection-path "$out" "$path"
 $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd "$@"
-	#if something has actually been uploaded 
-	if [ -s "$out" ]; then
-		read -r lastSaved < "$out"
-		echo $(dirname "$lastSaved") > /tmp/last_saved_in_portal_folder
-	fi
 fi
