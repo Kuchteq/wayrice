@@ -84,16 +84,26 @@ cmd trash ${{
   done
 }}
 
-cmd restore_trash ${{
+cmd restoreTrash ${{
   trash-restore
 }}
 
-cmd open_terminal_here ${{ 
-  if [ -z ${TMUX+x} ]; then 
-  	setsid -f $TERMINAL >/dev/null 2>&1
-  else
-	tmux split-window -c $PWD 
-  fi
+cmd travelToSymlink ${{
+	dest=$(realpath $f)
+	if [ -f "$dest" ]; then
+	 whereExactly=$(basename "$dest")
+	 dest=$(dirname "$dest") 
+	 lf -remote "send $id :cd '$dest'; select '$whereExactly'"
+	else
+	 lf -remote "send $id cd '$dest'"
+	fi
+}}
+
+cmd symlinkSelectedHere ${{ 
+	for s in $fs
+	do 
+	  ln -s "$s" .
+	done
 }}
 
 cmd watchInPlaylistSelected ${{
@@ -123,13 +133,16 @@ map Mf mkfile
 map Me $chmod u+x $f && lf -remote "send :reload" # make executable
 map au unarchive
 map DD trash
-map Dr restore_trash
+map Dr restoreTrash
+map <c-l> travelToSymlink
+map P symlinkSelectedHere
 map <c-t> open_terminal_here
 map W watchInPlaylistSelected
 map Yf clipputfile
 map Yd clipputfolder
 map <c-v> $lf -remote "send $id cd $(wl-paste)" # cd into the copied path
 map T tag-clear 
+map <c-r> :reload; $killall bat
 
 # Other less complex binds
 

@@ -31,11 +31,10 @@ glowormdcat() {
 		glow "$file"
 	else
 		mdcat "$file"
-	fi
+fi
 }
 
 CACHE="$HOME/.cache/lf/thumbnail.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | awk '{print $1}'))"
-
 
 case "$(file --dereference --brief --mime-type -- "$1")" in
 	image/avif) CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/lf/thumb.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | cut -d' ' -f1)"
@@ -84,5 +83,5 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
 
 		batorcat "$1" "$2" "$3"
 		;;
-esac
+esac 
 exit 1
