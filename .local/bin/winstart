@@ -1,3 +1,5 @@
+#!/bin/sh
+
 sudo systemctl start libvirtd
 sudo virsh net-start default
 sudo virsh start win11

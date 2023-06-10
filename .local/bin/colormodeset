@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-if [[ "$1" == "light" ]]; then
+if [ "$1" = "light" ]; then
 	background="[99]#f7f7f7"
 	foreground=00/00/00
 
@@ -43,7 +43,7 @@ else
 	bright6=00ffff   # bright cyan
 	bright7=ffffff   # bright white
 fi
-function cset() {
+cset() {
   ANSI=$1
   RGB=$2
   R=${RGB:0:2}

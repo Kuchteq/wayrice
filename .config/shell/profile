@@ -63,6 +63,7 @@ export QT_SCALE_FACTOR=1.5
 export GDK_DPI_SCALE=1.5
 export GDK_SCALE=2
 export MOZ_USE_XINPUT2="1" # Mozilla smooth scrolling/touchpads.
+export GTK_USE_PORTAL=1
 
 # Colors
 export PRIMARY_COLOR="B400B4"

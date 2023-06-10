@@ -1,3 +1,5 @@
+#!/bin/sh
+
 sudo killall qemu-system-x86_64
 sudo systemctl stop libvirtd
 sudo systemctl stop smb

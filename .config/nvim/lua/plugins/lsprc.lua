@@ -1,26 +1,26 @@
+local on_attach_base = function(client, _)
+	-- e as in error
+	vim.keymap.set('n', ']e', vim.diagnostic.goto_next)
+	vim.keymap.set('n', '[e', vim.diagnostic.goto_prev)
+	vim.keymap.set('n', ']a', vim.lsp.buf.code_action, {})
+	vim.keymap.set('n', '[a', vim.lsp.buf.code_action, {})
+	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
+
+	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
+	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {})
+	vim.keymap.set('n', 'K', vim.lsp.buf.hover, { silent = true })
+	vim.keymap.set('n', '<leader>q', function() vim.lsp.buf.format({ tabSize = 1 }) end)
+	-- tell lsp not to provide their lousy syntax highlighting
+	client.server_capabilities.semanticTokensProvider = nil
+end
 local function setUpLsp()
 	require("mason").setup()
 	require("mason-lspconfig").setup({
-		ensure_installed = { "ltex", "pyright", "bashls", "tsserver"},
+		ensure_installed = { "ltex", "pyright", "bashls", "tsserver" },
 		automatic_installation = true
 	})
 
 
-	local on_attach_base = function(client, _)
-		-- e as in error
-		vim.keymap.set('n', ']e', vim.diagnostic.goto_next)
-		vim.keymap.set('n', '[e', vim.diagnostic.goto_prev)
-		vim.keymap.set('n', ']a', vim.lsp.buf.code_action, {})
-		vim.keymap.set('n', '[a', vim.lsp.buf.code_action, {})
-		vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
-
-		vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
-		vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {})
-		vim.keymap.set('n', 'K', vim.lsp.buf.hover, { silent = true })
-		vim.keymap.set('n', '<leader>q', function() vim.lsp.buf.format({ tabSize = 1 }) end)
-		-- tell lsp not to provide their lousy syntax highlighting
-		client.server_capabilities.semanticTokensProvider = nil
-	end
 
 	-- ensuring we have a nice border around hover definitions
 	local border = {
@@ -89,7 +89,7 @@ local function setUpLsp()
 	} }
 end
 
-return {
+return { {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
@@ -100,4 +100,19 @@ return {
 		"folke/neodev.nvim"
 	},
 	config = setUpLsp
+},
+	-- java settins, feel free to get rid of them
+	{
+		"mfussenegger/nvim-jdtls",
+		ft = "java",
+		config = function()
+			local config = {
+				cmd = { vim.fn.stdpath("data") .. "/mason/bin/jdtls" },
+				root_dir = vim.fs.dirname(vim.fs.find({ 'gradlew', '.git', 'mvnw' }, { upward = true })[1]),
+				on_attach = on_attach_base
+			}
+			require('jdtls').start_or_attach(config)
+		end
+	}
+
 }
