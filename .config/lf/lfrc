@@ -106,6 +106,14 @@ cmd symlinkSelectedHere ${{
 	done
 }}
 
+cmd open_terminal_here ${{ 
+  if [ -z ${TMUX+x} ]; then 
+  	setsid -f $TERMINAL >/dev/null 2>&1
+  else
+	tmux split-window -c $PWD 
+  fi
+}}
+
 cmd watchInPlaylistSelected ${{
 	mpv $fs
 }}

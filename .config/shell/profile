@@ -13,7 +13,7 @@ unsetopt PROMPT_SP
 # Default programs:
 export EDITOR="vimd"
 export TERMINAL="footie"
-export BROWSER="firefox"
+export BROWSER="librewolf"
 export MANPAGER="less -R --use-color -Dd+m -Du+c"
 
 # XDG stuff

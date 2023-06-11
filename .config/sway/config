@@ -28,7 +28,7 @@ set $term foot
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 set $menu dmenu_path | dmenu | xargs swaymsg exec --
-bindsym $mod+w exec flatpak run io.gitlab.librewolf-community
+bindsym $mod+w exec librewolf
 bindsym $mod+Shift+n exec flatpak run com.github.flxzt.rnote
 
 include /etc/sway/config-vars.d/*
@@ -40,7 +40,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 #
 # Example configuration:
 #
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+output eDP-1 resolution 2880x1880 position 0,0 scale 1
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -225,6 +225,7 @@ bar {
         statusline #ffffff
         background #323232
         inactive_workspace #32323200 #32323200 #5c5c5c
+	  font Hack 18
     }
 }
 
