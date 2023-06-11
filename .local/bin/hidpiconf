@@ -4,12 +4,10 @@
 # m as in make, i.e. modify to have hidpi
 if [ "$1" = "-m" ]; then
 	sed -i '/\(SCALE_FACTOR\|_SCALE=\)/ s/^#//' "$XDG_CONFIG_HOME/shell/profile"
-	sed -i '/\(font=\)/ s/12/20/' "$XDG_CONFIG_HOME/bemenu/bemenurc"
 	sed -i '/\(font=\)/ s/size=9/pixelsize=28/' "$XDG_CONFIG_HOME/foot/foot_light.ini" "$XDG_CONFIG_HOME/foot/foot_dark.ini"
 # u as in undo
 elif [ "$1" = "-u" ]; then
 	sed -i '/\(SCALE_FACTOR\|_SCALE=\)/ s/./#&/' "$XDG_CONFIG_HOME/shell/profile"
-	sed -i '/\(font=\)/ s/20/12/' "$XDG_CONFIG_HOME/bemenu/bemenurc"
 	sed -i '/\(font=\)/ s/pixelsize=28/size=9/' "$XDG_CONFIG_HOME/foot/foot_light.ini" "$XDG_CONFIG_HOME/foot/foot_dark.ini"
 else
 	echo "wrong selection"
