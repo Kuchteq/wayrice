@@ -1,9 +1,9 @@
 #!/bin/sh
 
 dwl -s 'somebar | \
+pipewire <&- | \
 someblocks <&- | \
 themeset <&- | \
 dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP <&- | \
 kanshi <&- | \
-deactivateBtIfNoKeyboard <&- | \
 foot --server <&-'
