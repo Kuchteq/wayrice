@@ -3,7 +3,7 @@
 background='#1a1a1a'
 mainBlue='#268bd2'
 fontsize=12
-[ $GDK_SCALE -gt 1 ] && fontsize=40
+[ "$GDK_SCALE" -gt 1 ] && fontsize=20
 font="Hack $fontsize"
 horispacing=14
 
