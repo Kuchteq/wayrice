@@ -8,6 +8,7 @@ return {
 	config = function()
 		local lfStart = "lf"
 		-- If there is the server variable (received by launching with vimd)
+		NVIM_SERVER_ON=vim.api.nvim_get_vvar("servername")
 		if NVIM_SERVER_ON then
 			lfStart = "NVSERVER=" .. NVIM_SERVER_ON .. " lf -command invim"
 		end

@@ -1,5 +1,0 @@
-#!/bin/bash
-#Vim Diesel wrapper for remote control (needed for lf integration)
-
-O=~/.cache/nvim/server$RANDOM.pipe
-exec nvim --listen $O -c "lua NVIM_SERVER_ON='$O'" "$@"

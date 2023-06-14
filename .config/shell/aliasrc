@@ -8,7 +8,7 @@ done; unset command
 
 # Temporary/project related aliases
 alias \
-	mem="vimd ~pr/Memento/memento/lib" 
+	mem="$EDITOR ~pr/Memento/memento/lib" 
 
 
 # Verbosity and settings that you pretty much just always are going to want.

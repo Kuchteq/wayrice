@@ -81,6 +81,12 @@ bindkey  "^[[F"   vi-end-of-line
 bindkey -a "^[[H"   vi-beginning-of-line
 bindkey -a "^[[F"   vi-end-of-line
 
+bindkey  "^[[1;5D"   vi-backward-word
+bindkey  "^[[1;5C"   vi-forward-word
+# make ctrl-left and ctrl-right work (actually on keyboard its bottom control+j/k
+bindkey  "^[[H"   vi-beginning-of-line
+bindkey  "^[[F"   vi-end-of-line
+
 bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search
 bindkey -s '^T' 'setsid -f $TERMINAL >/dev/null 2>&1\n'

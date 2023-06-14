@@ -1,4 +1,4 @@
 [Desktop Entry]
 Type=Application
 Name=Text editor
-Exec=footie vimd %u
+Exec=footie nvim %u

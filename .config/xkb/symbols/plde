@@ -53,6 +53,7 @@ xkb_symbols "basic" {
 
     key <SPCE>	{ [     space,      space, nobreakspace, nobreakspace ]	};
     key <BKSL>	{ [     backslash,      bar, Greek_rho, nobreakspace ]	};
+    key <AB10>	{ [     slash,      question, bar, Greek_rho ]	};
     key <PRSC> {key.type[Group1]="FOUR_LEVEL",  key.symbols[Group1]=[Print, Print, XF86_Launch4, XF86_Launch4 ]  };
 
 
