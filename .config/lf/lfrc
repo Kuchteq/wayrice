@@ -176,6 +176,8 @@ map Us $setsid -f qrshare "$fx" >/dev/null 2>&1
 map Ur $setsid -f qrshare -r >/dev/null 2>&1
 
 map <c-f> $lf -remote "send $id select \"$(fzf)\"" # fuzzy find files
+map <a-f> $lf -remote "send $id select \"$(FZF_DEFAULT_COMMAND='rg --files --hidden --no-ignore' fzf)\"" # fuzzy find files
+
 map <c-g> $nvim -c ":lua startInTelescopeOnly()" # live grep files
 
 # Other tips

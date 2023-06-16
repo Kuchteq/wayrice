@@ -1,5 +1,11 @@
 .cache
+.npm
+
 .config/arduino15/packages
+
 .local/share/Steam
 .local/share/qmk_firmware/lib
 .local/share/rustup
+.local/share/cargo/registry
+.local/share/gradle
+.local/share/nvim/mason
