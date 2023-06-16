@@ -1,0 +1,79 @@
+{
+  "editor.inlineSuggest.enabled": true,
+  "terminal.integrated.sendKeybindingsToShell": true,
+  "vim.useSystemClipboard": true,
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": [
+        "ə"
+      ],
+      "commands": [
+        ":bn"
+      ]
+    },
+    {
+      "before": [
+        "…"
+      ],
+      "commands": [
+        ":bp"
+      ]
+    },
+    {
+      "before": [
+        "<c-q>"
+      ],
+      "commands": [
+        ":bd"
+      ]
+    },
+    {
+      "before": [
+        "|"
+      ],
+      "commands": [
+        ":vsplit"
+      ]
+    },
+    {
+      "before": [
+        "g","i"
+      ],
+      "commands": [
+        "editor.action.goToImplementation"
+      ]
+    },
+    {
+      "before": [
+        "æ"
+      ],
+      "commands": [
+        "workbench.action.quickOpen"
+      ]
+    },
+    {
+      "before": [
+        "ŋ"
+      ],
+      "commands": [
+        "workbench.action.findInFiles"
+      ]
+    },
+  ],
+  "telemetry.telemetryLevel": "off",
+  "editor.formatOnSave": true,
+  "window.menuBarVisibility": "toggle",
+  "editor.lineNumbers": "relative",
+  "explorer.confirmDelete": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "window.zoomLevel": 3,
+  "editor.fontFamily": "'Hack'"
+}

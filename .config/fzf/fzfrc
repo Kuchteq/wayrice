@@ -1,1 +1,2 @@
 export FZF_DEFAULT_OPTS="--bind 'ctrl-u:half-page-up,ctrl-d:half-page-down'"
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!{.git,CacheStorage,Code Cache}"'

@@ -21,7 +21,7 @@ setup() {
  	# if it is the first time, it won't kill anything since there's nothing
  	[ -n "$currentBgInstance" ] && kill $currentBgInstance
  	pkill -USR1 zsh
-	for file in $(ls $XDG_CACHE_HOME/nvim/server*); do
+	for file in $(ls $XDG_RUNTIME_DIR/nvim.*); do
 		nvim --server "$file" --remote-send "<cmd>:lua themeset('$theme')<CR>"
 	    # Perform actions on each file here
 	done >/dev/null 2>&1

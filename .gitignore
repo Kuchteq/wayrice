@@ -1,0 +1,5 @@
+.cache
+.config/arduino15/packages
+.local/share/Steam
+.local/share/qmk_firmware/lib
+.local/share/rustup

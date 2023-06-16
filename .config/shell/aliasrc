@@ -60,5 +60,5 @@ alias \
 	j="sudo journalctl" \
 	sysa="systemctl start" \
   	startx="export GDK_BACKEND=x11 DISPLAY=:2 GDK_DPI_SCALE=1 QT_AUTO_SCREEN_SCALE_FACTOR=1 && startx -display :2" \
-  	gpg-refresh="gpg-connect-agent updatestartuptty /bye" 
-
+  	gpg-refresh="gpg-connect-agent updatestartuptty /bye" \
+	mvn="mvn -gs $XDG_CONFIG_HOME/maven/settings.xml"

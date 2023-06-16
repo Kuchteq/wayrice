@@ -35,6 +35,8 @@ export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 export ANDROID_HOME=/opt/android-sdk/Sdk
 export ANDROID_AVD_HOME="$XDG_DATA_HOME/android/avd"
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
+export ANALYZER_STATE_LOCATION_OVERRIDE="$XDG_CACHE_HOME/dartServer"
 
 # Program settings
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"

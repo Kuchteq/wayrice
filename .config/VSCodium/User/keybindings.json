@@ -19,6 +19,6 @@
  {
  "key": "ctrl+minus",
  "command": "-workbench.action.zoomOut"
- }
+},
 ]
 
