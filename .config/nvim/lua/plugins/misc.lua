@@ -83,5 +83,20 @@ return {
 			    require("colorizer").setup()
 		    end
 	    },
+	    {
+		    'natecraddock/workspaces.nvim',
+		    keys = { { "<leader>w" } },
+		    config = function()
+			    require("workspaces").setup(
+				    {
+					    hooks = { open = "Telescope find_files",
+					    }
+				    }
+			    )
+			    require('telescope').load_extension("workspaces")
+			    vim.keymap.set('n', '<leader>w', require("telescope").extensions.workspaces.workspaces, {})
+		    end
+
+	    }
     },
     { defaults = { lazy = true } }

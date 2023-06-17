@@ -1,9 +1,12 @@
+-- This is shit I know but some day when I have the time I'll make it better
 DEBUG_MODE_STATUS = false
 DEBUGGABLE_MODE_STATUS = false
 DEBUG_MODE_BUFFER_NR = -100
 DEBUG_MODE_AUTOCMD_ID = -10
 
 local function toggleEasyDebug()
+	-- automatically check if there's a launch.json available and add configuration present there
+	require('dap.ext.vscode').load_launchjs(".vscode/launch.json");
 	local stackmap = require("stackmap")
 	local lualine = require("lualine")
 	if DEBUGGABLE_MODE_STATUS == false then
@@ -24,6 +27,7 @@ function debug_mode_toggle()
 	local lualine = require("lualine")
 
 	if DEBUG_MODE_STATUS == false then
+		stackmap.pop("debuggable", "n");
 		local bufnr = vim.api.nvim_get_current_buf()
 		DEBUG_MODE_BUFFER_NR = bufnr
 		stackmap.push("debug_mode", "n", {
@@ -43,7 +47,7 @@ function debug_mode_toggle()
 						}, {}
 					)
 				end,
-				{ buffer = bufnr },
+				{},
 				desc = "Toggle Breakpoint"
 			},
 			{
@@ -52,47 +56,38 @@ function debug_mode_toggle()
 					vim.api.nvim_feedkeys('j', 'n', false)
 					require("dap").toggle_breakpoint()
 				end,
-				{ buffer = bufnr },
+				{},
 				desc = "Toggle Breakpoint"
 			},
-			{ "A",     function() require("dap").clear_breakpoints() end, { buffer = bufnr },                               desc = "Clear all breakpoitns" },
-			{ "c",     function() require("dap").continue() end,          { buffer = bufnr, silent = true, nowait = true }, desc = "Continue" },
-			{ "o",     function() require("dap").run_to_cursor() end,     { buffer = bufnr },                               desc = "Run to Cursor" },
+			{ "A",     function() require("dap").clear_breakpoints() end, {},                               desc = "Clear all breakpoitns" },
+			{ "c",     function() require("dap").continue() end,          { silent = true, nowait = true }, desc = "Continue" },
+			{ "o",     function() require("dap").run_to_cursor() end,     {},                               desc = "Run to Cursor" },
+			{ "<esc>", debug_mode_toggle,                                 desc = "Escape debug" },
 			--{ "dg", function() require("dap").goto_() end, desc = "Go to line (no execute)" },
 			--{ "di", function() require("dap").step_into() end, desc = "Step Into" },
-			{ "n",     function() require("dap").down() end,              { buffer = bufnr },                               desc = "Down" },
-			{ "p",     function() require("dap").up() end,                { buffer = bufnr },                               desc = "Up" },
-			{ "r",     function() require("dap").run_last() end,          { buffer = bufnr },                               desc = "Run Last" },
+			{ "n",     function() require("dap").down() end,              {},                               desc = "Down" },
+			{ "p",     function() require("dap").up() end,                {},                               desc = "Up" },
+			{ "r",     function() require("dap").run_last() end,          {},                               desc = "Run Last" },
+			{ "q",     function() require("dap").terminate() end,          {},                               desc = "Run Last" },
 
 			--{ "do", function() require("dap").step_out() end, desc = "Step Out" },
 			-- D like down, down we go further
-			{ "d",     function() require("dap").step_over() end,         { buffer = bufnr, silent = true, nowait = true }, desc = "Step Over" },
+			{ "d",     function() require("dap").step_over() end,         { silent = true, nowait = true }, desc = "Step Over" },
 			--{ "dp", function() require("dap").pause() end, desc = "Pause" },
-			{ "<c-r>", function() require("dap").repl.toggle() end,       { buffer = bufnr, nowait = true },                desc = "Toggle REPL" },
+			{ "<c-r>", function() require("dap").repl.toggle() end,       { nowait = true },                desc = "Toggle REPL" },
 			--{ "ds", function() require("dap").session() end, desc = "Session" },
-			--{ "dt", function() require("dap").terminate() end, desc = "Terminate" },
-			{ "u",     function() require("dap").step_back() end,         { buffer = bufnr },                               desc = "Step Back" },
-			--{ "a",     function() require("dapui").eval() end,            { buffer = bufnr, nowait = true },                desc = "Eval" },
-			{ "a",     function() require("dap.ui.widgets").hover() end,            { buffer = bufnr, nowait = true },                desc = "Eval" },
+			{ "u",     function() require("dap").step_back() end,         {},                               desc = "Step Back" },
+			--{ "a",     function() require("dapui").eval() end,            { , nowait = true },                desc = "Eval" },
+			{ "a",     function() require("dap.ui.widgets").hover() end,  { nowait = true },                desc = "Eval" },
 		})
 		stackmap.push("with_ui", "v", {
-			{ "a", function() require("dapui").eval() end, { buffer = bufnr, nowait = true }, desc = "Eval" },
-		})
-		DEBUG_MODE_AUTOCMD_ID = vim.api.nvim_create_autocmd({ "BufEnter" }, {
-			callback = function()
-				local thisbufnr = vim.api.nvim_get_current_buf()
-				if thisbufnr == DEBUG_MODE_BUFFER_NR then
-					lualine.setup({ sections = { lualine_a = { { function() return "DEBUG" end, color = { bg = "#e57474", fg = "#000000" } } } } })
-				else
-					lualine.setup({ sections = { lualine_a = { "mode" } } })
-				end
-			end
+			{ "a", function() require("dapui").eval() end, { nowait = true }, desc = "Eval" },
 		})
 		lualine.setup({ sections = { lualine_a = { { function() return "DEBUG" end, color = { bg = "#e57474", fg = "#000000" } } } } })
 	else
 		stackmap.pop("debug_mode", "n")
 		stackmap.pop("with_ui", "n")
-		vim.api.nvim_del_autocmd(DEBUG_MODE_AUTOCMD_ID)
+		stackmap.push("debuggable", "n", { { "q", debug_mode_toggle, desc = "debuggable" } })
 		lualine.setup({ sections = { lualine_a = { "mode" } } })
 	end
 	DEBUG_MODE_STATUS = not DEBUG_MODE_STATUS
@@ -118,8 +113,8 @@ return {
 				vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = palette.color1, bg = '#31353f' })
 				vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = palette.color4, bg = '#31353f' })
 				vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = palette.color2, bg = '#31353f' })
-				vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
-				vim.fn.sign_define('DapBreakpointCondition', { text = 'ﳁ', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+				vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+				vim.fn.sign_define('DapBreakpointCondition', { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
 				vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
 				vim.fn.sign_define('DapLogPoint', { text = '', texthl = 'DapLogPoint', linehl = 'DapLogPoint', numhl = 'DapLogPoint' })
 				vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStopped', numhl = 'DapStopped' })
@@ -133,7 +128,7 @@ return {
 		},
 
 		{ "Alighorab/stackmap.nvim" },
-		{ "theHamsta/nvim-dap-virtual-text"},
+		{ "theHamsta/nvim-dap-virtual-text" },
 
 		{
 			"rcarriga/nvim-dap-ui",

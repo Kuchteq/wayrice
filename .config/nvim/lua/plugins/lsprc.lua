@@ -9,7 +9,8 @@ local on_attach_base = function(client, _)
 	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
 	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {})
 	vim.keymap.set('n', 'K', vim.lsp.buf.hover, { silent = true })
-	vim.keymap.set('n', '<leader>q', function() vim.lsp.buf.format({ tabSize = 1 }) end)
+	-- o as in foooormat
+	vim.keymap.set('n', '<leader>o', function() vim.lsp.buf.format({ tabSize = 1 }) end)
 	-- tell lsp not to provide their lousy syntax highlighting
 	client.server_capabilities.semanticTokensProvider = nil
 end
@@ -104,14 +105,33 @@ return { {
 	-- java settins, feel free to get rid of them
 	{
 		"mfussenegger/nvim-jdtls",
+
+		dependencies = {
+			"nvim-telescope/telescope-dap.nvim",
+		},
 		ft = "java",
 		config = function()
 			local config = {
 				cmd = { vim.fn.stdpath("data") .. "/mason/bin/jdtls" },
 				root_dir = vim.fs.dirname(vim.fs.find({ 'gradlew', '.git', 'mvnw' }, { upward = true })[1]),
-				on_attach = on_attach_base
+				on_attach = function()
+					require('jdtls.dap').setup_dap({ hotcodereplace = 'auto' })
+					on_attach_base()
+				end,
+				init_options = {
+					bundles = {
+						vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar")
+					},
+				}
 			}
-			require('jdtls').start_or_attach(config)
+			--require('jdtls').start_or_attach(config)
+			require('telescope').load_extension('dap');
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "java",
+				callback = function()
+					require('jdtls').start_or_attach(config)
+				end,
+			})
 		end
 	}
 
