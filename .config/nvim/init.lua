@@ -46,11 +46,13 @@ vim.keymap.set("n", "<leader>fd", ":filetype detect<CR>")
 vim.keymap.set("i", "<C-e>", "<esc>ldei")
 -- custom replace functions for visual mode
 vim.keymap.set('v', '©', '"hy:%s/<C-r>h//gc<left><left><left>', { noremap = true })
--- easier navigation
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
+
+-- split navigation using right alt + wsad, control activated using right alt + e
+vim.keymap.set("n", "ę", "<C-w>")
+vim.keymap.set("n", "ä", "<C-w>h")
+vim.keymap.set("n", "ß", "<C-w>j")
+vim.keymap.set("n", "œ", "<C-w>k")
+vim.keymap.set("n", "ð", "<C-w>l")
 -- start up a new terminal window straight away in the same path
 vim.keymap.set('n', '<leader>t', ":!setsid -f $TERMINAL >/dev/null 2>&1<CR><ESC>")
 

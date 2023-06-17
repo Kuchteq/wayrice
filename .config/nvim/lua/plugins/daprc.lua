@@ -25,7 +25,8 @@ end
 function debug_mode_toggle()
 	local stackmap = require("stackmap")
 	local lualine = require("lualine")
-
+	local widgets = require('dap.ui.widgets')
+	local varsidebar = widgets.sidebar(widgets.scopes, {width=50})
 	if DEBUG_MODE_STATUS == false then
 		stackmap.pop("debuggable", "n");
 		local bufnr = vim.api.nvim_get_current_buf()
@@ -68,17 +69,19 @@ function debug_mode_toggle()
 			{ "n",     function() require("dap").down() end,              {},                               desc = "Down" },
 			{ "p",     function() require("dap").up() end,                {},                               desc = "Up" },
 			{ "r",     function() require("dap").run_last() end,          {},                               desc = "Run Last" },
-			{ "q",     function() require("dap").terminate() end,          {},                               desc = "Run Last" },
+			{ "q",     function() require("dap").terminate() end,         {},                               desc = "Run Last" },
 
 			--{ "do", function() require("dap").step_out() end, desc = "Step Out" },
 			-- D like down, down we go further
 			{ "d",     function() require("dap").step_over() end,         { silent = true, nowait = true }, desc = "Step Over" },
 			--{ "dp", function() require("dap").pause() end, desc = "Pause" },
 			{ "<c-r>", function() require("dap").repl.toggle() end,       { nowait = true },                desc = "Toggle REPL" },
+			{"<c-v>",  function() varsidebar.toggle() end,  { nowait = true },		desc = "Toggle Variables"
+			},
 			--{ "ds", function() require("dap").session() end, desc = "Session" },
-			{ "u",     function() require("dap").step_back() end,         {},                               desc = "Step Back" },
+			{ "u", function() require("dap").step_back() end,        {},                desc = "Step Back" },
 			--{ "a",     function() require("dapui").eval() end,            { , nowait = true },                desc = "Eval" },
-			{ "a",     function() require("dap.ui.widgets").hover() end,  { nowait = true },                desc = "Eval" },
+			{ "a", function() require("dap.ui.widgets").hover() end, { nowait = true }, desc = "Eval" },
 		})
 		stackmap.push("with_ui", "v", {
 			{ "a", function() require("dapui").eval() end, { nowait = true }, desc = "Eval" },

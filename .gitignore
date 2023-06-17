@@ -1,7 +1,10 @@
 .cache
 .npm
+.mozilla
+.m2
 
 .config/arduino15/packages
+.config/libreoffice/*/cache
 
 .local/share/Steam
 .local/share/qmk_firmware/lib
@@ -9,3 +12,7 @@
 .local/share/cargo/registry
 .local/share/gradle
 .local/share/nvim/mason
+.local/share/mail
+
+.local/lib/
+
