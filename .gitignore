@@ -1,10 +1,17 @@
+# the home ones that tend to be huge
 .cache
 .npm
 .mozilla
 .m2
+.pub-cache
 
 .config/arduino15/packages
 .config/libreoffice/*/cache
+# this + add any other electron app that produces bloat
+# .config/VSCodium/*
+.config/VSCodium/*/*
+!.config/VSCodium/User/keybindings.json
+!.config/VSCodium/User/settings.json
 
 .local/share/Steam
 .local/share/qmk_firmware/lib
@@ -13,6 +20,7 @@
 .local/share/gradle
 .local/share/nvim/mason
 .local/share/mail
+.local/share/virtualenv
 
 .local/lib/
-
+.flutter

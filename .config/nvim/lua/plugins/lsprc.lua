@@ -1,4 +1,4 @@
-local on_attach_base = function(client, _)
+LSP_ON_ATTACH_BASE_SETUP = function(client, _)
 	-- e as in error
 	vim.keymap.set('n', ']e', vim.diagnostic.goto_next)
 	vim.keymap.set('n', '[e', vim.diagnostic.goto_prev)
@@ -20,8 +20,6 @@ local function setUpLsp()
 		ensure_installed = { "ltex", "pyright", "bashls", "tsserver" },
 		automatic_installation = true
 	})
-
-
 
 	-- ensuring we have a nice border around hover definitions
 	local border = {
@@ -49,7 +47,7 @@ local function setUpLsp()
 
 	require("lspconfig").ltex.setup {
 		on_attach = function(_, _)
-			on_attach_base()
+			LSP_ON_ATTACH_BASE_SETUP()
 			-- the ltex extra sets up some necessities such as disabling rules and adding stuff to custom dictionary
 			require("ltex_extra").setup {
 				load_langs = { "en-US" }, -- table <string> : languages for witch dictionaries will be loaded
@@ -65,7 +63,7 @@ local function setUpLsp()
 	}
 	require("neodev").setup({})
 	require('lspconfig').lua_ls.setup({
-		on_attach = on_attach_base,
+		on_attach = LSP_ON_ATTACH_BASE_SETUP,
 		settings = {
 			Lua = {
 				completion = { callSnippet = "Replace" },
@@ -78,61 +76,21 @@ local function setUpLsp()
 			}
 		}
 	})
-	require("lspconfig").pyright.setup { on_attach = on_attach_base, capabilities = capabilities }
-	require("lspconfig").clangd.setup { on_attach = on_attach_base, capabilities = capabilities }
-	require("lspconfig").bashls.setup { on_attach = on_attach_base, capabilities = capabilities }
-	require("lspconfig").tsserver.setup { on_attach = on_attach_base, capabilities = capabilities }
-	require("flutter-tools").setup { lsp = {
-		on_attach = on_attach_base,
-		settings = {
-			lineLength = 90
-		}
-	} }
+
+	require("lspconfig").pyright.setup { on_attach = LSP_ON_ATTACH_BASE_SETUP, capabilities = capabilities }
+	require("lspconfig").clangd.setup { on_attach = LSP_ON_ATTACH_BASE_SETUP, capabilities = capabilities }
+	require("lspconfig").bashls.setup { on_attach = LSP_ON_ATTACH_BASE_SETUP, capabilities = capabilities }
+	require("lspconfig").tsserver.setup { on_attach = LSP_ON_ATTACH_BASE_SETUP, capabilities = capabilities }
 end
 
-return { {
+return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
 		"barreiroleo/ltex_extra.nvim",
-		"Nash0x7E2/awesome-flutter-snippets",
 		"folke/neodev.nvim"
 	},
 	config = setUpLsp
-},
-	-- java settins, feel free to get rid of them
-	{
-		"mfussenegger/nvim-jdtls",
-
-		dependencies = {
-			"nvim-telescope/telescope-dap.nvim",
-		},
-		ft = "java",
-		config = function()
-			local config = {
-				cmd = { vim.fn.stdpath("data") .. "/mason/bin/jdtls" },
-				root_dir = vim.fs.dirname(vim.fs.find({ 'gradlew', '.git', 'mvnw' }, { upward = true })[1]),
-				on_attach = function()
-					require('jdtls.dap').setup_dap({ hotcodereplace = 'auto' })
-					on_attach_base()
-				end,
-				init_options = {
-					bundles = {
-						vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar")
-					},
-				}
-			}
-			--require('jdtls').start_or_attach(config)
-			require('telescope').load_extension('dap');
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = "java",
-				callback = function()
-					require('jdtls').start_or_attach(config)
-				end,
-			})
-		end
-	}
-
 }

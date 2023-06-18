@@ -63,13 +63,6 @@ return {
 		    end,
 	    },
 	    {
-		    'akinsho/flutter-tools.nvim',
-		    pattern = "BufEnter *.lua",
-		    dependencies = {
-			    'nvim-lua/plenary.nvim',
-		    },
-	    },
-	    {
 		    'kylechui/nvim-surround',
 		    event = "VeryLazy",
 		    config = function()

@@ -4,7 +4,7 @@
 # some choice programs to use to open it.
 feed="${1:-$(printf "%s" | bemenu -p 'Paste URL or file path')}"
 
-case "$(printf "browser\\nyank\\nzathura\\nimv\\nvim\\nmpv\\nchromium\\nlynx\\nmpv loop\\nmpv float\\nqueue download\\nqueue yt-dlp\\nqueue yt-dlp audio" | bemenu -i -p "Open it with?")" in
+case "$(printf "browser\\nyank\\nzathura\\nimv\\nvim\\nmpv\\nchromium\\nlynx\\nmpv loop\\nmpv float\\nqueue download\\nqueue yt-dlp\\nqueue yt-dlp audio" | bemenu --accept-single -i -p "Open it with?")" in
 	"yank") echo "$feed" | wl-copy ;;
 	mpv) setsid -f mpv -quiet "$feed" >/dev/null 2>&1 ;;
 	"mpv loop") setsid -f mpv -quiet --loop "$feed" >/dev/null 2>&1 ;;
