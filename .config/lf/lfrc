@@ -166,7 +166,7 @@ map O :set dirpreviews!; reload # O as in overview, this turns the third column 
 map . set hidden!
 map <enter> open
 map R push :rename<enter><c-k>.
-map zz middle
+map Z middle
 map am $addshortcut $f
 map o $mimeopen --ask "$f"
 map Ya $wl-copy < $f #yank all contents 

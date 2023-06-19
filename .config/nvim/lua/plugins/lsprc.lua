@@ -66,7 +66,9 @@ local function setUpLsp()
 		on_attach = LSP_ON_ATTACH_BASE_SETUP,
 		settings = {
 			Lua = {
-				completion = { callSnippet = "Replace" },
+				workspace = {
+					checkThirdParty = false,
+				},
 				format = {
 					enable = true,
 					defaultConfig = {

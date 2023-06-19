@@ -27,6 +27,7 @@ function debug_mode_toggle()
 	local lualine = require("lualine")
 	local widgets = require('dap.ui.widgets')
 	local varsidebar = widgets.sidebar(widgets.scopes, {width=50})
+	local palette = require('everblush.palette')
 	if DEBUG_MODE_STATUS == false then
 		stackmap.pop("debuggable", "n");
 		local bufnr = vim.api.nvim_get_current_buf()
@@ -87,10 +88,13 @@ function debug_mode_toggle()
 			{ "a", function() require("dapui").eval() end, { nowait = true }, desc = "Eval" },
 		})
 		lualine.setup({ sections = { lualine_a = { { function() return "DEBUG" end, color = { bg = "#e57474", fg = "#000000" } } } } })
+		vim.api.nvim_set_hl(0, 'CursorLine', { ctermbg = 0, fg = palette.color4, bg = '#263252' })
 	else
 		stackmap.pop("debug_mode", "n")
 		stackmap.pop("with_ui", "n")
 		stackmap.push("debuggable", "n", { { "q", debug_mode_toggle, desc = "debuggable" } })
+
+		vim.api.nvim_set_hl(0, 'CursorLine', { ctermbg = 10, bg = palette.cursorline })
 		lualine.setup({ sections = { lualine_a = { "mode" } } })
 	end
 	DEBUG_MODE_STATUS = not DEBUG_MODE_STATUS
