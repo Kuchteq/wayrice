@@ -26,7 +26,7 @@ function debug_mode_toggle()
 	local stackmap = require("stackmap")
 	local lualine = require("lualine")
 	local widgets = require('dap.ui.widgets')
-	local varsidebar = widgets.sidebar(widgets.scopes, {width=50})
+	local varsidebar = widgets.sidebar(widgets.scopes, { width = 50 })
 	local palette = require('everblush.palette')
 	if DEBUG_MODE_STATUS == false then
 		stackmap.pop("debuggable", "n");
@@ -77,7 +77,7 @@ function debug_mode_toggle()
 			{ "d",     function() require("dap").step_over() end,         { silent = true, nowait = true }, desc = "Step Over" },
 			--{ "dp", function() require("dap").pause() end, desc = "Pause" },
 			{ "<c-r>", function() require("dap").repl.toggle() end,       { nowait = true },                desc = "Toggle REPL" },
-			{"<c-v>",  function() varsidebar.toggle() end,  { nowait = true },		desc = "Toggle Variables"
+			{ "<c-v>", function() varsidebar.toggle() end, { nowait = true }, desc = "Toggle Variables"
 			},
 			--{ "ds", function() require("dap").session() end, desc = "Session" },
 			{ "u", function() require("dap").step_back() end,        {},                desc = "Step Back" },
@@ -131,6 +131,10 @@ return {
 					ensure_installed = { "python" },
 					handlers = {}
 				})
+				require('dap').defaults.fallback.external_terminal = {
+					command = 'footie',
+					args = { '-a', "floatermid", "-W", "90x26" },
+				}
 			end
 		},
 
