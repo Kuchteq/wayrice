@@ -17,8 +17,8 @@ cmd mkfile ${{
 
 map ŋ $nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send 'ŋ'
 map æ $nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send 'æ'
+map <c-g> $nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send "<cmd>lua require('telescope.builtin').live_grep({cwd='$PWD'})<CR>"
 map e $nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send "<cmd>cd $PWD<CR><CR>"
 #chande nvim's cwd on request (AltGr+d)
 map ð $nvim --server $NVSERVER --remote-send "<cmd>cd $PWD<CR><CR>"
-
 

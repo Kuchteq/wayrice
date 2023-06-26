@@ -18,7 +18,7 @@ return {
 		local function moveToWhereOpen()
 			if whereOpen ~= "" and firstTime == false then
 				-- LF_CLIENT_ID received by lf -command invim callback
-				vim.fn.jobstart("lf -remote 'send " .. LF_CLIENT_ID .. " cd \"" .. whereOpen .. "\"'")
+				vim.fn.jobstart("lf -remote 'send " .. LF_CLIENT_ID .. " select \"" .. whereOpen .. "\"'")
 				whereOpen = ""
 			end
 		end
@@ -47,7 +47,7 @@ return {
 		end
 
 		function _lf_toggle_here()
-			whereOpen = vim.fn.expand('%:p:h')
+			whereOpen = vim.api.nvim_buf_get_name(0)
 			lf:toggle()
 		end
 	end
