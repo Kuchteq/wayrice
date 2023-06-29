@@ -42,6 +42,7 @@ alias \
 	z="zathura" \
 	img="imv" \
 	bs="brightnessctl set " \
+	lg="lazygit" \
 	neomutt="ESCDELAY=0 neomutt"
 
 #Usually some settings related stuff

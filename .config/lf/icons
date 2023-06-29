@@ -307,6 +307,7 @@ Vagrantfile             
 *.emf   
 *.ogv   
 *.ogx   
+*.srt   󰨗
 
 # audio formats (extensions from dircolors defaults)
 *.aac   󰝚
