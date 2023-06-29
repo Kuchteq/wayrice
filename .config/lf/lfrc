@@ -176,9 +176,10 @@ map Us $setsid -f qrshare "$fx" >/dev/null 2>&1
 map Ur $setsid -f qrshare -r >/dev/null 2>&1
 
 map <c-f> $lf -remote "send $id select \"$(fzf)\"" # fuzzy find files
-map <a-f> $lf -remote "send $id select \"$(FZF_DEFAULT_COMMAND='rg --files --hidden --no-ignore' fzf)\"" # fuzzy find files
-
+map <c-e> $lf -remote "send $id select \"$(FZF_DEFAULT_COMMAND='fd -td' fzf)\"" # fuzzy find directories
 map <c-g> $nvim -c ":lua startInTelescopeOnly()" # live grep files
+
+map C $git diff $f
 
 # Other tips
 # Remember ' is a special mark which saves the previous path , so by pressing double '' you get back to the previous folder, i.e. using mark-load
