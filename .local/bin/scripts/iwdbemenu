@@ -1,0 +1,83 @@
+#!/bin/bash
+
+STATION="wlan0"
+
+remove_colors() {
+    sed -E 's/\x1B\[[0-9;]*[JKmsu]//g'
+}
+
+connect() {
+    SSID="$1"
+    notify-send --urgency=low "Attempting to connect to network: $SSID"
+    if iwctl station "$STATION" connect "$SSID" --dont-ask; then
+        notify-send "Connected to network: $SSID"
+        exit 0
+    fi
+    if ERROR=$(
+        iwctl station "$STATION" connect "$SSID" \
+            --passphrase "$(bemenu "${FLAGS[@]}" -p Password: </dev/null)" \
+            --dont-ask 2>&1
+    ); then
+        notify-send "Connected to network: $SSID"
+    else
+        notify-send --urgency=critical \
+            "Failed to connect to network: $SSID" "$(remove_colors <<<$ERROR)"
+    fi
+}
+
+networks() {
+    iwctl station "$STATION" get-networks | awk '
+BEGIN {
+    i = -1
+}
+{
+    i++
+    if (i < 4) next # skip header
+
+    network = ""
+    strength = 0
+    for (ix = 1; ix <= NF; ix++) {
+        if (ix == NF - 1) continue # skip protocol
+
+        # calculate strength by reading *s until
+        # a color code is encountered
+        char = sprintf("%c", $ix)
+        if (char == "*") {
+            split($ix, chars, "")
+            for (c = 1; c <= length($ix); c++) {
+                char = sprintf("%c", chars[c])
+                if (char == "\033") break
+                strength++
+            }
+            continue
+        }
+
+        if (char == "\033") continue # color codes
+        if ($ix == "") continue # whitespace
+        if ($ix == ">") continue # current network
+
+        # ssids may contain spaces
+        if (network == "") {
+            network = $ix
+            continue
+        }
+        network = network " " $ix
+    }
+    if (network == "") next
+    networks[network] = strength
+}
+END {
+    for (s = 4; s >= 0; s--) {
+        for (network in networks) {
+            if (networks[network] == s) {
+                print network
+                delete networks[network]
+            }
+        }
+    }
+}
+'
+}
+
+SELECTION=$(networks | bemenu "${FLAGS[@]}") || exit 1
+connect "$SELECTION"

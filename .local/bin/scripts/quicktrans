@@ -1,0 +1,10 @@
+#!/bin/sh
+
+currentOutputFile=$(mktemp)
+[ "$1" = "-c" ] && keyd do C-c && sleep 0.1
+trans "$(wl-paste)" > $currentOutputFile
+lineheight=$(($(wc -l < $currentOutputFile)+1))
+linewidth=$(wc -L < $currentOutputFile)
+[ $lineheight -gt 40 ] && lineheight=41
+[ $linewidth -gt 80 ] && linewidth=81
+exec $TERMINAL -W "${linewidth}x$lineheight" -a "floatermid" less $currentOutputFile
