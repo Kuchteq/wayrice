@@ -42,14 +42,13 @@ return
 					require("jdtls").pick_test();
 				end, { buffer = true })
 
-				require('jdtls.dap').setup_dap({ hotcodereplace = 'auto' })
+				require('jdtls.dap').setup_dap({ hotcodereplace = 'auto', config_overrides = { console = "internalConsole" } })
 				LSP_ON_ATTACH_BASE_SETUP()
 			end,
 			init_options = {
 				bundles = bundles }
 		}
 
-		--require('jdtls').start_or_attach(config)
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "java",
 			callback = function()

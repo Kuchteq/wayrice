@@ -16,6 +16,9 @@ M._styleNamespace = nil;
 M.toggleEasyDebug = function()
 	-- automatically check if there's a launch.json available and add configuration present there
 	require('dap.ext.vscode').load_launchjs(".vscode/launch.json");
+	if vim.bo.filetype == "java" then
+		require('jdtls.dap').setup_dap_main_class_configs()
+	end
 	local stackmap = require("stackmap")
 	local lualine = require("lualine")
 	M._styleNamespace = vim.api.nvim_create_namespace("currentCursorNs");
@@ -37,19 +40,19 @@ M._modeChangeApperance = function(toDebug)
 	if toDebug then
 		lualine.setup({ sections = { lualine_a = { { function() return "DEBUG" end, color = { bg = "#e57474", fg = "#000000" } } } } })
 		local lineBg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg;
-		vim.api.nvim_set_hl(M._styleNamespace, 'CursorLine', {  fg = palette.color4, bg = lineBg,   bold = true })
-		vim.api.nvim_set_hl(M._styleNamespace, 'CursorLineNr', { fg = palette.color4, bg = lineBg  })
+		vim.api.nvim_set_hl(M._styleNamespace, 'CursorLine', { fg = palette.color4, bg = lineBg, bold = true })
+		vim.api.nvim_set_hl(M._styleNamespace, 'CursorLineNr', { fg = palette.color4, bg = lineBg })
 		vim.api.nvim_set_hl_ns(M._styleNamespace);
 
 		M._previousDebugCursorRow = vim.api.nvim_win_get_cursor(0)[1]
-		vim.fn.sign_place(420, "currentCursorNs", "CurrentCursorDebugLine",1, {lnum=M._previousDebugCursorRow });
+		vim.fn.sign_place(420, "currentCursorNs", "CurrentCursorDebugLine", 1, { lnum = M._previousDebugCursorRow });
 
 		M._followCursorAutocmdId = vim.api.nvim_create_autocmd("CursorMoved", {
 			callback = function()
 				local currentRow = vim.api.nvim_win_get_cursor(0)[1]
 				if M._previousDebugCursorRow ~= currentRow then
-					vim.fn.sign_unplace("currentCursorNs", {buffer=1, id=420});
-					vim.fn.sign_place(420, "currentCursorNs", "CurrentCursorDebugLine",1, {lnum=currentRow});
+					vim.fn.sign_unplace("currentCursorNs", { buffer = 1, id = 420 });
+					vim.fn.sign_place(420, "currentCursorNs", "CurrentCursorDebugLine", 1, { lnum = currentRow });
 				end
 				M._previousDebugCursorRow = currentRow;
 			end,
@@ -57,7 +60,7 @@ M._modeChangeApperance = function(toDebug)
 	else
 		vim.api.nvim_set_hl_ns(0)
 		vim.api.nvim_del_autocmd(M._followCursorAutocmdId);
-		vim.fn.sign_unplace("currentCursorNs", {buffer=1, id=420});
+		vim.fn.sign_unplace("currentCursorNs", { buffer = 1, id = 420 });
 		lualine.setup({ sections = { lualine_a = { "mode" } } })
 	end
 end
