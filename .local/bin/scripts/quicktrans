@@ -5,6 +5,6 @@ currentOutputFile=$(mktemp)
 trans "$(wl-paste)" > $currentOutputFile
 lineheight=$(($(wc -l < $currentOutputFile)+1))
 linewidth=$(wc -L < $currentOutputFile)
-[ $lineheight -gt 40 ] && lineheight=41
+[ $lineheight -gt 45 ] && lineheight=46
 [ $linewidth -gt 80 ] && linewidth=81
 exec $TERMINAL -W "${linewidth}x$lineheight" -a "floatermid" less $currentOutputFile

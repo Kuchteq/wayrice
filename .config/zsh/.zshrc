@@ -104,12 +104,7 @@ bindkey -M visual '^[[P' vi-delete
 function precmd {
     # Set window title
     print -Pn "\e]0;zsh%L %(1j,%j job%(2j|s|); ,)%~\e\\"
-	if [ -v ENTERVIAFTER ]; then
-		keyd do esc l
-	fi
-	unset ENTERVIAFTER
 }
-
 function preexec {
     # Called when executing a command and sets bar title
     print -Pn "\e]0;${(q)1}\e\\"
@@ -134,6 +129,17 @@ function persistent-normal-edit {
 zle -N persistent-normal-edit
 bindkey '^[[27;5;13~' accept-and-hold
 bindkey -M vicmd '^[[27;5;13~' persistent-normal-edit
+
+zle-line-init() { 
+	if [ -v ENTERVIAFTER ]; then
+		zle -K vicmd
+		unset ENTERVIAFTER
+	else 
+		# fix cursor if you were in normal mode when you executed the previous query 
+		echo -ne '\e[5 q'
+	fi 
+}
+zle -N zle-line-init
 
 # Load syntax highlighting; should be last.
 source $XDG_CONFIG_HOME/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null

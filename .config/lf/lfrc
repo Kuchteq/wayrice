@@ -46,16 +46,17 @@ cmd open ${{
     esac
 }}
 
-cmd mkdir ${{
-  printf "Directory Name: "
-  read ans
-  mkdir $ans
+cmd mkdir %{{
+    printf "Directory Name: "
+    read dir
+    mkdir -p "$dir"
+    lf -remote "send $id cd \"$dir\""
 }}
 
-cmd mkfile ${{
+cmd mkfile %{{
   printf "File Name: "
   read ans
-  $EDITOR $ans
+  lf -remote "send $id $ $EDITOR $ans"
 }}
 
 # Archive bindings
