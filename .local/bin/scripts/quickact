@@ -11,7 +11,7 @@ case "$selected" in
      h) $TERMINAL htop ;;
      t) $TERMINAL tmux a ;;
      b) $TERMINAL -a "floateright" -W "60x20" bluetuith ;;
-     e) $TERMINAL -a "floateright" -W "60x20" trans ;;
+     e) $TERMINAL -a "floateright" -W "60x20" trans -v -I ;;
      n) iwdbemenu
 esac
 #so times 16 it's the width

@@ -56,7 +56,7 @@ cmd mkdir %{{
 cmd mkfile %{{
   printf "File Name: "
   read ans
-  lf -remote "send $id $ $EDITOR $ans"
+  lf -remote "send $id $ $EDITOR \"$ans\""
 }}
 
 # Archive bindings
