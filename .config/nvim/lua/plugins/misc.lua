@@ -90,6 +90,14 @@ return {
 			    vim.keymap.set('n', '<leader>w', require("telescope").extensions.workspaces.workspaces, {})
 		    end
 
-	    }
+	    },
+	    {
+		    'numToStr/Comment.nvim',
+		    event = "VeryLazy",
+		    config = function()
+			    require("Comment").setup()
+		    end
+	    },
+
     },
     { defaults = { lazy = true } }

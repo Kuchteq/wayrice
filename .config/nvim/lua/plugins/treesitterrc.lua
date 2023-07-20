@@ -3,11 +3,11 @@ return {
 	version = false,
 	build = ":TSUpdate",
 	event = { "BufReadPost", "BufNewFile" },
-	dependencies = {
-		{
-			"nvim-treesitter/nvim-treesitter-textobjects",
-		}
-	},
+	-- dependencies = {
+	-- 	{
+	-- 		"nvim-treesitter/nvim-treesitter-textobjects",
+	-- 	}
+	-- },
 	opts = {
 		highlight = { enable = true },
 		--indent = { enable = true },
@@ -15,6 +15,7 @@ return {
 		ensure_installed = {
 			"bash",
 			"c",
+			"dart",
 			"html",
 			"javascript",
 			"json",
@@ -28,7 +29,6 @@ return {
 			"regex",
 			"tsx",
 			"typescript",
-			"vim",
 			"yaml",
 		}
 	},

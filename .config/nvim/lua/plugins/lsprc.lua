@@ -82,6 +82,7 @@ local function setUpLsp()
 	require("lspconfig").pyright.setup { on_attach = LSP_ON_ATTACH_BASE_SETUP, capabilities = capabilities }
 	require("lspconfig").clangd.setup { on_attach = LSP_ON_ATTACH_BASE_SETUP, capabilities = capabilities }
 	require("lspconfig").bashls.setup { on_attach = LSP_ON_ATTACH_BASE_SETUP, capabilities = capabilities }
+	require("lspconfig").html.setup { on_attach = LSP_ON_ATTACH_BASE_SETUP, capabilities = capabilities }
 	require("lspconfig").tsserver.setup { on_attach = LSP_ON_ATTACH_BASE_SETUP, capabilities = capabilities }
 end
 

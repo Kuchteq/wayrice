@@ -1,24 +1,24 @@
 #send back the id of lf to neovim
 $nvim --server $NVSERVER --remote-send "<cmd>lua LF_CLIENT_ID=$id<CR>"
 
-cmd open ${{
+cmd open &{{
    file=$f
    nvim --server $NVSERVER --remote-send 'þ'
    nvim --server $NVSERVER --remote $file 
 }}
 
 
-cmd mkfile ${{
+cmd mkfile %{{
   printf "File Name: "
   read ans
   nvim --server $NVSERVER --remote-send 'þ'
   nvim --server $NVSERVER --remote "$PWD/$ans"
 }}
 
-map ŋ $nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send 'ŋ'
-map æ $nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send 'æ'
-map <c-g> $nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send "<cmd>lua require('telescope.builtin').live_grep({cwd='$PWD'})<CR>"
-map e $nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send "<cmd>cd $PWD<CR><CR>"
+map ŋ &nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send 'ŋ'
+map æ &nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send 'æ'
+map <c-g> &nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send "<cmd>lua require('telescope.builtin').live_grep({cwd='$PWD'})<CR>"
+map e &nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send "<cmd>cd $PWD<CR><CR>"
 #chande nvim's cwd on request (AltGr+d)
-map ð $nvim --server $NVSERVER --remote-send "<cmd>cd $PWD<CR><CR>"
+map ð &nvim --server $NVSERVER --remote-send "<cmd>cd $PWD<CR><CR>"
 

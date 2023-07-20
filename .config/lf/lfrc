@@ -107,7 +107,7 @@ cmd symlinkSelectedHere ${{
 	done
 }}
 
-cmd open_terminal_here ${{ 
+cmd open_terminal_here &{{ 
   if [ -z ${TMUX+x} ]; then 
   	setsid -f $TERMINAL >/dev/null 2>&1
   else
@@ -117,14 +117,6 @@ cmd open_terminal_here ${{
 
 cmd watchInPlaylistSelected ${{
 	mpv $fs
-}}
-
-cmd clipputfile ${{
-  echo $f | wl-copy
-}}
-
-cmd clipputfolder ${{
-  echo $PWD | wl-copy
 }}
 
 cmd tag-clear :tag; tag-toggle
@@ -139,7 +131,7 @@ cmd inportalsave source "~/.config/lf/inportalsave"
 map M
 map Md mkdir
 map Mf mkfile
-map Me $chmod u+x $f && lf -remote "send :reload" # make executable
+map Me &chmod u+x $f && lf -remote "send :reload" # make executable
 map au unarchive
 map DD trash
 map Dr restoreTrash
@@ -147,11 +139,10 @@ map <c-l> travelToSymlink
 map P symlinkSelectedHere
 map <c-t> open_terminal_here
 map W watchInPlaylistSelected
-map Yf clipputfile
-map Yd clipputfolder
-map <c-v> $lf -remote "send $id cd $(wl-paste)" # cd into the copied path
+map Yd &echo $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to clipboard" # cd into the copied path
+map Yf &echo $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard" # cd into the copied path
 map T tag-clear 
-map <c-r> :reload; $killall bat
+map <c-r> :reload; &killall bat
 
 # Other less complex binds
 
@@ -173,8 +164,8 @@ map o $mimeopen --ask "$f"
 map Ya $wl-copy < $f #yank all contents 
 
 # call qr sharing in the current folder
-map Us $setsid -f qrshare "$fx" >/dev/null 2>&1
-map Ur $setsid -f qrshare -r >/dev/null 2>&1
+map Us &setsid -f qrshare "$fx" >/dev/null 2>&1
+map Ur &setsid -f qrshare -r >/dev/null 2>&1
 
 map <c-f> $lf -remote "send $id select \"$(fzf)\"" # fuzzy find files
 map <c-e> $lf -remote "send $id select \"$(FZF_DEFAULT_COMMAND='fd -td' fzf)\"" # fuzzy find directories

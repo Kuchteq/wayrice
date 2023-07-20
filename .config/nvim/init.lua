@@ -7,7 +7,7 @@ vim.o.cmdheight = 0
 vim.o.signcolumn = "yes"
 vim.o.cursorline = true
 vim.o.clipboard = "unnamedplus"
--- vim.opt.autochdir = true, the bottom one is similar but it is ran only on once on enter, 
+-- vim.opt.autochdir = true, the bottom one is similar but it is ran only on once on enter,
 -- this makes it so that telescope or anything that depends on PWD still search stuff
 vim.api.nvim_create_autocmd({ "VimEnter" }, { command = "cd %:p:h" })
 -- no case sensitive searches by default but if I type something in uppercase then turn it on
@@ -17,14 +17,17 @@ vim.o.ignorecase = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 -- tab options
-vim.opt.tabstop = 6
-vim.opt.shiftwidth = 6
-vim.opt.softtabstop = 6
+vim.opt.tabstop = 8
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.autoindent = true
+vim.opt.smartindent = true
 vim.opt.cindent = true
+--vim.opt.cindent = true
 
 -- disable greeting screen
 vim.opt.shortmess:append({ I = true })
--- disable tilde characters on the left ~ 
+-- disable tilde characters on the left ~
 vim.opt.fillchars = { eob = " " }
 
 vim.g.mapleader = ' '
@@ -73,7 +76,7 @@ vim.opt.undofile = true
 
 -- setting up plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then vim.fn.system({"git","clone","--filter=blob:none","https://github.com/folke/lazy.nvim.git","--branch=stable",lazypath,}) end
+if not vim.loop.fs_stat(lazypath) then vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath, }) end
 vim.opt.rtp:prepend(lazypath)
 -- this line causes lazy nvim plugin manager to execute and load stuff from the plugins folder
 require("lazy").setup("plugins")
