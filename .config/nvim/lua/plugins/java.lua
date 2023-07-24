@@ -43,6 +43,7 @@ return
 				end, { buffer = true })
 
 				require('jdtls.dap').setup_dap({ hotcodereplace = 'auto', config_overrides = { console = "internalConsole" } })
+				require('jdtls.setup').add_commands();
 				LSP_ON_ATTACH_BASE_SETUP()
 			end,
 			init_options = {

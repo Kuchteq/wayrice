@@ -4,6 +4,7 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.so = 3
 vim.o.cmdheight = 0
+vim.opt.showmode = false
 vim.o.signcolumn = "yes"
 vim.o.cursorline = true
 vim.o.clipboard = "unnamedplus"
@@ -44,9 +45,9 @@ vim.keymap.set("n", "¢", ":BufferLineGoToBuffer4<CR>", { silent = true })
 vim.keymap.set("n", "|", ":vsplit<CR>")
 vim.keymap.set("n", "–", ":split<CR>")
 vim.keymap.set("n", "©", ":%s//g<Left><Left>")
-vim.keymap.set("n", "<C-s>", ":w!<CR>")
+vim.keymap.set("n", "<C-s>", ":silent update<CR>", {silent=true})
 vim.keymap.set("n", "<leader>fd", ":filetype detect<CR>")
-vim.keymap.set("i", "<C-e>", "<esc>ldei")
+vim.keymap.set("i", "<C-k>", "<esc>ldei")
 -- custom replace functions for visual mode
 vim.keymap.set('v', '©', '"hy:%s/<C-r>h//gc<left><left><left>', { noremap = true })
 

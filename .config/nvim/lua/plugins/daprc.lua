@@ -11,7 +11,6 @@ P = function(table) print(vim.inspect(table)); end
 M._styleNamespace = nil;
 M._previousDebugCursorRow = nil;
 M._followCursorAutocmdId = nil;
-M._styleNamespace = nil;
 
 M.toggleEasyDebug = function()
 	-- automatically check if there's a launch.json available and add configuration present there
