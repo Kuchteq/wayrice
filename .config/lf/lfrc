@@ -14,6 +14,7 @@ set ratios 1:2:3
 
 # make sure changing directories updates the titlebar
 cmd on-cd &{{
+    printf "\e]7;file://$HOST$PWD" > /dev/tty
     printf "\033]0; $PWD\007" > /dev/tty
 }}
 on-cd
@@ -137,7 +138,7 @@ map DD trash
 map Dr restoreTrash
 map <c-l> travelToSymlink
 map P symlinkSelectedHere
-map <c-t> open_terminal_here
+map <c-n> open_terminal_here
 map W watchInPlaylistSelected
 map Yd &echo $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to clipboard" # cd into the copied path
 map Yf &echo $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard" # cd into the copied path
