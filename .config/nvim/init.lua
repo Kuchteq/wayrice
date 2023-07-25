@@ -1,5 +1,7 @@
 -- general settings
 vim.o.title = 1
+
+
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.so = 3
@@ -10,7 +12,6 @@ vim.o.cursorline = true
 vim.o.clipboard = "unnamedplus"
 -- vim.opt.autochdir = true, the bottom one is similar but it is ran only on once on enter,
 -- this makes it so that telescope or anything that depends on PWD still search stuff
-vim.api.nvim_create_autocmd({ "VimEnter" }, { command = "cd %:p:h" })
 -- no case sensitive searches by default but if I type something in uppercase then turn it on
 vim.o.smartcase = true
 vim.o.ignorecase = true
@@ -25,6 +26,18 @@ vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.cindent = true
 --vim.opt.cindent = true
+
+local sync_dir_with_shell = function()
+    os.execute('printf "\\e]7;file://'.. vim.fn.hostname() .. vim.fn.expand("%:p:h")..'"')
+end
+vim.api.nvim_create_autocmd({ "DirChanged" }, {
+    callback = sync_dir_with_shell
+})
+vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = function ()
+    vim.api.nvim_command("cd %:p:h")
+    sync_dir_with_shell()
+end })
+
 
 -- disable greeting screen
 vim.opt.shortmess:append({ I = true })
@@ -45,7 +58,7 @@ vim.keymap.set("n", "¢", ":BufferLineGoToBuffer4<CR>", { silent = true })
 vim.keymap.set("n", "|", ":vsplit<CR>")
 vim.keymap.set("n", "–", ":split<CR>")
 vim.keymap.set("n", "©", ":%s//g<Left><Left>")
-vim.keymap.set("n", "<C-s>", ":silent update<CR>", {silent=true})
+vim.keymap.set("n", "<C-s>", ":silent update<CR>", { silent = true })
 vim.keymap.set("n", "<leader>fd", ":filetype detect<CR>")
 vim.keymap.set("i", "<C-k>", "<esc>ldei")
 -- custom replace functions for visual mode

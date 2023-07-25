@@ -1,6 +1,8 @@
 #send back the id of lf to neovim
 $nvim --server $NVSERVER --remote-send "<cmd>lua LF_CLIENT_ID=$id<CR>"
 
+cmd on-cd
+
 cmd open &{{
    file=$f
    nvim --server $NVSERVER --remote-send 'þ'
