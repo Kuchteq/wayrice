@@ -34,7 +34,7 @@ setup() {
 
 # -z true if doesnt exist
 if [ -z "$1" ]; then
-	if (( hour < 21 && hour > 6 )); then
+	if (( ${hour#0} < 21 && ${hour#0} > 6 )); then
 		theme="light"
 	else
 		theme="dark"

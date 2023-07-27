@@ -14,7 +14,7 @@ set ratios 1:2:3
 
 # make sure changing directories updates the titlebar
 cmd on-cd &{{
-    printf "\e]7;file://$HOST$PWD" > /dev/tty
+    printf "\033]7;file://$HOST$PWD" > /dev/tty
     printf "\033]0; $PWD\007" > /dev/tty
 }}
 on-cd
