@@ -17,9 +17,15 @@ return {
                 -- function for ~/.local/bin/themeset
                 function themeset(theme)
                     SYSTHEME = theme
-                    local booledSystheme = SYSTHEME == "light" and true or false;
-                    vim.opt.background = booledSystheme and "light" or "dark"
-                    require('everblush').setup({ lightmode = booledSystheme, transparent_background = not booledSystheme })
+                    local booled_systheme = SYSTHEME == "light" and true or false;
+                    if booled_systheme then
+                        vim.api.nvim_chan_send(2, '\x1b]11;[99]#f7f7f7\a')
+                        vim.opt.background = "light"
+                    else
+                        vim.api.nvim_chan_send(2, '\x1b]11;[85]#000000\a')
+                        vim.opt.background = "dark"
+                    end
+                    require('everblush').setup({ lightmode = booled_systheme, transparent_background = not booled_systheme })
                     vim.cmd([[colorscheme everblush]])
                     os.execute("colormodeset " .. SYSTHEME)
                 end

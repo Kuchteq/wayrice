@@ -13,6 +13,9 @@ setup() {
 	#foot - needs a wrapper script called "foothe" which overrides the colors of foot.ini using --override arguments. Default config that has dark scheme defined. Because it is ran in server mode, every new instance doesn't fetch a clean foot.ini and not every app is ran with a zsh subshell so .zshrc can't trigger its colorchanging capabilities (and even if it could you would get these weird flashes of the config's first color) hence the wrapper
 	#zsh - for dynamic updates of shells the TRAPUSR1 function which reads /tmp/theme is defined in the config that is then triggered here by special pkill (see down)
  	echo $theme > /tmp/theme
+	newGtkTheme=$PREFERRED_GTK_THEME_LIGHT && [[ $theme == "dark" ]] && newGtkTheme=$PREFERRED_GTK_THEME_DARK
+	gsettings set org.gnome.desktop.interface color-scheme "prefer-$theme"
+
  	setsid -f swaybg --image "$HOME/Pictures/Wallpapers/wallpaper_$theme.jpg" >/dev/null 2>&1
  	ln -sf "$XDG_CONFIG_HOME/bat/config_$theme" "$XDG_CONFIG_HOME/bat/config"
 	# though we use footserver, we still link the theme because regular foot is used for xdg-desktop-portal. 
@@ -25,10 +28,14 @@ setup() {
 		nvim --server "$file" --remote-send "<cmd>:lua themeset('$theme')<CR>"
 	    # Perform actions on each file here
 	done >/dev/null 2>&1
-	newGtkTheme=$PREFERRED_GTK_THEME_LIGHT && [[ $theme == "dark" ]] && newGtkTheme=$PREFERRED_GTK_THEME_DARK
-	gsettings set org.gnome.desktop.interface gtk-theme "$newGtkTheme"
-	gsettings set org.gnome.desktop.interface color-scheme "prefer-$theme"
+
+	for file in $(ls $XDG_RUNTIME_DIR/hurlui.*); do
+                nvim --server "$file" --remote-send "<cmd>:lua APPLY_SYSTEM_THEME()<CR>"
+	    # Perform actions on each file here
+	done >/dev/null 2>&1
 	lf -remote "send \$colormodeset $theme"
+
+	gsettings set org.gnome.desktop.interface gtk-theme "$newGtkTheme"
 
 }
 

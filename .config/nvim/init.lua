@@ -30,6 +30,7 @@ vim.opt.cindent = true
 local sync_dir_with_shell = function()
     vim.api.nvim_chan_send(2,'\x1b]7;file://'.. vim.fn.hostname() .. vim.fn.getcwd())
 end
+
 vim.api.nvim_create_autocmd({ "DirChanged" }, {
     callback = sync_dir_with_shell
 })
