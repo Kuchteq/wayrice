@@ -3,6 +3,7 @@
 # keys	filename				description
 bf	${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-files	# This file, a list of bookmarked files
 bd	${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs		# A list of bookmarked directories similar to this file
+rc      ${XDG_DATA_HOME:-$HOME/.local/share}/receivers
 sn	${XDG_DATA_HOME}/snippets
 # A list of bookmarked stuff that's usually useful
 cfb	~/.local/src/someblocks/config.h				# smeblocks: the status bar for dwl

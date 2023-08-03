@@ -1,6 +1,6 @@
 #!/bin/zsh
-text="i - Note \\nw - Word lookup \\ne - translate\\nh - Htop\\nb - Bluetooth\\nt - Tmux\\nn - WiFi"
-width=$(($(echo -e $text | wc -m) * 16))
+text="i - Note \\nw - Word lookup \\ne - translate\\nh - Htop\\nb - Bluetooth\\nt - Tmux\\nn - WiFi\\ns - Server Term \\nc - Server Files"
+width=$(($(echo -e $text | wc -m) * 15))
 selected=${$(printf $text | tofi --auto-accept-single=true  --matching-algorithm=prefix --prompt-text "Quick: " --width "$width" -c "$XDG_CONFIG_HOME/tofi/topPrompt.ini"):0:1}
 #caje "$selected"
 DATE=$(date +%Y-%m-%dT%H:%M:%S)
@@ -12,6 +12,8 @@ case "$selected" in
      t) $TERMINAL tmux a ;;
      b) $TERMINAL -a "floateright" -W "60x20" bluetuith ;;
      e) $TERMINAL -a "floateright" -W "60x20" trans -v -I ;;
+     s) serverterm ;;
+     c) serverfilesterm ;;
      n) iwdbemenu
 esac
 #so times 16 it's the width

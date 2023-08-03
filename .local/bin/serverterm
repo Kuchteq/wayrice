@@ -1,0 +1,4 @@
+#!/bin/sh
+
+read -r default_host < $XDG_DATA_HOME/receivers
+$TERMINAL ssh -4 $default_host

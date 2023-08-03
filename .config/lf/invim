@@ -1,5 +1,5 @@
 #send back the id of lf to neovim
-$nvim --server $NVSERVER --remote-send "<cmd>lua LF_CLIENT_ID=$id<CR>"
+$nvim --server $NVSERVER --remote-send "<cmd>lua LF_CLIENT_ID=$id; lf_move_to_where_open()<CR>"
 
 cmd on-cd
 

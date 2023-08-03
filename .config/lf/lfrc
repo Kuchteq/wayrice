@@ -120,6 +120,19 @@ cmd watchInPlaylistSelected ${{
 	mpv $fs
 }}
 
+cmd sendTo %{{
+  [ -z $fs ] && echo "No files selected" && exit 1
+  if [ -z "$WAYLAND_DISPLAY" ]; then
+      echo "Rsync recipient: "
+      read ans
+  else 
+    ans=$(cat "$XDG_DATA_HOME/receivers" | bemenu -p "rsync recipient: " ||  exit 1)
+  fi
+  echo "Sending to $ans"
+  rsync $fs "${ans}:" >/dev/null && echo "$ans Received!" || echo "$ans Error Occured"
+}}
+
+
 cmd tag-clear :tag; tag-toggle
 
 # two command which get called externally
@@ -171,6 +184,7 @@ map Ur &setsid -f qrshare -r >/dev/null 2>&1
 map <c-f> $lf -remote "send $id select \"$(fzf)\"" # fuzzy find files
 map <c-e> $lf -remote "send $id select \"$(FZF_DEFAULT_COMMAND='fd -td' fzf)\"" # fuzzy find directories
 map <c-g> $nvim -c ":lua startInTelescopeOnly()" # live grep files
+map <c-s> sendTo
 
 map C $git diff $f
 

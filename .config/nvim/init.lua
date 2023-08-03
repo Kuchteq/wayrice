@@ -1,7 +1,5 @@
 -- general settings
 vim.o.title = 1
-
-
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.so = 3
@@ -10,8 +8,6 @@ vim.opt.showmode = false
 vim.o.signcolumn = "yes"
 vim.o.cursorline = true
 vim.o.clipboard = "unnamedplus"
--- vim.opt.autochdir = true, the bottom one is similar but it is ran only on once on enter,
--- this makes it so that telescope or anything that depends on PWD still search stuff
 -- no case sensitive searches by default but if I type something in uppercase then turn it on
 vim.o.smartcase = true
 vim.o.ignorecase = true
@@ -71,8 +67,6 @@ vim.keymap.set("n", "ä", "<C-w>h")
 vim.keymap.set("n", "ß", "<C-w>j")
 vim.keymap.set("n", "œ", "<C-w>k")
 vim.keymap.set("n", "ð", "<C-w>l")
--- start up a new terminal window straight away in the same path
-vim.keymap.set('n', '<leader>t', ":!setsid -f $TERMINAL >/dev/null 2>&1<CR><ESC>")
 
 -- Document related mappings
 -- Compile the files for fast preview, in groff's case, they won't have images tho

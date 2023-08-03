@@ -12,20 +12,18 @@ return {
 		if NVIM_SERVER_ON then
 			lfStart = "NVSERVER=" .. NVIM_SERVER_ON .. " lf -command invim"
 		end
-		local whereOpen = ""
-		local firstTime = true
+		local where_open = ""
 
-		local function moveToWhereOpen()
-			if whereOpen ~= "" and firstTime == false then
+		function lf_move_to_where_open()
+			if where_open ~= "" then
 				-- LF_CLIENT_ID received by lf -command invim callback
-				vim.fn.jobstart("lf -remote 'send " .. LF_CLIENT_ID .. " select \"" .. whereOpen .. "\"'")
-				whereOpen = ""
+				vim.fn.jobstart("lf -remote 'send " .. LF_CLIENT_ID .. " select \"" .. where_open .. "\"'")
 			end
 		end
 		local Terminal = require('toggleterm.terminal').Terminal
 		local lf = Terminal:new({
 			cmd = lfStart,
-			dir = whereOpen,
+			dir = where_open,
 			direction = "float",
 			float_opts = {
 				border = "rounded",
@@ -35,11 +33,10 @@ return {
 			},
 			-- function to run on opening the terminal
 			on_open = function(term)
-				moveToWhereOpen()
+				vim.api.nvim_buf_set_keymap(term.bufnr, "t", "þ","<cmd>lua _lf_toggle()<CR>:set titlestring=<CR>", { noremap = true, silent = true })
+				lf_move_to_where_open()
 				vim.cmd("startinsert!")
-				vim.api.nvim_buf_set_keymap(term.bufnr, "t", "þ",
-					"<cmd>lua _lf_toggle()<CR>:set titlestring=<CR>", { noremap = true, silent = true })
-				firstTime = false
+                                where_open = ""
 			end,
 		})
 		function _lf_toggle()
@@ -47,7 +44,7 @@ return {
 		end
 
 		function _lf_toggle_here()
-			whereOpen = vim.api.nvim_buf_get_name(0)
+			where_open = vim.api.nvim_buf_get_name(0)
 			lf:toggle()
 		end
 	end

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+read -r default_host < $XDG_DATA_HOME/receivers
+$TERMINAL -a floatermid -W 82x25 -T "Pulling files from: $default_host" ssh -4 $default_host -t 'lf -command infileterm' && eval `wl-paste -p` && notify-send "Transfer completed"
