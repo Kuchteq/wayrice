@@ -136,30 +136,39 @@ end
 local debug_output_term = {
     win_id = nil,
     buf_id = nil,
+    launch_editor_buf_id = nil,
     init = function(self)
         self.buf_id = api.nvim_create_buf(false, false)
-        api.nvim_create_autocmd({ "WinClosed" }, {
-            callback = function()
-                self.win_id = nil;
-            end,
-            buffer = self.buf_id
-        })
-        api.nvim_create_autocmd({ "BufDelete" }, {
-            callback = function()
-                self.win_id = nil;
-                self.buf_id = nil
-            end,
-            buffer = self.buf_id
-        })
-        api.nvim_create_autocmd({ "VimResized" }, {
-            callback = function()
-                if self.win_id then
-                    self:get_sizing()
-                    api.nvim_win_set_config(self.win_id, vim.tbl_extend("force", { relative = "editor" }, self.get_sizing()))
-                end
-            end,
-            buffer = self.buf_id
-        })
+        self.launch_editor_buf_id = api.nvim_create_buf(false, false)
+        vim.keymap.set("n", "ę", function()
+            P(api.nvim_get_current_buf())
+            if api.nvim_get_current_buf() == self.buf_id then
+                api.nvim_set_current_buf(self.launch_editor_buf_id);
+                vim.cmd("edit .vscode/launch.json");
+                api.nvim_buf_set_option(self.launch_editor_buf_id, "buflisted", false)
+            else
+                api.nvim_set_current_buf(self.buf_id);
+            end
+        end);
+        local create_autocms = function(buffer)
+            api.nvim_create_autocmd({ "BufDelete" }, {
+                callback = function()
+                    self.win_id = nil;
+                    self.buf_id = nil
+                end,
+                buffer = buffer
+            })
+            api.nvim_create_autocmd({ "VimResized" }, {
+                callback = function()
+                    if self.win_id then
+                        self:get_sizing()
+                        api.nvim_win_set_config(self.win_id, vim.tbl_extend("force", { relative = "editor" }, self.get_sizing()))
+                    end
+                end,
+                buffer = buffer
+            })
+        end
+        create_autocms(self.buf_id)
     end,
     get_sizing = function()
         local nvim_width = vim.go.columns;
@@ -182,6 +191,14 @@ local debug_output_term = {
                 self:init()
             end
             self.win_id = api.nvim_open_win(self.buf_id, true, vim.tbl_extend("force", { relative = "editor", border = "rounded", style = "minimal" }, self.get_sizing()))
+            api.nvim_create_autocmd({ "WinClosed" }, {
+                callback = function()
+                    if api.nvim_get_current_win() == self.win_id then
+                        self.win_id = nil;
+                        return true
+                    end
+                end,
+            })
         end
     end
 
@@ -199,9 +216,9 @@ startInDebug = function()
         merged = relative_prefix .. launch_json
         relative_search_dir = vim.fn.fnamemodify(vim.fn.getcwd() .. "/" .. relative_prefix, ":p")
     end
-    if relative_search_dir ~= "/home/"  then vim.api.nvim_command("cd " .. relative_search_dir) end
+    if relative_search_dir ~= "/home/" then vim.api.nvim_command("cd " .. relative_search_dir) end
     local potential_service = vim.fn.glob("*Service")
-    launch_json =  ((vim.fn.glob('.gitlab-ci.yml') ~= "" and potential_service ~= "") and (potential_service .. "/") or "") .. launch_json
+    launch_json = ((vim.fn.glob('.gitlab-ci.yml') ~= "" and potential_service ~= "") and (potential_service .. "/") or "") .. launch_json
 
     if vim.fn.glob(launch_json) ~= "" then
         require("mason").setup()
