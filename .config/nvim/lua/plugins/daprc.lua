@@ -199,8 +199,11 @@ startInDebug = function()
         merged = relative_prefix .. launch_json
         relative_search_dir = vim.fn.fnamemodify(vim.fn.getcwd() .. "/" .. relative_prefix, ":p")
     end
-    vim.api.nvim_command("cd " .. relative_search_dir)
-    if vim.fn.glob('.vscode/launch.json') ~= "" then
+    if relative_search_dir ~= "/home/"  then vim.api.nvim_command("cd " .. relative_search_dir) end
+    local potential_service = vim.fn.glob("*Service")
+    launch_json =  ((vim.fn.glob('.gitlab-ci.yml') ~= "" and potential_service ~= "") and (potential_service .. "/") or "") .. launch_json
+
+    if vim.fn.glob(launch_json) ~= "" then
         require("mason").setup()
         require('plugins.java').config()
         vim.bo.filetype = "java"
@@ -208,7 +211,7 @@ startInDebug = function()
         vim.api.nvim_create_autocmd('LspNotify', {
             callback = function(args)
                 debug_output_term:init()
-                require('dap.ext.vscode').load_launchjs(".vscode/launch.json");
+                require('dap.ext.vscode').load_launchjs(launch_json);
                 require('dap').defaults.java.terminal_win_cmd = function()
                     vim.api.nvim_win_set_buf(0, debug_output_term.buf_id); -- Idk why I have to do that if it is supposed to be done on the line below but this way I don't have problems with the displayed numberline
                     vim.cmd.bd(1)
