@@ -1,5 +1,6 @@
+api = vim.api
 -- general settings
-vim.o.title = 1
+vim.o.title = true
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.so = 3

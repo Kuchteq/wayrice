@@ -188,6 +188,9 @@ map <c-s> sendTo
 
 map C $git diff $f
 
+map e
+map ee $nvim -c ":lua startInDebug()"
+map ei $nvim $f
 # Other tips
 # Remember ' is a special mark which saves the previous path , so by pressing double '' you get back to the previous folder, i.e. using mark-load
 

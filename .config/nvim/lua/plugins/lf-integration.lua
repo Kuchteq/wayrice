@@ -19,6 +19,7 @@ return {
 				-- LF_CLIENT_ID received by lf -command invim callback
 				vim.fn.jobstart("lf -remote 'send " .. LF_CLIENT_ID .. " select \"" .. where_open .. "\"'")
 			end
+                        where_open = ""
 		end
 		local Terminal = require('toggleterm.terminal').Terminal
 		local lf = Terminal:new({
@@ -36,7 +37,6 @@ return {
 				vim.api.nvim_buf_set_keymap(term.bufnr, "t", "þ","<cmd>lua _lf_toggle()<CR>:set titlestring=<CR>", { noremap = true, silent = true })
 				lf_move_to_where_open()
 				vim.cmd("startinsert!")
-                                where_open = ""
 			end,
 		})
 		function _lf_toggle()
