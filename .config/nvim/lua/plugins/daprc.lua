@@ -134,14 +134,14 @@ end
 
 
 local debug_output_term = {
-    win_id = nil,
+    win_clean_autocmd_id = nil,
     buf_id = nil,
     launch_editor_buf_id = nil,
     init = function(self)
         self.buf_id = api.nvim_create_buf(false, false)
         self.launch_editor_buf_id = api.nvim_create_buf(false, false)
+        vim.keymap.set("n", "r", require("dap").run_last, { buffer = self.buf_id, silent = true });
         vim.keymap.set("n", "ę", function()
-            P(api.nvim_get_current_buf())
             if api.nvim_get_current_buf() == self.buf_id then
                 api.nvim_set_current_buf(self.launch_editor_buf_id);
                 vim.cmd("edit .vscode/launch.json");
@@ -150,59 +150,43 @@ local debug_output_term = {
                 api.nvim_set_current_buf(self.buf_id);
             end
         end);
-        local create_autocms = function(buffer)
-            api.nvim_create_autocmd({ "BufDelete" }, {
-                callback = function()
-                    self.win_id = nil;
-                    self.buf_id = nil
-                end,
-                buffer = buffer
-            })
-            api.nvim_create_autocmd({ "VimResized" }, {
-                callback = function()
-                    if self.win_id then
-                        self:get_sizing()
-                        api.nvim_win_set_config(self.win_id, vim.tbl_extend("force", { relative = "editor" }, self.get_sizing()))
-                    end
-                end,
-                buffer = buffer
-            })
-        end
-        create_autocms(self.buf_id)
+        api.nvim_create_autocmd({ "BufDelete" }, {
+            callback = function()
+                self.buf_id = nil
+            end,
+            buffer = self.buf_id
+        })
     end,
     get_sizing = function()
         local nvim_width = vim.go.columns;
         local nvim_height = vim.go.lines;
-        local lf_width = math.floor(nvim_width * 0.9)
-        local lf_height = math.floor(nvim_height * 0.9)
+        local output_width = math.floor(nvim_width * 0.9)
+        local output_height = math.floor(nvim_height * 0.9)
         return {
-            col = math.floor((nvim_width - lf_width) / 2),
-            row = math.floor((nvim_height - lf_height) / 2) - 1,
-            width = lf_width,
-            height = lf_height
+            col = math.floor((nvim_width - output_width) / 2),
+            row = math.floor((nvim_height - output_height) / 2) - 1,
+            width = output_width,
+            height = output_height
         }
     end,
+    get_output_win_ids = function()
+        return vim.tbl_filter(function(v) return pcall(function() api.nvim_win_get_var(v, "displays_output") end) and true or false end, api.nvim_list_wins())
+    end,
     toggle = function(self)
-        if self.win_id then
-            api.nvim_win_close(self.win_id, true)
+        local output_wins = self.get_output_win_ids()
+        if #output_wins > 0 then
+            for _, value in ipairs(output_wins) do
+                api.nvim_win_close(value, true)
+            end
         else
             local previously_inited = self.buf_id
             if not previously_inited then
                 self:init()
             end
-            self.win_id = api.nvim_open_win(self.buf_id, true, vim.tbl_extend("force", { relative = "editor", border = "rounded", style = "minimal" }, self.get_sizing()))
-            api.nvim_create_autocmd({ "WinClosed" }, {
-                callback = function()
-                    if api.nvim_get_current_win() == self.win_id then
-                        self.win_id = nil;
-                        return true
-                    end
-                end,
-            })
+            local opened_win_id = api.nvim_open_win(self.buf_id, true, vim.tbl_extend("force", { relative = "editor", border = "rounded", style = "minimal" }, self.get_sizing()))
+            api.nvim_win_set_var(opened_win_id, "displays_output", true);
         end
     end
-
-
 }
 
 startInDebug = function()
