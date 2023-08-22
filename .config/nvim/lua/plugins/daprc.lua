@@ -313,5 +313,36 @@ return {
             debug_output_term:init()
             return debug_output_term.buf_id
         end
+
+        -- C section
+        dap.configurations.c = {
+            {
+                name = "Launch file",
+                type = "codelldb",
+                request = "launch",
+                program = function()
+                    local toCompile = vim.api.nvim_buf_get_name(0)
+                    -- local checksum = vim.spl vim.fn.system({"md5sum", toCompile})
+
+                    local outFile = vim.fn.expand("%:t:r") .. "-debug.out"
+                    vim.fn.system({ "gcc", "-g", toCompile, "-o", vim.fn.getcwd() .. "/" .. outFile })
+                    return outFile
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+            },
+        }
+        dap.adapters.codelldb = {
+            type = 'server',
+            port = "${port}",
+            executable = {
+                -- CHANGE THIS to your path!
+                command = '/home/maniu/.local/share/nvim/mason/packages/codelldb/codelldb',
+                args = { "--port", "${port}" },
+
+                -- On windows you may have to uncomment this:
+                -- detached = false,
+            }
+        }
     end
 }

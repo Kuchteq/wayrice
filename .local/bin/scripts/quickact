@@ -10,8 +10,8 @@ case "$selected" in
      w) linguee ;;
      h) $TERMINAL htop ;;
      t) $TERMINAL tmux a ;;
-     b) $TERMINAL -a "floateright" -W "60x20" bluetuith ;;
-     e) $TERMINAL -a "floateright" -W "60x20" trans -v -I ;;
+     b) $TERMINAL -a "floateright" -T "Bluetuith" -W "60x20" bluetuith ;;
+     e) $TERMINAL -T "Translate" -a "floateright" -W "60x20" trans -v -I ;;
      s) serverterm ;;
      c) serverfilesterm ;;
      n) iwdbemenu
