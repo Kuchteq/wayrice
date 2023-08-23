@@ -104,6 +104,7 @@ bindkey -M visual '^[[P' vi-delete
 function precmd {
     # Set window title
     print -Pn "\e]0;zsh%L %(1j,%j job%(2j|s|); ,)%~\e\\"
+    print -Pn "\e]133;A\e\\"
 }
 function preexec {
     # Called when executing a command and sets bar title
