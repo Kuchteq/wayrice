@@ -43,7 +43,8 @@ alias \
 	img="imv" \
 	bs="brightnessctl set " \
 	lg="lazygit" \
-	neomutt="ESCDELAY=0 neomutt"
+	neomutt="ESCDELAY=0 neomutt" \
+        parum="paru --fm lf -S "
 
 #Usually some settings related stuff
 alias \

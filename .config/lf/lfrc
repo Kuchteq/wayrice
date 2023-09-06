@@ -11,6 +11,7 @@ set period 1
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set previewer '~/.config/lf/preview'
 set ratios 1:2:3
+set sixel
 
 # make sure changing directories updates the titlebar
 cmd on-cd &{{
@@ -60,6 +61,12 @@ cmd mkfile %{{
   lf -remote "send $id $ $EDITOR \"$ans\""
 }}
 
+cmd makeowner %{{
+    echo -n "New owner: " 
+    read usr && sudo chown -R "$usr" "$f" && echo -n "File: $f has new owner: $usr"
+    lf -remote "send $id :reload"
+}}
+
 # Archive bindings
 cmd unarchive ${{
   case "$f" in
@@ -101,11 +108,15 @@ cmd travelToSymlink ${{
 	fi
 }}
 
-cmd symlinkSelectedHere ${{ 
+cmd symlinkSelectedHere %{{ 
+    if [ -z $fs ]; then
+        echo -ne "\033[41;1mNo items selected for symlinking"
+    else
 	for s in $fs
 	do 
 	  ln -s "$s" .
 	done
+    fi;
 }}
 
 cmd open_terminal_here &{{ 
@@ -129,7 +140,7 @@ cmd sendTo %{{
     ans=$(cat "$XDG_DATA_HOME/receivers" | bemenu -p "rsync recipient: " ||  exit 1)
   fi
   echo "Sending to $ans"
-  rsync $fs "${ans}:" >/dev/null && echo "$ans Received!" || echo "$ans Error Occured"
+  rsync -r $fs "${ans}:" >/dev/null && echo "$ans Received!" || echo "$ans Error Occured"
 }}
 
 
@@ -139,6 +150,7 @@ cmd tag-clear :tag; tag-toggle
 cmd invim source "~/.config/lf/invim"
 cmd inportalsave source "~/.config/lf/inportalsave"
 
+cmd sudolf $sudo lf -command 'source "~/.config/lf/insudo"';
 
 
 # Binds mapped to the commands
@@ -146,6 +158,7 @@ map M
 map Md mkdir
 map Mf mkfile
 map Me &chmod u+x $f && lf -remote "send :reload" # make executable
+map Mo makeowner 
 map au unarchive
 map DD trash
 map Dr restoreTrash
@@ -158,6 +171,7 @@ map Yf &echo $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboar
 map Ya &wl-copy < $f; lf -remote "send $id echo 'Yanked all $f to clipboard'" #yank all contents 
 map T tag-clear 
 map <c-r> :reload; &killall bat
+map Su sudolf
 
 # Other less complex binds
 

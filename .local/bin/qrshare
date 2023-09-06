@@ -1,10 +1,13 @@
 #!/bin/sh
 
-[ $# = 0 ] && echo "Error: file share requires at least one argument" && exit 1
-title="Sending ${*//$'\n'/ }"
-foot -c "$XDG_CONFIG_HOME/foot/qrshower.ini" -T "$title" -a "floatermid"  qrcp -q send --keep-alive "$@"
 
 if [[ "$1" == "-r" ]]; then
-	title="Receiving"
-	foot -c "$XDG_CONFIG_HOME/foot/qrshower.ini" -T "$title" -a "floatermid"  qrcp receive 
+      title="Receiving"
+      foot -c "$XDG_CONFIG_HOME/foot/qrshower.ini" -T "$title" -a "floatermid"  qrcp receive 
+elif [[ "$1" == "-d" ]]; then #d as in data, encode in qr a given file
+      qrencode -m 2 -t utf8 <<< "$1"  
+else 
+    [ $# = 0 ] && echo "Error: file share requires at least one argument" && exit 1
+    title="Sending ${*//$'\n'/ }"
+    foot -c "$XDG_CONFIG_HOME/foot/qrshower.ini" -T "$title" -a "floatermid"  qrcp -q send --keep-alive "$@"
 fi

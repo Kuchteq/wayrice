@@ -54,9 +54,9 @@ return {
                     end,
                     buffer = t.bufnr
                 })
-                lf_move_to_where_open()
             end,
             on_open = function()
+                lf_move_to_where_open()
                 vim.cmd("startinsert!")
             end,
         })

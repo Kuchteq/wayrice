@@ -1,5 +1,5 @@
 [filechooser]
-cmd=/home/maniu/.config/xdg-desktop-portal-wlr/lf-wrapper.sh
+cmd=$SUBSTITUTED_USERHOME/.config/xdg-desktop-portal-wlr/lf-wrapper.sh
 default_dir=/home/maniu
 
 [screencast]

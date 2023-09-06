@@ -3,7 +3,7 @@
 dwl -s 'dwlb | \
 pipewire <&- | \
 themeset <&- | \
-dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP <&- | \
+dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP BEMENU_OPTS <&- | \
 foot --server <&- | \
 kanshi <&- | \
 fnott <&- | \
