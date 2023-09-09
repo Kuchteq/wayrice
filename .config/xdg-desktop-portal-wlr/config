@@ -1,6 +1,6 @@
 [filechooser]
-cmd=$SUBSTITUTED_USERHOME/.config/xdg-desktop-portal-wlr/lf-wrapper.sh
-default_dir=/home/maniu
+cmd=/home/$USER/.config/xdg-desktop-portal-wlr/lf-wrapper.sh
+default_dir=/home/$USER
 
 [screencast]
 output_name=

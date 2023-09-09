@@ -1,10 +1,10 @@
 #!/bin/sh
 
-dwl -s 'dwlb | \
+exec dwl -s 'dwlb | \
 pipewire <&- | \
 themeset <&- | \
 dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP BEMENU_OPTS <&- | \
 foot --server <&- | \
 kanshi <&- | \
 fnott <&- | \
-someblocks -p | while read -r line; do dwlb -status all "$line"; done'
+(sleep 0.5 && someblocks -p | dwlb -status-stdin all)'

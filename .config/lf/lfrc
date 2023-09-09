@@ -15,7 +15,7 @@ set sixel
 
 # make sure changing directories updates the titlebar
 cmd on-cd &{{
-    printf "\033]7;file://$HOST$PWD" > /dev/tty
+    printf "\033]7;file://$HOST$PWD\007" > /dev/tty
     printf "\033]0; $PWD\007" > /dev/tty
 }}
 on-cd
@@ -83,7 +83,6 @@ cmd trash ${{
   files=$(printf "$fx" | tr '\n' ';')
   while [ "$files" ]; do
     file=${files%%;*}
-
     trash-put "$(basename "$file")"
     if [ "$files" = "$file" ]; then
       files=''
@@ -91,10 +90,6 @@ cmd trash ${{
       files="${files#*;}"
     fi
   done
-}}
-
-cmd restoreTrash ${{
-  trash-restore
 }}
 
 cmd travelToSymlink ${{
@@ -161,7 +156,7 @@ map Me &chmod u+x $f && lf -remote "send :reload" # make executable
 map Mo makeowner 
 map au unarchive
 map DD trash
-map Dr restoreTrash
+map Dr $trash-restore
 map <c-l> travelToSymlink
 map P symlinkSelectedHere
 map <c-n> open_terminal_here
