@@ -35,6 +35,7 @@ alias \
 	g="git" \
 	trem="transmission-remote" \
 	ytf="ytfzf" \
+	ytfa="ytfzf -m --url-handler-opts='--no-video'" \
 	sdn="shutdown -h now" \
 	e="$EDITOR" \
 	v="$EDITOR" \

@@ -1,4 +1,4 @@
 profile home {
-  output "BNQ BenQ G2420HDB FAA00476SL000" mode 1920x1080@60Hz position 2880,0 scale 0.7
+  output "HDMI-A-1" mode 1920x1080@60Hz position 2880,0 scale 0.7
   output eDP-1 enable position 0,0 
 }

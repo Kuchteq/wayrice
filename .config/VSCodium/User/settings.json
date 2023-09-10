@@ -1,6 +1,7 @@
 {
   "editor.inlineSuggest.enabled": true,
   "terminal.integrated.sendKeybindingsToShell": true,
+  "window.titleBarStyle": "native",
   "vim.useSystemClipboard": true,
   "vim.normalModeKeyBindingsNonRecursive": [
     {
@@ -37,7 +38,8 @@
     },
     {
       "before": [
-        "g","i"
+        "g",
+        "i"
       ],
       "commands": [
         "editor.action.goToImplementation"
@@ -74,6 +76,7 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "window.zoomLevel": 3,
-  "editor.fontFamily": "'Hack'"
+  "editor.fontFamily": "'Hack'",
+  "security.workspace.trust.untrustedFiles": "open",
+  "window.zoomLevel": 4
 }

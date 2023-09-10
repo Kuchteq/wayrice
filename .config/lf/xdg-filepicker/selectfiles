@@ -1,0 +1,10 @@
+set promptfmt "\033[33;1m Open files \033[35;1m%d\033[0m\033[1m%f\033[0m"
+
+cmd selectfiles ${{
+  printf '%s' "$fx" > "/tmp/termfilechooser.portal"
+   lf -remote "send $id quit" 
+}}
+
+cmd open selectfiles
+
+map <enter> selectfiles

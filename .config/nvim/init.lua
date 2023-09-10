@@ -32,14 +32,20 @@ vim.api.nvim_create_autocmd({ "DirChanged" }, {
     callback = sync_dir_with_shell
 })
 
-vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = function ()
-    vim.api.nvim_command("cd %:p:h")
-    sync_dir_with_shell()
-    if vim.fn.getcwd() == "/tmp" and vim.bo.filetype == "zsh" then
-        vim.keymap.set("n", "<enter>", ":wq<CR>", { buffer=true })
-    end
-end })
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+    callback = function()
+        -- if we are editing a shell file we don't want to sync directory with /tmp shell
+        if vim.fn.expand("%:p:h") == "/tmp" and vim.bo.filetype == "zsh" then
+            vim.keymap.set("n", "<enter>", ":wq<CR>", { buffer = true })
+            vim.o.titlestring = "Shell at: " .. vim.fn.getcwd();
+            vim.bo.filetype = "bash"
+        else
+            vim.api.nvim_command("cd %:p:h")
+            sync_dir_with_shell()
+        end
 
+    end
+})
 
 -- disable greeting screen
 vim.opt.shortmess:append({ I = true })

@@ -6,6 +6,4 @@ if [[ $1 == "-t" ]]; then
 else
 	toadd="$(wl-paste)"
 fi
-if ! grep -q "$toadd" "$snipath"; then 
-	echo "$toadd" >> "$snipath"
-fi
+echo "$toadd" >> "$snipath"

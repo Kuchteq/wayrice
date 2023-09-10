@@ -1,5 +1,8 @@
 # config for when the you use lf through the xdg file chooser portal, remember to include in your main config:
 
+set promptfmt "\033[1m Save in \033[35;1m%d\033[0m\033[0m\033[1m%f\033[0m"
+set rulerfmt "  File: \033[1;32m%{lf_user_filename} | %a  |%p  |\033[7;31m %m \033[0m  |\033[7;33m %c \033[0m  |\033[7;35m %s \033[0m  |\033[7;34m %f \033[0m"
+
 map <enter>
 map <enter> savehere
 
@@ -13,8 +16,11 @@ cmd open ${{
   fi
 }}
 
-cmd savehere ${{
-  printf '%s' "$PWD/$(basename "$LF_PORTAL_ARG")" > "/tmp/termfilechooser.portal"
+cmd savehere %{{
+   printf '%s' "$PWD/$lf_user_filename" > "/tmp/termfilechooser.portal"
+   marks=/home/maniu/.local/share/lf/marks
+   sed -i "/^D/d" "$marks"
+   echo "D:$PWD" >> "$marks"
    lf -remote "send $id quit"
 }}
 

@@ -2,7 +2,7 @@
 # IMPORTANT INFO
 # THE SCRIPT REQUIRES LF config integration. Add "inportal" file to you lf config folder and include this line anywhere inside your main config (lfrc):
 # cmd inportal source "~/.config/lf/inportal"
-# The script also assumes you are using the foot terminal. -o gives a small padding around the terminal and -a sets the appid for the window which is helpfull for WM config files since you can more easily make the newly opened window floatable. If you are using something else, just adjust cmd variable
+# The script also assumes you are using the foot terminal. -o gives a small padding around the terminal and -a sets the appid for the window which is helpfull for WM config files since you can more easily make the newly selected window floatable. If you are using something else, just adjust cmd variable
 #
 # More technical info
 # This wrapper script is invoked by xdg-desktop-portal-termfilechooser.
@@ -10,7 +10,7 @@
 # Inputs:
 # 1. "1" if multiple files can be chosen, "0" otherwise.
 # 2. "1" if a directory should be chosen, "0" otherwise.
-# 3. "0" if opening files was requested, "1" if writing to a file was
+# 3. "0" if selecting files was requested, "1" if writing to a file was
 #    requested. For example, when uploading files in Firefox, this will be "0".
 #    When saving a web page in Firefox, this will be "1".
 # 4. If writing to a file, this is recommended path provided by the caller. For
@@ -36,14 +36,20 @@ termcmd="/usr/bin/foot"
 if [ "$save" = "1" ]; then
 	#make the saving appear in the last path
 	set -- "$(dirname "$path")"
-	LF_PORTAL_ARG="$path" $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd -command inportalsave "$@"
+        FILENAME="$(basename "$path")"
+        $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+        -command "set user_filename '$FILENAME'" \
+        -command "source ~/.config/lf/xdg-filepicker/save" "$@"
+elif [ "$directory" = "1" ] && [ "$multiple" = "1" ] ; then
+            $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+            -command "source ~/.config/lf/xdg-filepicker/selectanything" 
 elif [ "$directory" = "1" ]; then
-	set -- -selection-path "$out" "$path"
-$termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd "$@"
+            $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+            -command "source ~/.config/lf/xdg-filepicker/selectdir" 
 elif [ "$multiple" = "1" ]; then
-	set -- -selection-path "$out" "$path"
-$termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd "$@"
+            $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+            -command "source ~/.config/lf/xdg-filepicker/selectfiles"
 else
-	set -- -selection-path "$out" "$path"
-$termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd "$@"
+            $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+            -command "source ~/.config/lf/xdg-filepicker/selectfile"
 fi

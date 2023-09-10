@@ -12,6 +12,7 @@ set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set previewer '~/.config/lf/preview'
 set ratios 1:2:3
 set sixel
+set promptfmt "\033[33;1m%u\033[32;1m@\033[34;1m%h\033[0m:\033[35;1m%d\033[0m\033[1m%f\033[0m"
 
 # make sure changing directories updates the titlebar
 cmd on-cd &{{
@@ -24,7 +25,7 @@ cmd open ${{
     case $(file --mime-type "$(readlink -f $f)" -b) in
 	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
 	image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
-        text/*|application/json|inode/x-empty) $EDITOR $fx;;
+        text/*|application/json|application/javascript|inode/x-empty) $EDITOR $fx;;
 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
 	image/svg+xml) imv $f ;;
 	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|tif\|ico\)\(_large\)*$" |
@@ -65,6 +66,13 @@ cmd makeowner %{{
     echo -n "New owner: " 
     read usr && sudo chown -R "$usr" "$f" && echo -n "File: $f has new owner: $usr"
     lf -remote "send $id :reload"
+}}
+
+cmd makeworkspace %{{
+    echo -n "Workspace name (empty for $(basename "$PWD")): " 
+    read ans
+    [ -z "$ans" ] && ans=$(basename "$PWD")
+    nvim --headless -c ":lua require('workspaces').add('$ans', '$PWD');" -c ":q"
 }}
 
 # Archive bindings
@@ -143,7 +151,6 @@ cmd tag-clear :tag; tag-toggle
 
 # two command which get called externally
 cmd invim source "~/.config/lf/invim"
-cmd inportalsave source "~/.config/lf/inportalsave"
 
 cmd sudolf $sudo lf -command 'source "~/.config/lf/insudo"';
 
@@ -154,6 +161,7 @@ map Md mkdir
 map Mf mkfile
 map Me &chmod u+x $f && lf -remote "send :reload" # make executable
 map Mo makeowner 
+map Mw makeworkspace 
 map au unarchive
 map DD trash
 map Dr $trash-restore
