@@ -1,6 +1,8 @@
 set promptfmt "\033[34;1m Open directory \033[35;1m%d"
 
-cmd selectdir ${{
+set rulerfmt "%a  |%p  |\033[7;31m %m \033[0m  |\033[7;33m %c \033[0m  |\033[7;35m %s \033[0m  |\033[7;34m %f \033[0m  |%i/%t"
+
+cmd selectdir %{{
   printf '%s' "$PWD" > "/tmp/termfilechooser.portal"
    lf -remote "send $id quit" 
 }}

@@ -4,7 +4,6 @@ exec dwl -s 'dwlb | \
 pipewire <&- | \
 themeset <&- | \
 dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP BEMENU_OPTS <&- | \
-foot --server <&- | \
 kanshi <&- | \
 fnott <&- | \
 (sleep 0.5 && someblocks -p | dwlb -status-stdin all)'

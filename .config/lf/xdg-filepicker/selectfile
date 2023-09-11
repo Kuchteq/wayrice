@@ -1,6 +1,6 @@
-set promptfmt "\033[32;1m󰩎 Open file \033[35;1m%d\033[0m\033[1m%f\033[0m"
+set promptfmt "\033[32;1m󰩎 Open file \033[35;1m%d\033[0m\033[32;1m%f\033[0m"
 
-cmd open ${{
+cmd open %{{
   printf '%s' "$f" > "/tmp/termfilechooser.portal"
    lf -remote "send $id quit" 
 }}
