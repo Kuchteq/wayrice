@@ -1,3 +1,4 @@
 #!/bin/sh
 
-keyd input "$(grep -v '^#' $HOME/.local/share/snippets | bemenu -i -l 50 | cut -d' ' -f1)"
+# Snippet file comments need to have one space before and one after the hash
+sudo keyd input -t 20 "$(grep -v '^#' $HOME/.local/share/snippets | bemenu -i -l 50 | awk -F ' # ' '{print $1}')"
