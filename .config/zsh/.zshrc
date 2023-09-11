@@ -1,5 +1,6 @@
 # Luke's config for the Zoomer Shell
 # Enable colors and change prompt:
+
 set history-preserve-point on
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
@@ -17,6 +18,9 @@ HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 
+# vi mode
+export KEYTIMEOUT=1
+
 # Basic auto/tab complete:
 autoload -U compinit
 zstyle ':completion:*' menu select
@@ -24,9 +28,6 @@ zmodload zsh/complist
 compinit
 _comp_options+=(globdots)		# Include hidden files.
 
-# vi mode
-bindkey -v
-export KEYTIMEOUT=1
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
@@ -43,13 +44,7 @@ function zle-keymap-select () {
     esac
 }
 zle -N zle-keymap-select
-zle-line-init() {
-    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-    echo -ne "\e[5 q"
-}
-zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
-preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # Yanking is saved to clipboard
 function vi-yank-wl {
@@ -70,9 +65,7 @@ lfcd () {
     fi
 }
 bindkey -s '^o' '^ulfcd\n' # ctrl+o to open lf and move easily
-
 bindkey -s '^a' '^ubc -lq\n' # open bc calculator
-
 bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n' # use fzf and move there
 
 # make home, end and del work again
@@ -108,17 +101,14 @@ function precmd {
 }
 function preexec {
     # Called when executing a command and sets bar title
+    echo -ne '\e[5 q'
     print -Pn "\e]0;${(q)1}\e\\"
 }
 
 # capture the signal to allow for easy global terminal colormode switching on every opened terminal
 TRAPUSR1() {
   theme=$(< /tmp/theme)
-  if [ "$theme" = "dark" ];then
-    colormodeset
-  elif [ "$theme" = "light" ]; then
-    colormodeset light
-  fi
+  colormodeset
 }
 
 # The following allow for executing a command without deleting the query with Ctrl+Enter 
@@ -132,16 +122,15 @@ bindkey '^[[27;5;13~' accept-and-hold
 bindkey -M vicmd '^[[27;5;13~' persistent-normal-edit
 
 zle-line-init() { 
+	echo -ne '\e[5 q'
 	if [ -v ENTERVIAFTER ]; then
 		zle -K vicmd
 		unset ENTERVIAFTER
-	else 
-		# fix cursor if you were in normal mode when you executed the previous query 
-		echo -ne '\e[5 q'
 	fi 
 }
 zle -N zle-line-init
 autoload -U add-zsh-hook
+
 function osc7-pwd() {
     emulate -L zsh # also sets localoptions for us
     setopt extendedglob
