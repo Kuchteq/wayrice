@@ -1,0 +1,3 @@
+#!/bin/sh
+
+$EDITOR -c "autocmd BufWritePost * silent !kanshictl reload && notify-send '󰍺  Monitors config reloaded'" -c "set filetype=config" "$XDG_CONFIG_HOME/kanshi/config"
