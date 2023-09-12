@@ -36,6 +36,10 @@ export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 export ANALYZER_STATE_LOCATION_OVERRIDE="$XDG_CACHE_HOME/dartServer"
 export RLWRAP_HOME="$XDG_DATA_HOME/rlwrap_clis/"
+export KUBECONFIG="$XDG_CONFIG_HOME/kube" 
+export REDISCLI_HISTFILE="$XDG_DATA_HOME"/rediscli_history
+export REDISCLI_RCFILE="$XDG_CONFIG_HOME"/redis/redisclirc
+export AZURE_CONFIG_DIR=$XDG_DATA_HOME/azure 
 
 # Program settings
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"

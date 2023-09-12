@@ -47,6 +47,13 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
     end
 })
 
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+    pattern = "/tmp/calcurse*,~/.calcurse/notes/*",
+    callback = function ()
+        vim.bo.filetype = "markdown"
+    end
+})
+
 -- disable greeting screen
 vim.opt.shortmess:append({ I = true })
 -- disable tilde characters on the left ~
