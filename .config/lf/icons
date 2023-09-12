@@ -10,7 +10,7 @@ bd      b       # BLK
 cd      c       # CHR
 su      u       # SETUID
 sg      g       # SETGID
-ex      e       # EXEC
+ex      󱓟     # EXEC
 fi             # FILE
 
 # file extensions (vim-devicons)
