@@ -1,10 +1,18 @@
 #!/bin/sh
 
 # Prints the current volume or 🔇 if muted.
+vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)" 
+if [ $? != 0 ] || [ -z "$vol" ]; then  
+    if ! pgrep -f 'sleep 2 && pkill -44 someblocks' >/dev/null 2>&1; then
+        setsid -f sh -c "sleep 2 && pkill -44 someblocks" >/dev/null 2>&1; 
+    fi
+    echo "!🔇"
+exit; 
+fi
 
 vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)" 
 if [ $? != 0 ] || [ -z "$vol" ]; then  
-    setsid -f sh -c "sleep 2 && pkill -44 someblocks" >/dev/null 2>&1;
+    [ -z "$(pgrep -f 'sleep 2 && pkill -44 someblocks')" ] && setsid -f sh -c "sleep 2 && pkill -44 someblocks" >/dev/null 2>&1;
     echo "!🔇"
 exit; fi
 
