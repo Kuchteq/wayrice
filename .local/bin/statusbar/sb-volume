@@ -10,12 +10,6 @@ if [ $? != 0 ] || [ -z "$vol" ]; then
 exit; 
 fi
 
-vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)" 
-if [ $? != 0 ] || [ -z "$vol" ]; then  
-    [ -z "$(pgrep -f 'sleep 2 && pkill -44 someblocks')" ] && setsid -f sh -c "sleep 2 && pkill -44 someblocks" >/dev/null 2>&1;
-    echo "!🔇"
-exit; fi
-
 # If muted, print 🔇 and exit.
 [ "$vol" != "${vol%\[MUTED\]}" ] && echo 🔇 && exit
 
