@@ -5,11 +5,11 @@ configpath="${XDG_CONFIG_HOME:-$HOME/.config}"
 # m as in make, i.e. modify to have hidpi
 if [ "$1" = "-m" ]; then
 	sed -i '/\(SCALE_FACTOR\|_SCALE=\)/ s/^#*//' "$configpath/shell/profile"
-	sed -i '/\(font=\)/ s/size=9/pixelsize=28/' "$configpath/foot/foot_light.ini" "$configpath/foot/foot_dark.ini"
+	sed -i '/\(font=\)/ s/size=15/pixelsize=28/' "$configpath/foot/foot_light.ini" "$configpath/foot/foot_dark.ini"
 # u as in undo
 elif [ "$1" = "-u" ]; then
 	sed -i '/\(SCALE_FACTOR\|_SCALE=\)/ s/./#&/' "$configpath/shell/profile"
-	sed -i '/\(font=\)/ s/pixelsize=28/size=9/' "$configpath/foot/foot_light.ini" "$configpath/foot/foot_dark.ini"
+	sed -i '/\(font=\)/ s/pixelsize=28/size=15/' "$configpath/foot/foot_light.ini" "$configpath/foot/foot_dark.ini"
 else
 	echo "wrong selection"
 fi
