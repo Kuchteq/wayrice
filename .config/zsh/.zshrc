@@ -108,7 +108,11 @@ function preexec {
 # capture the signal to allow for easy global terminal colormode switching on every opened terminal
 TRAPUSR1() {
   theme=$(< /tmp/theme)
-  colormodeset
+  if [ "$theme" = "dark" ];then
+    colormodeset
+  elif [ "$theme" = "light" ]; then
+    colormodeset light
+  fi
 }
 
 # The following allow for executing a command without deleting the query with Ctrl+Enter 
