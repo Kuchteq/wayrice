@@ -152,9 +152,6 @@ cmd tag-clear :tag; tag-toggle
 # two command which get called externally
 cmd invim source "~/.config/lf/invim"
 
-cmd sudolf $sudo lf -command 'source "~/.config/lf/insudo"';
-
-
 # Binds mapped to the commands
 map M
 map Md mkdir
@@ -174,7 +171,7 @@ map Yf &echo $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboar
 map Ya &wl-copy < $f; lf -remote "send $id echo 'Yanked all $f to clipboard'" #yank all contents 
 map T tag-clear 
 map <c-r> :reload; &killall bat
-map Su sudolf
+map Su $sudo lf -command 'source "~/.config/lf/insudo"';
 
 # Other less complex binds
 
@@ -193,6 +190,7 @@ map R push :rename<enter><c-k>.
 map Z middle
 map am $addshortcut $f
 map o $mimeopen --ask "$f"
+map <tab> push ''
 
 # call qr sharing in the current folder
 map Us &setsid -f qrshare "$fx" >/dev/null 2>&1

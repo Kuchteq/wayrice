@@ -1,0 +1,2 @@
+#!/bin/sh
+glab repo clone $(glab repo list --member -P 100 | awk 'NR>2{ printf $1; for(i=3; i<=NF-1; i++) printf " " $i; print ""}' | fzf | awk '{print $1}')

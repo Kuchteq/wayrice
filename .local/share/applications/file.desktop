@@ -1,4 +1,5 @@
 [Desktop Entry]
 Type=Application
 Name=File Manager
-Exec=footie lfrun %u
+Exec=lfrun %u
+Terminal=true

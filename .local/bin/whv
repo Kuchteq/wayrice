@@ -1,2 +1,14 @@
 #!/bin/sh
-$EDITOR $(which "$1")
+
+
+if [ "$1" = "-b" ] ; then
+    set -f;
+    IFS=:; 
+    towhich=$(find -L $PATH -maxdepth 1 -type f -perm -100 -print \
+        | sed 's!.*/!!' | bemenu)
+
+    [ -z $towhich ] || $TERMINAL $EDITOR $(which $towhich)
+else 
+    selected=$(which "$1")
+    [ $? = 0 ] && $EDITOR "$selected"
+fi

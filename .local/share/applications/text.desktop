@@ -1,4 +1,5 @@
 [Desktop Entry]
 Type=Application
 Name=Text editor
-Exec=footie nvim %u
+Exec=nvim %u
+Terminal=true

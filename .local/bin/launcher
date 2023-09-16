@@ -1,0 +1,4 @@
+#!/bin/sh
+
+tolaunch="$(tofi-drun)"
+[ $? = 0 ] && setsid -f $tolaunch >/dev/null 2>&1

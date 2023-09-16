@@ -22,6 +22,7 @@ HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 export KEYTIMEOUT=1
 
 # Basic auto/tab complete:
+export FPATH="$FPATH:${HOME}/.local/bin/completions"
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
@@ -64,6 +65,7 @@ lfcd () {
         [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
     fi
 }
+
 bindkey -s '^o' '^ulfcd\n' # ctrl+o to open lf and move easily
 bindkey -s '^a' '^ubc -lq\n' # open bc calculator
 bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n' # use fzf and move there

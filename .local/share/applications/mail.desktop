@@ -1,4 +1,5 @@
 [Desktop Entry]
 Type=Application
 Name=Mail
-Exec=footie neomutt %u
+Exec=neomutt %u
+Terminal=true
