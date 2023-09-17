@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=Monitors Config
+Exec=-a floatermid -W 82x24 monconf
+Terminal=true
