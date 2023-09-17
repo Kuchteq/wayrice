@@ -25,12 +25,13 @@ fi             # FILE
 *.css           
 *.less          
 *.txt           󰭷
+*.csv           
 *.md            󰽛
 *.mdx           󰽛
 *.markdown      󰽛
 *.rmd           󰽛
-*.json          
-*.webmanifest   
+*.json          󰘦
+*.webmanifest   󰘦
 *.js            
 *.mjs           
 *.jsx           

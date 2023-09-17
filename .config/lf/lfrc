@@ -146,6 +146,27 @@ cmd sendTo %{{
   rsync -r $fs "${ans}:" >/dev/null && echo "$ans Received!" || echo "$ans Error Occured"
 }}
 
+cmd bulkrename ${{
+    tmpfile_old="$(mktemp)"
+    tmpfile_new="$(mktemp)"
+
+    [ -n "$fs" ] && fs=$(basename -a $fs) || fs=$(ls)
+
+    echo "$fs" > "$tmpfile_old"
+    echo "$fs" > "$tmpfile_new"
+    $EDITOR "$tmpfile_new"
+
+    [ "$(wc -l < "$tmpfile_old")" -eq "$(wc -l < "$tmpfile_new")" ] || { rm -f "$tmpfile_old" "$tmpfile_new"; exit 1; }
+
+    paste "$tmpfile_old" "$tmpfile_new" | while IFS="$(printf '\t')" read -r src dst
+    do
+        [ "$src" = "$dst" ] || [ -e "$dst" ] || mv -- "$src" "$dst"
+    done
+
+    rm -f "$tmpfile_old" "$tmpfile_new"
+    lf -remote "send $id unselect"
+}}
+
 
 cmd tag-clear :tag; tag-toggle
 
@@ -164,7 +185,7 @@ map DD trash
 map Dr $trash-restore
 map <c-l> travelToSymlink
 map P symlinkSelectedHere
-map <c-n> open_terminal_here
+map <c-t> open_terminal_here
 map W watchInPlaylistSelected
 map Yd &echo $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to clipboard" # cd into the copied path
 map Yf &echo $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard" # cd into the copied path
@@ -187,6 +208,7 @@ map O :set dirpreviews!; reload # O as in overview, this turns the third column 
 map . set hidden!
 map <enter> open
 map R push :rename<enter><c-k>.
+map B bulkrename
 map Z middle
 map am $addshortcut $f
 map o $mimeopen --ask "$f"

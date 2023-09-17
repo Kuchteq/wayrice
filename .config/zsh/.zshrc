@@ -57,6 +57,7 @@ bindkey -M vicmd 'y' vi-yank-wl
 
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
+    echo -e '\e[2F'
     tmp="$(mktemp -uq)"
     trap 'rm -f $tmp >/dev/null 2>&1 && trap - HUP INT QUIT TERM PWR EXIT' HUP INT QUIT TERM PWR EXIT
     lfrun -last-dir-path="$tmp" "$@"
@@ -69,6 +70,11 @@ lfcd () {
 bindkey -s '^o' '^ulfcd\n' # ctrl+o to open lf and move easily
 bindkey -s '^a' '^ubc -lq\n' # open bc calculator
 bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n' # use fzf and move there
+function ala {
+    sh
+}
+zle -N ala
+bindkey '^r' ala
 
 # make home, end and del work again
 bindkey  "^[[H"   vi-beginning-of-line

@@ -32,6 +32,7 @@ path="$4"
 out="$5"
 cmd="/usr/bin/lf"
 termcmd="/usr/bin/foot"
+lfxdgbasedir="~/.config/lf/xdg-filepicker"
 
 if [ "$save" = "1" ]; then
 	#make the saving appear in the last path
@@ -39,17 +40,17 @@ if [ "$save" = "1" ]; then
         FILENAME="$(basename "$path")"
         $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
         -command "set user_filename '$FILENAME'" \
-        -command "source ~/.config/lf/xdg-filepicker/save" "$@"
+        -command "source $lfxdgbasedir/save" "$@"
 elif [ "$directory" = "1" ] && [ "$multiple" = "1" ] ; then
             $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
-            -command "source ~/.config/lf/xdg-filepicker/selectanything" 
+            -command "source $lfxdgbasedir/selectanything" 
 elif [ "$directory" = "1" ]; then
             $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
-            -command "source ~/.config/lf/xdg-filepicker/selectdir" 
+            -command "source $lfxdgbasedir/selectdir" 
 elif [ "$multiple" = "1" ]; then
             $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
-            -command "source ~/.config/lf/xdg-filepicker/selectfiles"
+            -command "source $lfxdgbasedir/selectfiles"
 else
             $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
-            -command "source ~/.config/lf/xdg-filepicker/selectfile"
+            -command "source $lfxdgbasedir/selectfile"
 fi
