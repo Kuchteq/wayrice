@@ -32,7 +32,8 @@ path="$4"
 out="$5"
 cmd="/usr/bin/lf"
 termcmd="/usr/bin/foot"
-lfxdgbasedir="~/.config/lf/xdg-filepicker"
+lfxdgbasedir=~/.config/lf/xdg-filepicker
+[ -f ~/.config/fzf/fzfrc ] && source ~/.config/fzf/fzfrc
 
 if [ "$save" = "1" ]; then
 	#make the saving appear in the last path

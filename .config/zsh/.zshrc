@@ -2,6 +2,7 @@
 # Enable colors and change prompt:
 
 set history-preserve-point on
+bindkey '^R' history-incremental-search-backward
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 setopt autocd		# Automatically cd into typed directory.
@@ -19,6 +20,7 @@ HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 
 # vi mode
+bindkey -v
 export KEYTIMEOUT=1
 
 # Basic auto/tab complete:
@@ -35,7 +37,6 @@ bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -v '^?' backward-delete-char
 
 # Change cursor shape for different vi modes.
 function zle-keymap-select () {
@@ -70,11 +71,6 @@ lfcd () {
 bindkey -s '^o' '^ulfcd\n' # ctrl+o to open lf and move easily
 bindkey -s '^a' '^ubc -lq\n' # open bc calculator
 bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n' # use fzf and move there
-function ala {
-    sh
-}
-zle -N ala
-bindkey '^r' ala
 
 # make home, end and del work again
 bindkey  "^[[H"   vi-beginning-of-line
