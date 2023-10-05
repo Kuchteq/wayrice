@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ $1 = -u ]; then
+    wlr-randr --output eDP-1 --mode '2880x1800@90.000999Hz'
+else
+    wlr-randr --output eDP-1 --mode '2880x1800@60.000999Hz'
+fi

@@ -1,0 +1,5 @@
+#!/bin/sh
+ssid="" 
+password=""
+iwctl known-networks "$ssid" forget || echo "Network has already been forgotten"
+iwctl station wlan0 connect-hidden "$ssid" -P "$password" && notify-send "󱚽 Internet connected!" "Tethering to $ssid succeded" || notify-send "󰖪 Couldn't force connect" "Tethering to $ssid failed"

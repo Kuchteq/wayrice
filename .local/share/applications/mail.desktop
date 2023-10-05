@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Application
 Name=Mail
-Exec=neomutt %u
+Exec=-a Mail -T Mail env ESCDELAY=0 neomutt %u
 Terminal=true

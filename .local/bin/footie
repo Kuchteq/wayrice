@@ -18,7 +18,7 @@ if [[ $theme == light ]]; then
 	-o colors.regular3=E96A05
 	-o colors.regular4=00a0e4
 	-o colors.regular5=a06994
-	-o colors.regular6=36A3D9
+	-o colors.regular6=39cbbc
 	-o colors.regular7=494542
 	-o colors.bright0=959da5
 	-o colors.bright1=cb2431

@@ -27,7 +27,7 @@ set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $menu launcher | xargs swaymsg exec --
 bindsym $mod+w exec librewolf
 bindsym $mod+Shift+n exec flatpak run com.github.flxzt.rnote
 
