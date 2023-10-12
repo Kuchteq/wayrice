@@ -82,7 +82,7 @@ END {
 curNetwork=$(iwctl station wlan0 show | awk '/Connected network/ {for (i=3; i<=NF; i++) printf "%s ", $i; printf "\n"}')
 [ -z $curNetwork ] && curNetwork="󰤮 "
 SELECTION=$(printf "$(networks)\\nForceConnect" | bemenu -p "Current: $curNetwork" "${FLAGS[@]}") || exit 1
-if [ "$SELECTION" == "ForceMar" ]; then
+if [ "$SELECTION" == "ForceConnect" ]; then
     iwdforce
 else 
     connect "$SELECTION"

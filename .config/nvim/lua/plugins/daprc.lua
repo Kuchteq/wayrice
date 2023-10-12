@@ -24,7 +24,7 @@ M.toggleEasyDebug = function()
     local lualine = require("lualine")
     M._styleNamespace = vim.api.nvim_create_namespace("currentCursorNs");
     if DEBUGGABLE_MODE_STATUS == false then
-        lualine.setup({ sections = { lualine_b = { { function() return "EASY DEBUG ON" end, color = { fg = "#e57474", gui = "bold" } }, "diagnostics" } } })
+        lualine.setup({ sections = { lualine_b = { { function() return "DBG" end, color = { fg = "#e57474", gui = "bold" } }, "branch", 'diff', "diagnostics" } } })
         stackmap.push("debuggable", "n", {
             { "q", M.debug_mode_toggle, desc = "debuggable" }
         })
@@ -295,8 +295,11 @@ return {
     },
     -- stylua: ignore
     keys = {
-        { "<leader>d", function()
+        { "<leader>q", function()
             M.toggleEasyDebug()
+            if DEBUG_MODE_STATUS == false and DEBUGGABLE_MODE_STATUS or DEBUG_MODE_STATUS == true and DEBUGGABLE_MODE_STATUS == false then
+                M.debug_mode_toggle()
+            end
         end },
         { "»", function()
             debug_output_term:toggle()

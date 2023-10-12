@@ -3,8 +3,9 @@ cac ${XDG_CACHE_HOME:-$HOME/.cache}
 cf  ${XDG_CONFIG_HOME:-$HOME/.config}
 D   ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}
 d   ${XDG_DOCUMENTS_DIR:-$HOME/Documents}
-n   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/Notes/}
+nn   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/Notes/}
 nli   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/Notes/Linux}
+nd   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/Notes/Deutsch}
 bb   ${XDG_DOCUMENTS_DIR:-$HOME/Documents/Library}
 h   $HOME
 mu   ${XDG_MUSIC_DIR:-$HOME/Music}

@@ -24,7 +24,7 @@ return {
                 end,
             },
             lsp = {
-                on_attach = LSP_ON_ATTACH_BASE_SETUP,
+                on_attach = function(client,_) client.server_capabilities.semanticTokensProvider = nil; end,
                 settings = {
                     lineLength = 90
                 }

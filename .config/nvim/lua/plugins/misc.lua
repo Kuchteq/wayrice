@@ -44,7 +44,10 @@ return {
         {
             "nvim-lualine/lualine.nvim",
             config = function()
-                require('lualine').setup({ options = { theme = "everblush" } })
+
+                require('lualine').setup({ 
+                    sections = { lualine_c = { { function() if vim.diagnostic.is_disabled() then return " "; else return "" end end, color = { fg = "#005577", gui = "bold"  } }, "filename" }},
+                    options = { theme = "everblush" } })
             end
         },
         {

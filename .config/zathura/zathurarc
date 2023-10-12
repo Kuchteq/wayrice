@@ -11,8 +11,8 @@ map [fullscreen] D toggle_page_mode
 map f toggle_fullscreen
 map [fullscreen] f toggle_fullscreen
 
-map <C-b> toggle_statusbar
-map [fullscreen] <C-b> toggle_statusbar
+map b toggle_statusbar
+map [fullscreen] b toggle_statusbar
 
 map u scroll half-up
 map [fullscreen] u scroll half-up
