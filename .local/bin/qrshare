@@ -1,11 +1,31 @@
 #!/bin/sh
+set -e
 
+while getopts "rd:c" arg; do
+    case $arg in
+        r) receive=true ;;
+        d) data=$OPTARG ;;
+        c) data="$(wl-paste)" ;;
+    esac
+done;
+shift $((OPTIND-1))
 
-if [[ "$1" == "-r" ]]; then
+if [ "$receive" ]; then
       title="Receiving"
       foot -c "$XDG_CONFIG_HOME/foot/qrshower.ini" -T "$title" -a "floatermid"  qrcp receive 
-elif [[ "$1" == "-d" ]]; then #d as in data, encode in qr a given file
-      qrencode -m 2 -t utf8 <<< "$1"  
+elif [ "$data" ]; then #d as in data, encode in qr a given file
+    tempfile="$(mktemp -u)"
+    cleanup() {
+        rm -f "$tempfile"
+    }
+    trap cleanup EXIT
+    qrencode -m 2 -s 8 -o "$tempfile" <<< "$data" 
+    DIMENSIONS=$(file "$tempfile" | grep -o "[0-9]* x [0-9]*")
+    W=$(echo $DIMENSIONS | grep -o "^[0-9]*")
+    H=$(echo $DIMENSIONS | grep -o "[0-9]*$")
+    (( W < 480 )) && W=480		
+    (( H < 480 )) && H=480
+    imv "$tempfile" -W $W -H $H -w "qrshare: $(head -n1 <<< "$data")"
 else 
     [ $# = 0 ] && echo "Error: file share requires at least one argument" && exit 1
     title="Sending ${*//$'\n'/ }"
