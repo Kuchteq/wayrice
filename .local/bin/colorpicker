@@ -1,0 +1,7 @@
+#!/bin/sh
+color="$(hyprpicker)" 
+
+echo "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><path d='M0,0h60v60H0' fill='$color'/></svg>" > /tmp/latest_colorpicker
+notify-send "Color copied" "$color" -a colorpicker -i /tmp/latest_colorpicker
+echo "$color" | wl-copy
+
