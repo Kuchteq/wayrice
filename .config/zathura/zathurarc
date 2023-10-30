@@ -18,6 +18,8 @@ map u scroll half-up
 map [fullscreen] u scroll half-up
 map d scroll half-down
 map [fullscreen] d scroll half-down
+map e exec cliptrans
+map [fullscreen] e exec cliptrans
 
 
 map F follow

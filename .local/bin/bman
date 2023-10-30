@@ -1,0 +1,56 @@
+#!/bin/sh
+
+progname=$(basename $0)
+
+main () { parse_opts "$@"
+	if [ "$terminal" = true ]; then
+		apropos . | fzf | cut -d " " -f 1-2 | tr -d " " | xargs -I {} man '{}'
+		exit $?
+	fi
+
+	directory=/tmp/$progname
+
+	cleanup() { rm -rf $directory; }
+	trap cleanup EXIT
+	trap exit INT HUP TERM
+
+	[ ! -d "$directory" ] && mkdir $directory
+	all="$(apropos . | bemenu -l 10 )"
+        title="$(echo "$all" | cut -d " " -f 1-2 | tr -d " ")"
+	[ "$all" = "" ] && exit 1
+        foot -T "$all" -W "130x40" -a "floatermid" man "$title"
+
+}
+
+help() { printf "Usage:\t%s" "$progname [option]
+
+Options:
+
+Modes:
+-t|--terminal  │ Use the terminal user interface (fzf and man)
+-g|--graphical │ Use the semi-graphical user interface (dmenu and foot+less) (default)
+
+-h|--help      │ Print this help message and exit
+"; }
+
+parse_opts() {
+	while getopts htg- OPT; do
+		if [ "$OPT" = "-" ]; then
+			OPT="${OPTARG%%=*}"
+			OPTARG="${OPTARG#$OPT}"
+			OPTARG="${OPTARG#=}"
+		fi
+		case "$OPT" in
+			h | help) help ; exit 0 ;;
+			t | terminal) terminal=true ;;
+			g | graphical) graphical=true ;;
+			??*) printf "%s\n" "Illegal option --$OPT" >&2 ; exit 2 ;;
+			?) exit 2 ;;
+		esac
+	done
+	shift $((OPTIND-1))
+
+	[ "$graphical" != true -a "$terminal" != true ] && graphical=true
+}
+
+main "$@"

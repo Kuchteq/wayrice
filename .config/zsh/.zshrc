@@ -2,7 +2,8 @@
 # Enable colors and change prompt:
 
 set history-preserve-point on
-bindkey '^R' history-incremental-search-backward
+bindkey '^r' history-incremental-search-backward
+bindkey '^a' history-incremental-search-forward
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 setopt autocd		# Automatically cd into typed directory.
@@ -69,7 +70,6 @@ lfcd () {
 }
 
 bindkey -s '^o' '^ulfcd\n' # ctrl+o to open lf and move easily
-bindkey -s '^a' '^ubc -lq\n' # open bc calculator
 bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n' # use fzf and move there
 
 # make home, end and del work again

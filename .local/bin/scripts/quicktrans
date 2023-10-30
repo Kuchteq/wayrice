@@ -2,8 +2,16 @@
 
 currentOutputFile=$(mktemp)
 [ "$1" = "-c" ] && keyd do C-c && sleep 0.1
-trans "$(wl-paste)" > $currentOutputFile
-lineheight=$(($(wc -l < $currentOutputFile)+1))
+totranslate="$(wl-paste | tr '\n' ' ' )" 
+
+if [ $(wc -w <<< "$totranslate") -gt 3 ]; then
+    echo -e "\033[1m$totranslate" > $currentOutputFile
+    trans -b "$totranslate" >> $currentOutputFile
+    lineheight=$(($(wc -w < $currentOutputFile)/5))
+else
+    trans "$totranslate" > $currentOutputFile
+    lineheight=$(($(wc -l < $currentOutputFile)+1))
+fi
 linewidth=$(wc -L < $currentOutputFile)
 [ $lineheight -gt 45 ] && lineheight=46
 [ $linewidth -gt 80 ] && linewidth=81

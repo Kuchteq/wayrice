@@ -13,7 +13,6 @@ end
 
 return {
 	'nvim-telescope/telescope.nvim',
-	tag = '0.1.1',
 	dependencies = { 'nvim-lua/plenary.nvim' },
 	keys = { 'æ', 'ŋ', '’', 'gr', 'gd' },
 	config = function()
@@ -23,6 +22,8 @@ return {
 		vim.keymap.set('n', '’', builtin.resume, {})
 		vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 		vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+		vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, {})
+                vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, {})
 		require('telescope').setup {
 			defaults = {
 				mappings = {

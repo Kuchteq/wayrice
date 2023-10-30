@@ -56,12 +56,12 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
 source "$XDG_CONFIG_HOME/fzf/fzfrc" # fzf settings
 export LESS='-R --use-color -Dd+m$Du+c' # coloring less
 export REFER="./biba" # for groff
-export QT_STYLE_OVERRIDE=arc # QT style
 
 [ ! -f ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ] && setsid shortcuts >/dev/null 2>&1
 
 # Wayland related settings / HiDpi related settings
 export MOZ_ENABLE_WAYLAND=1
+export SDL_VIDEODRIVER=wayland
 export MOZ_USE_XINPUT2="1" # Mozilla smooth scrolling/touchpads.
 export GTK_USE_PORTAL=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=1.5

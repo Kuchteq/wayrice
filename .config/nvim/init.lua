@@ -95,6 +95,10 @@ vim.keymap.set("n", "<leader>p", ":!opout '%:p'<CR>")
 
 -- Save file as sudo on files that require root permission with the command w!!
 vim.cmd("cabbrev w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!")
+-- Plain run and output the result
+vim.keymap.set("n", "<F2>", function ()
+    require("dap").continue();
+end)
 
 -- set up undodir
 local cachePrefix = vim.env.XDG_CACHE_HOME

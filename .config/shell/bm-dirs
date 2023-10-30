@@ -12,7 +12,6 @@ mu   ${XDG_MUSIC_DIR:-$HOME/Music}
 mn  /mnt
 pp  ${XDG_PICTURES_DIR:-$HOME/Pictures}
 pr  ${XDG_PROJECTS_DIR:-$HOME/Projects}
-ss  ${XDG_PICTURES_DIR:-$HOME/Pictures/Screenshots}
 se  $HOME/.local/bin # ex as in executables and s as in source
 src $HOME/.local/src
 sa $HOME/.local/share

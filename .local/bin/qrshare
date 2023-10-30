@@ -25,7 +25,8 @@ elif [ "$data" ]; then #d as in data, encode in qr a given file
     H=$(echo $DIMENSIONS | grep -o "[0-9]*$")
     (( W < 480 )) && W=480		
     (( H < 480 )) && H=480
-    imv "$tempfile" -W $W -H $H -w "qrshare: $(head -n1 <<< "$data")"
+    windowTitle=$(tr '\n' ' ' <<< "$data")
+    imv "$tempfile" -W $W -H $H -w "qrshare: '$windowTitle'"
 else 
     [ $# = 0 ] && echo "Error: file share requires at least one argument" && exit 1
     title="Sending ${*//$'\n'/ }"

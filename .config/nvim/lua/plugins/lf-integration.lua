@@ -56,7 +56,7 @@ return {
                 })
             end,
             on_open = function()
-                lf_move_to_where_open()
+                pcall(lf_move_to_where_open)
                 vim.cmd("startinsert!")
             end,
         })

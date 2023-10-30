@@ -1,0 +1,5 @@
+#!/bin/sh
+chosen="$(ytfzf -L)"
+if ! [ -z "$chosen" ]; then
+    (cd ~/Music && yt-dlp --embed-metadata -i -x -f bestaudio/best "$chosen")
+fi

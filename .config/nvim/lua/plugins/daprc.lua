@@ -78,24 +78,6 @@ M.debug_mode_toggle = function()
         DEBUG_MODE_BUFFER_NR = bufnr
         stackmap.push("debug_mode", "n", {
             {
-                "<F2>",
-                function()
-                    require("dap").run(
-                        {
-                            -- The first three options are required by nvim-dap
-                            type = 'python', -- the type here established the link to the adapter definition: `dap.adapters.python`
-                            request = 'launch',
-                            name = 'Python: Launch file',
-                            program = '${file}', -- This configuration will launch the current file if used.
-                            pythonPath = venv_path and (venv_path .. '/bin/python') or nil,
-                            noDebug = true
-                        }, {}
-                    )
-                end,
-                {},
-                desc = "Toggle Breakpoint"
-            },
-            {
                 "i",
                 function()
                     vim.api.nvim_feedkeys('j', 'n', false)
@@ -113,6 +95,7 @@ M.debug_mode_toggle = function()
             { "r",     function() require("dap").run_last() end,          {},                               desc = "Run Last" },
             { "q",     function() require("dap").terminate() end,         {},                               desc = "Run Last" },
             { "d",     function() require("dap").step_over() end,         { silent = true, nowait = true }, desc = "Step Over" },
+            { "U",     function() require("dapui").toggle({}) end,         { silent = true, nowait = true }, desc = "Step Over" },
             { "<c-r>", function() require("dap").repl.toggle() end,       { nowait = true },                desc = "Toggle REPL" },
             { "<c-v>", function() varsidebar.toggle() end, { nowait = true }, desc = "Toggle Variables"
             },
@@ -265,12 +248,11 @@ return {
 
         { "Alighorab/stackmap.nvim" },
         { "theHamsta/nvim-dap-virtual-text" },
-
         {
             "rcarriga/nvim-dap-ui",
             -- stylua: ignore
             keys = {
-                { "<leader>D", function() require("dapui").toggle({}) end, desc = "Dap UI" },
+                { "<space>D", function() require("dapui").toggle({}) end, desc = "Dap UI" },
             },
             config = function(_, opts)
                 local dapui = require("dapui")
@@ -278,10 +260,10 @@ return {
                     layouts = { {
                         elements = { {
                             id = "scopes",
-                            size = 0.50
+                            size = 0.40
                         }, {
-                            id = "breakpoints",
-                            size = 0.25
+                            id = "watches",
+                            size = 0.35
                         }, {
                             id = "stacks",
                             size = 0.25
@@ -317,35 +299,49 @@ return {
             return debug_output_term.buf_id
         end
 
-        -- C section
+        local mason_registry = require("mason-registry")
+        dap.adapters.cppdbg = {
+            id = 'cppdbg',
+            type = 'executable',
+            command = mason_registry.get_package("cpptools"):get_install_path() .. '/extension/debugAdapters/bin/OpenDebugAD7',
+        }
         dap.configurations.c = {
             {
                 name = "Launch file",
-                type = "codelldb",
+                type = "cppdbg",
                 request = "launch",
                 program = function()
                     local toCompile = vim.api.nvim_buf_get_name(0)
                     -- local checksum = vim.spl vim.fn.system({"md5sum", toCompile})
-
                     local outFile = vim.fn.expand("%:t:r") .. "-debug.out"
                     vim.fn.system({ "gcc", "-g", toCompile, "-o", vim.fn.getcwd() .. "/" .. outFile })
                     return outFile
                 end,
                 cwd = '${workspaceFolder}',
-                stopOnEntry = false,
-            },
-        }
-        dap.adapters.codelldb = {
-            type = 'server',
-            port = "${port}",
-            executable = {
-                -- CHANGE THIS to your path!
-                command = '/home/maniu/.local/share/nvim/mason/packages/codelldb/codelldb',
-                args = { "--port", "${port}" },
-
-                -- On windows you may have to uncomment this:
-                -- detached = false,
-            }
-        }
+                externalConsole = true
+                --stopAtEntry = true,
+            } }
+        -- C section
+        -- dap.configurations.c = {
+        --     {
+        --         name = "Launch file",
+        --         type = "gdb",
+        --         request = "launch",
+        --         program = function()
+        --             local toCompile = vim.api.nvim_buf_get_name(0)
+        --             -- local checksum = vim.spl vim.fn.system({"md5sum", toCompile})
+        --             local outFile = vim.fn.expand("%:t:r") .. "-debug.out"
+        --             vim.fn.system({ "gcc", "-g", toCompile, "-o", vim.fn.getcwd() .. "/" .. outFile })
+        --             return outFile
+        --         end,
+        --         cwd = '${workspaceFolder}',
+        --         stopOnEntry = false,
+        --     },
+        -- }
+        -- dap.adapters.gdb = {
+        --     type = "executable",
+        --     command = "gdb",
+        --     args = { "-i", "dap" }
+        -- }
     end
 }

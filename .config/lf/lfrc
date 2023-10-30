@@ -214,9 +214,10 @@ map Z middle
 map am $addshortcut $f
 map o $mimeopen --ask "$f"
 map <tab> push ''
+map gcl $git clone "$(wl-paste)"
 
 # call qr sharing in the current folder
-map Us &setsid -f qrshare "$fx" >/dev/null 2>&1
+map Us &setsid -f qrshare $fx >/dev/null 2>&1
 map Ur &setsid -f qrshare -r >/dev/null 2>&1
 
 map <c-f> $lf -remote "send $id select \"$(fzf)\"" # fuzzy find files

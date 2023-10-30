@@ -49,7 +49,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf }
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-        vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, opts)
+        -- vim.keymap.set('n', 'gd',  vim.lsp.buf.definition, opts)
+        vim.keymap.set('n', 'gd',  require('telescope.builtin').lsp_definitions, opts)
         vim.keymap.set('n', 'gi', require('telescope.builtin').lsp_implementations, opts)
         vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, opts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
@@ -123,8 +124,9 @@ local function setUpLsp()
         }
     })
 
-    require("lspconfig").pyright.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
+    -- require("lspconfig").pyright.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
     require("lspconfig").clangd.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
+    require("lspconfig").gopls.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
     require("lspconfig").bashls.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
     require("lspconfig").html.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
     require("lspconfig").tsserver.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }

@@ -69,3 +69,5 @@ nohup foot --server="${sock_path}" --print-pid=3 > /dev/null &
 # Wait for server to start
 read -r pid <&3
 exec 3<&-
+
+exec footclient --server="${sock_path}" "${@}"

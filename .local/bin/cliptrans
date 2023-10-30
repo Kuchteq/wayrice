@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Quick clipboard translate with micro caching
+
+clip="$(wl-paste | tr '\n' ' ')"
+grep -q "$clip" /tmp/cliptranslast && translation="$(cut -d'~' -f2 /tmp/cliptranslast)" || translation="$(trans -b "$clip" )"
+echo "$clip~$translation" > /tmp/cliptranslast
+notify-send "$clip" "$translation"

@@ -15,5 +15,9 @@ set keymap vi-insert
 # these are for vi-insert mode
 Control-l: clear-screen
 Control-a: beginning-of-line
+Control-p: previous-history
+Control-n: next-history
+Control-a: forward-search-history
+Control-r: reverse-search-history
 
 $endif
