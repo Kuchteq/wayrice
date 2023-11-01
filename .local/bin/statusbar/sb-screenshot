@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/sh 
 
 INFO_PATH="/tmp/sb-screenshot-status-stack"
 if [ "$1" = "-m" ]; then
@@ -14,7 +14,7 @@ fi
 
 # d as in display
 if [ "$1" = "-d" ] && [ -s $INFO_PATH ]; then
-	echo $(< "$INFO_PATH")	
+	cat "$INFO_PATH"
 	# ensure the previous status won't prematurely dismiss the new one
 	pkill -f "sleep 4.666" > /dev/null 2>&1
  	(sleep 4.666 && true > $INFO_PATH && pkill -47 someblocks) &

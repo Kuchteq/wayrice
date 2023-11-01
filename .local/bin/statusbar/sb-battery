@@ -1,3 +1,5 @@
+#!/bin/sh
+
 for battery in /sys/class/power_supply/BAT?*; do
 	# If non-first battery, print a space separator.
 	[ -n "${capacity+x}" ] && printf " "

@@ -5,6 +5,4 @@ if ps -e | grep -q swayidle; then
   echo ""
 else
   setsid -f swayidle timeout 240 sus > /dev/null 
-  #echo 
 fi
-
