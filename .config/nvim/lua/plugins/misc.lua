@@ -1,9 +1,14 @@
+local intty = os.getenv("TERM") == "linux";
 return {
         {
             "Kuchteq/vimoblush",
             lazy = false,    -- make sure we load this during startup if it is your main colorscheme
             priority = 1000, -- make sure to load this before all the other start plugins
             config = function()
+                if intty then
+                    vim.opt.termguicolors = false
+                    return
+                end
                 -- TODO BUG the colormode switching does not work if we have used toggleterm in our session before
                 if vim.fn.filereadable("/tmp/theme") == 1 then
                     SYSTHEME = vim.fn.readfile("/tmp/theme")[1]
@@ -32,22 +37,32 @@ return {
             end,
         },
         {
-            "akinsho/bufferline.nvim",
+            'ThePrimeagen/harpoon',
+            dependencies = {
+                'nvim-lua/plenary.nvim',
+            },
+            keys = {
+                { " ", function()
+                    require("harpoon.ui").toggle_quick_menu()
+                end },
+                { "µ", function()
+                    require("harpoon.mark").add_file()
+                end },
+            },
             event = "VeryLazy",
             config = function()
-                require("bufferline").setup { options = {
-                    always_show_bufferline = false }
-                }
             end
         },
-
         {
             "nvim-lualine/lualine.nvim",
             config = function()
-
-                require('lualine').setup({ 
-                    sections = { lualine_c = { { function() if vim.diagnostic.is_disabled() then return " "; else return "" end end, color = { fg = "#005577", gui = "bold"  } }, "filename" }},
-                    options = { theme = "everblush" } })
+                require('lualine').setup({
+                    sections = { lualine_c = { { function() if vim.diagnostic.is_disabled() then return " "; else return "" end end, color = { fg = "#005577", gui = "bold" } }, "filename" } },
+                    options = {
+                        section_separators = { left = '', right = '' },
+                        theme = "everblush"
+                    }
+                })
             end
         },
         {
@@ -82,7 +97,9 @@ return {
             'norcalli/nvim-colorizer.lua',
             event = "VeryLazy",
             config = function()
-                require("colorizer").setup()
+                if not intty then
+                    require("colorizer").setup()
+                end
             end
         },
         {

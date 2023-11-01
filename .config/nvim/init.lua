@@ -25,7 +25,7 @@ vim.opt.cindent = true
 --vim.opt.cindent = true
 
 local sync_dir_with_shell = function()
-    vim.api.nvim_chan_send(2,'\x1b]7;file://'.. vim.fn.hostname() .. vim.fn.getcwd())
+    vim.api.nvim_chan_send(2, '\x1b]7;file://' .. vim.fn.hostname() .. vim.fn.getcwd())
 end
 
 vim.api.nvim_create_autocmd({ "DirChanged" }, {
@@ -43,13 +43,12 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
             vim.api.nvim_command("cd %:p:h")
             sync_dir_with_shell()
         end
-
     end
 })
 
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     pattern = "/tmp/calcurse*,~/.calcurse/notes/*",
-    callback = function ()
+    callback = function()
         vim.bo.filetype = "markdown"
     end
 })
@@ -66,10 +65,10 @@ vim.keymap.set("n", "<C-q>", ":bd<CR>", { silent = true })
 vim.keymap.set("n", "ə", ":bn<CR>", { silent = true })
 vim.keymap.set("n", "…", ":bp<CR>", { silent = true })
 vim.keymap.set("n", "ć", ":only<CR>", { silent = true })
-vim.keymap.set("n", "≠", ":BufferLineGoToBuffer1<CR>", { silent = true })
-vim.keymap.set("n", "²", ":BufferLineGoToBuffer2<CR>", { silent = true })
-vim.keymap.set("n", "³", ":BufferLineGoToBuffer3<CR>", { silent = true })
-vim.keymap.set("n", "¢", ":BufferLineGoToBuffer4<CR>", { silent = true })
+vim.keymap.set("n", "≠", function() require("harpoon.ui").nav_file(1) end, { silent = true })
+vim.keymap.set("n", "²", function() require("harpoon.ui").nav_file(2) end, { silent = true })
+vim.keymap.set("n", "³", function() require("harpoon.ui").nav_file(3) end, { silent = true })
+vim.keymap.set("n", "¢", function() require("harpoon.ui").nav_file(4) end, { silent = true })
 vim.keymap.set("n", "|", ":vsplit<CR>")
 vim.keymap.set("n", "–", ":split<CR>")
 vim.keymap.set("n", "©", ":%s//g<Left><Left>")
@@ -96,7 +95,7 @@ vim.keymap.set("n", "<leader>p", ":!opout '%:p'<CR>")
 -- Save file as sudo on files that require root permission with the command w!!
 vim.cmd("cabbrev w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!")
 -- Plain run and output the result
-vim.keymap.set("n", "<F2>", function ()
+vim.keymap.set("n", "<F2>", function()
     require("dap").continue();
 end)
 
