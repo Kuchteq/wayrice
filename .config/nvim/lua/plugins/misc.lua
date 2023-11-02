@@ -1,4 +1,5 @@
 local intty = os.getenv("TERM") == "linux";
+local themepath = os.getenv("XDG_RUNTIME_DIR") .. "/theme";
 return {
         {
             "Kuchteq/vimoblush",
@@ -9,9 +10,8 @@ return {
                     vim.opt.termguicolors = false
                     return
                 end
-                -- TODO BUG the colormode switching does not work if we have used toggleterm in our session before
-                if vim.fn.filereadable("/tmp/theme") == 1 then
-                    SYSTHEME = vim.fn.readfile("/tmp/theme")[1]
+                if vim.fn.filereadable(themepath) == 1 then
+                    SYSTHEME = vim.fn.readfile(themepath)[1]
                     vim.opt.background = SYSTHEME == "dark" and "dark" or "light"
                     if SYSTHEME == "light" then
                         require('everblush').setup({ lightmode = SYSTHEME, false })

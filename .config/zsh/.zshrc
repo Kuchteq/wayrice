@@ -111,7 +111,7 @@ function preexec {
 
 # capture the signal to allow for easy global terminal colormode switching on every opened terminal
 TRAPUSR1() {
-  theme=$(< /tmp/theme)
+  theme=$(< $XDG_RUNTIME_DIR/theme)
   if [ "$theme" = "dark" ];then
     colormodeset
   elif [ "$theme" = "light" ]; then
