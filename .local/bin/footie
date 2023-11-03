@@ -4,7 +4,7 @@
 # it also launches foot server if none are present from https://codeberg.org/dnkl/foot/issues/604
 
 
-read -r theme < /tmp/theme
+read -r theme < $XDG_RUNTIME_DIR/theme
 overrideString=''
 
 if [[ $theme == light ]]; then

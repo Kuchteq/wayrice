@@ -1,4 +1,4 @@
 #!/bin/sh
 theme=light
-[ -s /tmp/theme ] && theme=$(< /tmp/theme)
+[ -s $XDG_RUNTIME_DIR/theme ] && theme=$(< $XDG_RUNTIME_DIR/theme)
 swaylock -i "~/Pictures/Wallpapers/lock_wallpaper_$theme.jpg" | sudo systemctl suspend
