@@ -20,6 +20,10 @@ map d scroll half-down
 map [fullscreen] d scroll half-down
 map e exec cliptrans
 map [fullscreen] e exec cliptrans
+map <Button8> navigate next
+map [fullscreen] <Button8> navigate next
+map <Button9> navigate previous
+map [fullscreen] <Button9> navigate previous
 
 
 map F follow
