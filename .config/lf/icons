@@ -136,6 +136,7 @@ fi             # FILE
 *.pem           
 *.gpg           
 *.xml           󰗀
+*.patch         󰕚
 
 # file names (vim-devicons) (case-insensitive not supported in lf)
 *gruntfile.coffee       

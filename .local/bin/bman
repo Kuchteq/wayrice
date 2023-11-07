@@ -15,9 +15,20 @@ main () { parse_opts "$@"
 	trap exit INT HUP TERM
 
 	[ ! -d "$directory" ] && mkdir $directory
-	all="$(apropos . | bemenu -l 10 )"
-        title="$(echo "$all" | cut -d " " -f 1-2 | tr -d " ")"
+        if [ -f "$XDG_RUNTIME_DIR/lastman" ]; then 
+            read last < $XDG_RUNTIME_DIR/lastman 
+            lastopt=" last man: $last" 
+            lastoptwithn="$lastopt\\n"
+        fi
+        
+        all="$(echo -e "$lastoptwithn$(apropos .)" | bemenu -l 10 )"
 	[ "$all" = "" ] && exit 1
+        if [ "$all" = "$lastopt" ]; then
+            title=$last
+        else
+            title="$(echo "$all" | cut -d " " -f 1-2 | tr -d " ")"
+        fi
+        echo "$title" > "$XDG_RUNTIME_DIR/lastman"
         foot -T "$all" -W "130x40" -a "floatermid" man "$title"
 
 }

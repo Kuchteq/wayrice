@@ -3,6 +3,5 @@
 # Quick clipboard translate with micro caching
 
 clip="$(wl-paste | tr '\n' ' ')"
-grep -q "$clip" /tmp/cliptranslast && translation="$(cut -d'~' -f2 /tmp/cliptranslast)" || translation="$(trans -b "$clip" )"
-echo "$clip~$translation" > /tmp/cliptranslast
-notify-send "$clip" "$translation"
+whole="$(grep -m 1 "^$clip~" /tmp/cliptranslast)" && translation="$(cut -d'~' -f2 <<< $whole)" || translation="$(trans -b "$clip" )" && echo "$clip~$translation" >> /tmp/cliptranslast
+notify-send "$clip" "$translation" -t "$(($(wc -m <<< "$translation")*80))"
