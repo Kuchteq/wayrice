@@ -1,0 +1,18 @@
+#!/bin/sh
+getopts "w" OPT;
+shift $((OPTIND - 1))
+if [ "$OPT" = "w" ]; then
+    while [ ! -e "$1" ]; do
+        sleep 1  # Adjust the sleep duration based on your needs
+    done
+    notify-send "  File $1 available" "󱦟 starting the transcription";
+fi
+
+basedirpath="${1%.*}"
+mkdir "$basedirpath"
+mv "$1" "$basedirpath"
+newdest="$basedirpath/$(basename $1)"
+basename="${newdest%.*}"
+ffmpeg -i "$newdest" -ac 1 -ar 16000 -c:a pcm_s16le "$basename.wav" 
+whisper.cpp -m /usr/share/whisper.cpp-model-base/base.bin -l de  -f "$basename.wav" --output-srt -of "$basename" 
+notify-send "󰗊 File $1 transcribed" " find it at $basename";

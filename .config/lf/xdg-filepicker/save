@@ -25,10 +25,27 @@ cmd savehere %{{
 }}
 
 cmd saveundername ${{
-	echo "What is the name you would like to save it as: "
-	read ans
-	printf '%s' "$PWD/$ans" > "/tmp/termfilechooser.portal"
-	lf -remote "send $id quit"
+    echo "What is the name you would like to save it as: "
+    read ans
+    printf '%s' "$PWD/$ans" > "/tmp/termfilechooser.portal"
+    lf -remote "send $id quit"
+}}
+
+cmd saveandtranscribe %{{
+   if ! grep -q -E '.(mp4|mov|mkv|wav|m4v|mp3)' <<< "$lf_user_filename"; then 
+       echo "Format is not transcribeable"
+       exit 1
+   fi
+
+   printf '%s' "$PWD/$lf_user_filename" > "/tmp/termfilechooser.portal"
+   marks=~/.local/share/lf/marks
+   sed -i "/^D/d" "$marks"
+   echo "D:$PWD" >> "$marks"
+   setsid -f zsh -c '$HOME/.local/bin/vidtranscribe -w "$PWD/$lf_user_filename" >/dev/null 2>&1'
+   lf -remote "send $id quit"
 }}
 
 map i saveundername
+map ei
+map ee
+map et saveandtranscribe # in the future I plan on having many utilities like these which automatically do something to the saved file
