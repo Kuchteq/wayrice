@@ -1,0 +1,32 @@
+#!/bin/sh
+
+LOCAL="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+GLOBAL="/usr/share/applications"
+
+matchlocation() { 
+    MATCHING="$(grep -h "$1" "$2/mimeinfo.cache")"
+    if [ -z "$MATCHING" ]; then
+        return
+    fi
+    desktops="$(echo "$MATCHING" |cut -d = -f 2 |\
+        sed -z -e 's:\n::g;s:;:\n:g' |\
+        sort | uniq)"
+    desktoppaths="$(sed "s~^~$2/~"  <<< "$desktops")"
+    # this fucking shit matching does not work well, you should change it, check out .mp4 files to see what is wrong
+    echo "$(paste <(grep  -o -P '(?<=^Name=).*' -h -m 1 $desktoppaths) <(sed -e "s~^~($3/~" -e 's~$~)~' -e 's/.desktop//' <<< $desktops)) 
+" 
+}
+type="$(file -b --mime-type "$1")"
+all="$(matchlocation "$type" $GLOBAL g)"
+all="$all$(matchlocation "$type" $LOCAL l)"
+
+[ "$(wc -c <<< $all)" -lt 2 ] && notify-send "No shit matches" && exit 1
+
+selected="$(echo -ne "$all" | bemenu -l "$(wc -l <<< "$all")")"
+[ -z "$selected" ] && exit 0
+
+selected="$(grep -o -E '\(.*\)' <<< "$selected")"
+
+finaltorun="$(sed -e "s~g/~$GLOBAL/~" -e "s~l/~$LOCAL/~" -e 's/^.\(.*\).$/\1.desktop/' <<< "$selected")"
+run="$(sed -e "s~\%\(U\|f\|F\|u\)~$1~" <<< "$(grep  -o -P '(?<=^Exec=).*' -h -m 1 "$finaltorun")" )"
+setsid -f $run >/dev/null 2>&1

@@ -2,3 +2,4 @@
 Type=Application
 Name=Torrent
 Exec=/usr/bin/env transadd %U
+MimeType=application/x-bittorrent

@@ -41,7 +41,7 @@ cmd saveandtranscribe %{{
    marks=~/.local/share/lf/marks
    sed -i "/^D/d" "$marks"
    echo "D:$PWD" >> "$marks"
-   setsid -f zsh -c '$HOME/.local/bin/vidtranscribe -w "$PWD/$lf_user_filename" >/dev/null 2>&1'
+   setsid -f zsh -c '$HOME/.local/bin/vidtranscribe -w -e "$PWD/$lf_user_filename" >/dev/null 2>&1'
    lf -remote "send $id quit"
 }}
 

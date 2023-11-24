@@ -212,7 +212,7 @@ map R push :rename<enter><c-k>.
 map B bulkrename
 map Z middle
 map am $addshortcut $f
-map o $mimeopen --ask "$f"
+map o &mimeopener "$f"
 map <tab> push ''
 map gcl $git clone "$(wl-paste)"
 
