@@ -1,7 +1,23 @@
 #!/bin/sh
-getopts "w" OPT;
+
+model="base"
+while getopts "wems" OPT; do
+    if [ "$OPT" = "e" ] ; then
+        embedsubs=true
+    fi
+    if [ "$OPT" = "w" ]; then
+        wait=true
+    fi
+    if [ "$OPT" = "m" ]; then
+        model=medium
+    fi
+    if [ "$OPT" = "s" ]; then
+        model=small # better than base but not as heavy as medium
+    fi
+done
+
 shift $((OPTIND - 1))
-if [ "$OPT" = "w" ]; then
+if [ "$wait" = true ]; then
     while [ ! -e "$1" ]; do
         sleep 1  # Adjust the sleep duration based on your needs
     done
@@ -11,8 +27,12 @@ fi
 basedirpath="${1%.*}"
 mkdir "$basedirpath"
 mv "$1" "$basedirpath"
-newdest="$basedirpath/$(basename $1)"
+newdest="$basedirpath/$(basename "$1")"
 basename="${newdest%.*}"
-ffmpeg -i "$newdest" -ac 1 -ar 16000 -c:a pcm_s16le "$basename.wav" 
-whisper.cpp -m /usr/share/whisper.cpp-model-base/base.bin -l de  -f "$basename.wav" --output-srt -of "$basename" 
+[ -e "$basename.wav" ] || ffmpeg -i "$newdest" -ac 1 -ar 16000 -c:a pcm_s16le "$basename.wav" 
+whisper.cpp -m "/usr/share/whisper.cpp-model-$model/$model.bin" -l de -f "$basename.wav" --output-srt -of "$basename" 
+if [ "$embedsubs" = true ]; then
+    ffmpeg -i "$newdest" -i "$basename.srt" -c copy -c:s mov_text -metadata:s:s:0 language=deu "$basename-embed.mp4"
+    mv -f "$basename-embed.mp4" "$basename.mp4" # in place editing not allowed
+fi
 notify-send "󰗊 File $1 transcribed" " find it at $basename";

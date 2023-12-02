@@ -26,6 +26,8 @@ textype() { \
 		biber --input-directory "${textarget%/*}" "${textarget%.*}" &&
 		$command --output-directory="${textarget%/*}" "${textarget%.*}" &&
 		$command --output-directory="${textarget%/*}" "${textarget%.*}"
+                #[ "$2" = "-F" ] && gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.5 -dNOPAUSE -dQUIET -dBATCH -dPrinted=false -sOutputFile="$textarget" "$textarget.pdf"
+
 }
 if [[ -e "$dir/makefile" ]]; then
        make -B && exit 0
@@ -41,7 +43,12 @@ case "$ext" in
 	java) javac -d classes "$file" && java -cp classes "${1%.*}" ;;
 	m) octave "$file" ;;
 	md)	if  [ -x "$(command -v lowdown)" ]; then
-			lowdown --nroff-no-numbered --parse-no-intraemph "$file" -Tms | groff -mpdfmark -ms -kept -T pdf > "$base".pdf
+			# lowdown -s --nroff-no-numbered --parse-no-intraemph "$file" -Tms | groff -mpdfmark -ms -kept -T pdf > "$base".pdf
+                        out_name="$(basename -s .md "$file")"
+                        mkdir -p "$XDG_CACHE_HOME/compilercache/tex/$out_name"
+                        lowdown -s "$file" -Tlatex --latex-no-numbered | sed "s~usepackage{xcolor}~input{$XDG_DATA_HOME/latex_suits/structure.tex}~" | pdflatex -jobname "$out_name" --output-directory "$XDG_CACHE_HOME/compilercache/tex/$out_name"
+                        mv "$XDG_CACHE_HOME/compilercache/tex/$out_name/$out_name.pdf" "$PWD" 
+
 		elif [ -x "$(command -v groffdown)" ]; then
 			groffdown -i "$file" | groff -T pdf > "$base".pdf
 		else
@@ -56,6 +63,8 @@ case "$ext" in
 		fi ; ;;
 	org) emacs "$file" --batch -u "$USER" -f org-latex-export-to-pdf ;;
 	py) python "$file" ;;
+        S) as -g "$file" && ld a.out -o "$base" ;;
+	gv) dot "$file" -T svg -o "$base".svg ;;
 	[rR]md) Rscript -e "rmarkdown::render('$file', quiet=TRUE)" ;;
 	rs) cargo build ;;
 	sass) sassc -a "$file" "$base".css ;;

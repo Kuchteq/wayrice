@@ -19,8 +19,8 @@ cmd open ${{
 cmd savehere %{{
    printf '%s' "$PWD/$lf_user_filename" > "/tmp/termfilechooser.portal"
    marks=~/.local/share/lf/marks
-   sed -i "/^D/d" "$marks"
-   echo "D:$PWD" >> "$marks"
+   sed -i "/^d/d" "$marks"
+   echo "d:$PWD" >> "$marks"
    lf -remote "send $id quit"
 }}
 
@@ -39,8 +39,8 @@ cmd saveandtranscribe %{{
 
    printf '%s' "$PWD/$lf_user_filename" > "/tmp/termfilechooser.portal"
    marks=~/.local/share/lf/marks
-   sed -i "/^D/d" "$marks"
-   echo "D:$PWD" >> "$marks"
+   sed -i "/^d/d" "$marks"
+   echo "d:$PWD" >> "$marks"
    setsid -f zsh -c '$HOME/.local/bin/vidtranscribe -w -e "$PWD/$lf_user_filename" >/dev/null 2>&1'
    lf -remote "send $id quit"
 }}

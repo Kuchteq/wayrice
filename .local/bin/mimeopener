@@ -28,5 +28,5 @@ selected="$(echo -ne "$all" | bemenu -l "$(wc -l <<< "$all")")"
 selected="$(grep -o -E '\(.*\)' <<< "$selected")"
 
 finaltorun="$(sed -e "s~g/~$GLOBAL/~" -e "s~l/~$LOCAL/~" -e 's/^.\(.*\).$/\1.desktop/' <<< "$selected")"
-run="$(sed -e "s~\%\(U\|f\|F\|u\)~$1~" <<< "$(grep  -o -P '(?<=^Exec=).*' -h -m 1 "$finaltorun")" )"
-setsid -f $run >/dev/null 2>&1
+run="$(sed -e "s~\%\(U\|f\|F\|u\)~'$1'~" <<< "$(grep  -o -P '(?<=^Exec=).*' -h -m 1 "$finaltorun")" )"
+eval "$run"
