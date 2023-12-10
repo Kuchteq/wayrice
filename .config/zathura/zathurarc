@@ -28,4 +28,4 @@ map [fullscreen] <Button9> navigate previous
 
 map F follow
 map [fullscreen] F follow
-map þ exec "footie zsh -ci 'lfcd "$FILE"; exec zsh'"
+map þ exec "foot zsh -ci 'lfcd "$FILE"; exec zsh'"

@@ -10,9 +10,10 @@ export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
 
 # Default programs:
 export EDITOR="nvim"
-export TERMINAL="footie"
+export TERMINAL="foot"
 export BROWSER="librewolf"
 export MANPAGER="less -R --use-color -Dd+m -Du+c"
+export MANROFFOPT="-P -c"
 
 # XDG stuff
 export XDG_CONFIG_HOME="$HOME/.config"
