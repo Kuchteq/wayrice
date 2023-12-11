@@ -9,14 +9,15 @@ set scrolloff 10
 set icons
 set period 1
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
-set previewer '~/.config/lf/preview'
 set ratios 1:2:3
 set sixel
 set promptfmt "\033[33;1m%u\033[32;1m@\033[34;1m%h\033[0m:\033[35;1m%d\033[0m\033[1m%f\033[0m"
-
+# Set previewer but make sure cache folder is in place
+&{{ [ ! -d "$XDG_CACHE_HOME/lf" ] && mkdir --parents "$XDG_CACHE_HOME/lf" }}
+set previewer '~/.config/lf/preview'
 # make sure changing directories updates the titlebar
 cmd on-cd &{{
-    printf "\033]7;file://$HOST$PWD\007" > /dev/tty
+    printf "\033]7;file://$HOSTNAME$PWD\007" > /dev/tty
     printf "\033]0; $PWD\007" > /dev/tty
 }}
 on-cd
@@ -144,7 +145,7 @@ cmd sendTo %{{
     ans=$(cat "$XDG_DATA_HOME/receivers" | bemenu -p "rsync recipient: " ||  exit 1)
   fi
   echo "Sending to $ans"
-  rsync -r $fs "${ans}:" >/dev/null && echo "$ans Received!" || echo "$ans Error Occured"
+  rsync -r $fs "${ans}" >/dev/null && echo "$ans Received!" || echo "$ans Error Occured"
 }}
 
 cmd bulkrename ${{
@@ -232,6 +233,6 @@ map ee $nvim -c ":lua startInDebug()"
 map ei $nvim $f
 # Other tips
 # Remember ' is a special mark which saves the previous path , so by pressing double '' you get back to the previous folder, i.e. using mark-load
-
+cmd on-quit-prepare cmd on-quit ${{exec zsh}}
 
 source "~/.config/lf/shortcutrc"
