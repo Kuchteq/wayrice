@@ -1,0 +1,12 @@
+#!/bin/sh
+
+chosen="$(wpctl status -k | awk '/Sinks:/ {found=1; next} found && sub(" │  ",""); /*|*$/ {exit}' | tac | bemenu -l 18)"
+
+numonly="$(echo "$chosen" | grep -oE '^ *[0-9]+')"
+if  [ -n "$numonly" ]; then
+        wpctl set-default "$numonly"
+        if wpctl status -k | grep "$numonly" | grep -q " │  *   "; then
+                notify-send "󱆶 Audio change failed"
+        fi
+fi
+
