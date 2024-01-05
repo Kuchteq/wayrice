@@ -16,13 +16,12 @@ vim.o.ignorecase = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 -- tab options
-vim.opt.tabstop = 8
-vim.opt.expandtab = true
-vim.opt.shiftwidth = 4
-vim.opt.autoindent = true
 vim.opt.smartindent = true
-vim.opt.cindent = true
---vim.opt.cindent = true
+vim.opt.expandtab = true
+vim.opt.tabstop = 8
+vim.opt.shiftwidth = 8
+-- NOTE TO FUTURE SELF, some asshole might set .editorconfig file which overwrites these settings, bear this in mind!
+-- Modify the indentation levels there if they are overwrittien.
 
 local sync_dir_with_shell = function()
     vim.api.nvim_chan_send(2, '\x1b]7;file://' .. vim.fn.hostname() .. vim.fn.getcwd())
@@ -90,6 +89,7 @@ vim.keymap.set("n", "ð", "<C-w>l")
 vim.keymap.set("n", "<leader>c", ":w<CR>:!compiler '%:p'<CR><CR>")
 -- Compile the files for final, for groff there will be images and smaller size
 vim.keymap.set("n", "<leader>C", ":!compiler '%:p' -F<CR>")
+vim.keymap.set("n", "<leader>m", ":!make<CR>")
 vim.keymap.set("n", "<leader>p", ":!opout '%:p'<CR>")
 
 -- Save file as sudo on files that require root permission with the command w!!

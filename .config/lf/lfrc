@@ -29,7 +29,7 @@ cmd open ${{
         text/*|application/json|application/javascript|inode/x-empty) $EDITOR $fx;;
 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
 	image/svg+xml) imv $f ;;
-	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|tif\|ico\)\(_large\)*$" |
+	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|tif\|ppm\|ico\)\(_large\)*$" |
 		setsid -f imv 2>/dev/null | while read -r file; do
 			[ -z "$file" ] && continue
 			lf -remote "send select \"$file\""
@@ -144,6 +144,10 @@ cmd sendTo %{{
   else 
     ans=$(cat "$XDG_DATA_HOME/receivers" | bemenu -p "rsync recipient: " ||  exit 1)
   fi
+  case "$ans" in
+        *: ) ;;
+        * ) ans="$ans:" ;;
+  esac;
   echo "Sending to $ans"
   rsync -r $fs "${ans}" >/dev/null && echo "$ans Received!" || echo "$ans Error Occured"
 }}

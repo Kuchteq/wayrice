@@ -66,7 +66,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '[a', vim.lsp.buf.code_action, {})
         -- o as in foooormat
         vim.keymap.set('n', '<leader>o', function()
-            vim.lsp.buf.format({ tabSize = 1, async = true })
+            vim.lsp.buf.format { async = true }
         end, opts)
     end,
 })
