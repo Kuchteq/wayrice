@@ -1,6 +1,6 @@
 #!/bin/sh
 
-chosen="$(wpctl status -k | awk '/Sinks:/ {found=1; next} found && sub(" │  ",""); /*|*$/ {exit}' | tac | bemenu -l 18)"
+chosen="$(wpctl status -k | awk '/Sinks:/ {found=1; next} found && sub(" │  ",""); found && /^$/ {exit}' | head -n -1 | tac | bemenu -l 18)"
 
 numonly="$(echo "$chosen" | grep -oE '^ *[0-9]+')"
 if  [ -n "$numonly" ]; then
