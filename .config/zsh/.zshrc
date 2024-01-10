@@ -86,6 +86,9 @@ bindkey  "^[[F"   vi-end-of-line
 
 bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search
+# standard vi behaviour is a bit different and things like pasted content gets stuck, unable to be deleted with backspace
+bindkey -v '^?' backward-delete-char
+
 bindkey -s '^T' 'setsid -f $TERMINAL >/dev/null 2>&1\n'
 
 #Fix delete replacing characters
