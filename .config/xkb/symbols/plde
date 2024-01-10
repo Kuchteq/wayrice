@@ -16,11 +16,11 @@
 // ┃ ~ ∨ │ ! ' │ @ " │ # ˝ │ $ ¸ │ % ˇ │ ^ ^ │ & ˘ │ * ˙ │ ( ̣  │ ) ° │ _ ¯ │ + ˛ ┃  ⌫ Back   ┃     │
 // ┃ ` ¬ │ 1 ¡ │ 2 © │ 3 • │ 4 § │ 5 € │ 6 ¢ │ 7 − │ 8 × │ 9 ÷ │ 0 ° │ - – │ = — ┃   space   ┃ PGUP│
 // ┣━━━━━┷━┱───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┺━┳━━━━━━━━━╉─────┤
-// ┃       ┃ Q Ω │ W Ę │ E Ę │ R © │ T ß │ Y ¥ │ U ↑ │ I ↔ │ O Ó │ P Þ │ { Ü │ } Ö ┃   ? ρ   ┃     │
-// ┃Tab ↹  ┃ q π │ w œ │ e ę │ r ® │ t ß │ y ← │ u ↓ │ i → │ o ó │ p þ │ [ ü │ ] ö ┃   / |   ┃ PGDN│
+// ┃       ┃ Q Ą │ W Œ │ E Ę │ R © │ T ß │ Y ¥ │ U ↑ │ I ↔ │ O Ó │ P Þ │ { Ü │ } Ö ┃   ? ρ   ┃     │
+// ┃Tab ↹  ┃ q ą │ w œ │ e ę │ r ® │ t ß │ y ← │ u ↓ │ i → │ o ó │ p þ │ [ ü │ ] ö ┃   / |   ┃ PGDN│
 // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┲━━━━┻━━━━━━━━━╉─────┤
-// ┃Tap ESC ┃ A Ä │ S ß │ D ® │ F ® │ G Ŋ │ H • │ J Ə │ K / │ L Ł │ : ˝ │ " ˇ ┃   Enter      ┃     │
-// ┃Ctrl ⇬  ┃ a ä │ s ß │ d Ð │ f æ │ g ŋ │ h ’ │ j ə │ k … │ l ł │ ; ´ │ ' ^ ┃     ⏎        ┃ HOME│
+// ┃Tap ESC ┃ A Ä │ S ß │ D ś │ F ® │ G Ŋ │ H • │ J Ə │ K / │ L Ł │ : ˝ │ " ˇ ┃   Enter      ┃     │
+// ┃Ctrl ⇬  ┃ a ä │ s ß │ d Ś │ f æ │ g ŋ │ h ’ │ j ə │ k … │ l ł │ ; ´ │ ' ^ ┃     ⏎        ┃ HOME│
 // ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┻━━━━━━━━┳━━━━━╃─────┤
 // ┃             ┃ Z Ż │ X Ź │ C Ć │ V ‘ │ B “ │ N Ń │ M ∞ │ < × │ > ÷ │ |   ┃         ┃     │     │
 // ┃Shift ⇧      ┃ z ż │ x ź │ c ć │ v „ │ b ” │ n ń │ m µ │ , ≤ │ . ≥ │ \ ρ ┃Shift ⇧  ┃  ↑  │ END │
@@ -38,11 +38,11 @@
 // ┃ ~ ∨ │ ! ' │ @ " │ # ˝ │ $ ¸ │ % ˇ │ ^ ^ │ & ˘ │ * ˙ │ ( ̣  │ ) ° │ _ ¯ │ + ˛ ┃  ⌫ Back   ┃     │
 // ┃ ` ¬ │ 1 ¡ │ 2 © │ 3 • │ 4 § │ 5 € │ 6 ¢ │ 7 − │ 8 × │ 9 ÷ │ 0 ° │ - – │ = — ┃   space   ┃ PGUP│
 // ┣━━━━━┷━┱───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┺━┳━━━━━━━━━╉─────┤
-// ┃       ┃ Q Ω │ W Ę │MOUSE│MOUSE│ T ß │     │ U ↑ │ I ↔ │     │ P Þ │ { Ü │ } Ö ┃   |     ┃     │
-// ┃Tab ↹  ┃ q π │ w œ │ LEFT│RIGHT│ t ß │ COPY│ u ↓ │ i → │PASTE│ p þ │ [ ü │ ] ö ┃   \ ρ   ┃ PGDN│
+// ┃       ┃ Q Ą │ W Ę │MOUSE│MOUSE│ T ß │     │ U ↑ │ I ↔ │     │ P Þ │ { Ü │ } Ö ┃   |     ┃     │
+// ┃Tab ↹  ┃ q ą │ w œ │ LEFT│RIGHT│ t ß │ COPY│ u ↓ │ i → │PASTE│ p þ │ [ ü │ ] ö ┃   \ ρ   ┃ PGDN│
 // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┲━━━━┻━━━━━━━━━╉─────┤
-// ┃        ┃ A Ä │ S ß │ D ® │ F ® │ G Ŋ │     │ CTRL│ CTRL│     │ : ˝ │ " ˇ ┃              ┃     │
-// ┃Ctrl ⇬  ┃ a ä │ s ß │ d Ð │ f æ │ g ŋ │ HOME│  ←  │  →  │ END │ ; ´ │ ' ^ ┃              ┃ HOME│
+// ┃        ┃ A Ä │ S ß │ D ś │ F ® │ G Ŋ │     │ CTRL│ CTRL│     │ : ˝ │ " ˇ ┃              ┃     │
+// ┃Ctrl ⇬  ┃ a ä │ s ß │ d Ś │ f æ │ g ŋ │ HOME│  ←  │  →  │ END │ ; ´ │ ' ^ ┃              ┃ HOME│
 // ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┻━━━━━━━━┳━━━━━╃─────┤
 // ┃             ┃ Z Ż │ X Ź │ C Ć │ V ‘ │ B “ │ N Ń │ M ∞ │ < × │ > ÷ │ |   ┃         ┃MOVE │     │
 // ┃Shift ⇧      ┃ z ż │ x ź │ c ć │ v „ │ b ” │ n ń │ m µ │ , ≤ │ . ≥ │ \ ρ ┃Shift ⇧  ┃MOUS↑│ END │
@@ -78,11 +78,11 @@ xkb_symbols "basic" {
     key <AE10>	{ [         0, parenright, guillemotright,     degree ]	};
     key <AE11>	{ [     minus, underscore,       endash,       emdash ]	};
 
-    key <AD01>	{ [         q,          Q,     Greek_pi,  Greek_OMEGA ]	};
+    key <AD01>	{ [         q,          Q,      aogonek,      Aogonek ]	};
     key <AD02>	{ [         w,          W,           oe,           OE ]	};
     key <AD03>	{ [         e,          E,      eogonek,      Eogonek ]	};
     key <AD04>	{ [         r,          R,    copyright,   registered ]	};
-    key <AD05>	{ [         t,          T,       ssharp,    trademark ]	};
+    key <AD05>	{ [         t,          T,       Greek_pi,  Greek_OMEGA]};
     key <AD08>	{ [         i,          I,   rightarrow,        U2194 ]	};
     key <AD09>	{ [         o,          O,       oacute,        Oacute]	};
 
@@ -91,6 +91,7 @@ xkb_symbols "basic" {
 
     key <AC01>	{ [         a,          A,      adiaeresis,       Adiaeresis]	};
     key <AC02>	{ [         s,          S,       ssharp,       ssharp ]	};
+    key <AC03>	{ [         d,          D,      sacute,     Sacute    ] };
     key <AC04>	{ [         f,          F,           ae,           AE ]	};
     key <AC06>	{ [         h,          H, rightsinglequotemark, U2022 ] };
     key <AC07>	{ [         j,          J,        schwa,        SCHWA ]	};

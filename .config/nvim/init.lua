@@ -82,8 +82,9 @@ vim.keymap.set("n", "ę", "<C-w>")
 vim.keymap.set("n", "ä", "<C-w>h")
 vim.keymap.set("n", "ß", "<C-w>j")
 vim.keymap.set("n", "œ", "<C-w>k")
-vim.keymap.set("n", "ð", "<C-w>l")
-
+vim.keymap.set("n", "ś", "<C-w>l")
+vim.keymap.set("n", "Ś", ":vertical resize +5<CR>", {silent=true})
+vim.keymap.set("n", "Ä", ":vertical resize -5<CR>", {silent=true})
 -- Document related mappings
 -- Compile the files for fast preview, in groff's case, they won't have images tho
 vim.keymap.set("n", "<leader>c", ":w<CR>:!compiler '%:p'<CR><CR>")
