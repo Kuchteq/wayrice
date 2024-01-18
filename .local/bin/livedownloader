@@ -1,0 +1,5 @@
+#!/bin/sh
+[ -z "$1" ] && echo -e "\033[1mNo arg passed, using clipboard as source\033[0m" && url="$(wl-paste)" || url="$1"
+
+grep -E 'https?://(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[A-Za-z0-9()]{1,6}([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)' <<< "$url"
+yt-dlp --add-header "Cookie: key=value" "$url"
