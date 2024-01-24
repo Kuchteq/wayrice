@@ -1,4 +1,4 @@
 #!/bin/sh
 
-curl -Ls https://rds.eurozet.pl/reader/var/antyradio.json | grep -oE '"title":"[^"]+"|"artist":"[^"]+"'
-
+# little but ugly hack to make the antysong interpret unicode characters
+echo -e "$(curl -Ls https://rds.eurozet.pl/reader/var/antyradio.json | grep -oE '"title":"[^"]+"|"artist":"[^"]+"')"

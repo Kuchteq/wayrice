@@ -1,4 +1,21 @@
 #!/bin/sh
 
-mpv https://n-25-32.dcs.redcdn.pl/sc/o2/Eurozet/live/antyradio.livx
+notify-send "󰽴 Playing now" "$(antysong)" &
+
+existing="$(pgrep -f 'mpv.*antyradio.livx')"
+if [ -z "$existing" ]; then
+        choice="$(echo " start" | tofi --width 380 -c "$XDG_CONFIG_HOME/tofi/antyRadio.ini" --prompt-text "󱈜  No AntyRadio:" )"
+else
+        choice="$(echo " stop" | tofi --width 480 -c "$XDG_CONFIG_HOME/tofi/antyRadio.ini" --prompt-text "󰐹  AntyRadio running:" )"
+fi 
+
+case "$choice" in
+        *stop)
+             kill "$existing"
+                ;;
+        *start)
+                mpv https://n-25-32.dcs.redcdn.pl/sc/o2/Eurozet/live/antyradio.livx
+                ;;
+esac
+
 
