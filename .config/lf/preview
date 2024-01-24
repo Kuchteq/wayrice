@@ -9,7 +9,7 @@ image() {
 	if [ -n "$NVSERVER" ]; then
 		method="symbols"
 	fi
-	chafa "$1" -f "$method" -s "$geometry" --animate false | fold -w 65535
+	chafa "$1" -f "$method" -s "$geometry" --polite on --animate false | fold -w 65535
 }
 
 batorcat() {
