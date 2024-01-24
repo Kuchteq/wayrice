@@ -1,4 +1,17 @@
-profile home {
-  output "HDMI-A-1" mode 1920x1080@60Hz position 2880,0 scale 0.7
-  output eDP-1 enable position 0,0 
+// sample configurations for basic setups with laptop below the monitor
+
+profile aboveHDMI4ktv {
+  output "HDMI-iA-1" mode 3840x2160@60Hz position 0,0 scale 1
+  output eDP-1 enable position 0,2160 
 }
+
+profile aboveHDMI2k {
+  output "HDMI-A-1" mode 2560x1440@60Hz position 0,0 scale 1
+  output eDP-1 enable position 0,1440 scale 1.5
+}
+
+profile aboveHDMI {
+  output "HDMI-A-1" mode 1920x1080@60Hz position 0,0 scale 1
+  output eDP-1 enable position 0,1080 scale 1
+}
+
