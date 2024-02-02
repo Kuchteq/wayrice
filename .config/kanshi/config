@@ -1,5 +1,3 @@
-// sample configurations for basic setups with laptop below the monitor
-
 profile aboveHDMI4ktv {
   output "HDMI-iA-1" mode 3840x2160@60Hz position 0,0 scale 1
   output eDP-1 enable position 0,2160 
