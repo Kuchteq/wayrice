@@ -154,5 +154,12 @@ function chpwd-osc7-pwd() {
 }
 add-zsh-hook -Uz chpwd chpwd-osc7-pwd
 
+# These colors define how elements on tab completion look like
+_ls_colors="di=1;34:ln=1;36:so=35:pi=33:ex=1;32:bd=33:cd=33:su=30;41:sg=30;46:tw=30;42:ow=30;43" 
+zstyle ':completion:*:default' list-colors "${(s.:.)_ls_colors}"
+LS_COLORS+=$_ls_colors
+
+eval "$(atuin init zsh)"
+
 # Load syntax highlighting; should be last.
 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
