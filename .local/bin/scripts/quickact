@@ -21,6 +21,6 @@ case "$selected" in
      c) serverfilesterm ;;
      n) networkmanager_dmenu ;;
      q) qrshare -c ;;
-     u) $TERMINAL -T "bc" -a "floateright" -W "50x20" bc ;;
+     u) $TERMINAL -o 'text-bindings.flip()\x0a=Control+f' -T "calc" -a "floateright" -W "50x20" pycalc;;
 esac
 #so times 16 it's the width

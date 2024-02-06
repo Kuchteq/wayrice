@@ -1,0 +1,38 @@
+#!/usr/bin/python -i
+import sys
+
+RESET = '\033[0m'
+MAGENTA = '\033[95m'
+
+# Customize your prompts
+sys.ps1 = f'{MAGENTA}>>> {RESET}'
+sys.ps2 = f'{MAGENTA}... {RESET}'
+
+
+def displayhook(item):
+    if isinstance(item, int) and not isinstance(item, bool):
+        print('0x{0:X} ({0})'.format(item))
+    elif isinstance(item, int):
+        print('0x{0:X}L ({0}L)'.format(item))
+    elif item is not None:
+        print(repr(item))
+
+def displayhook_reg(item):
+    if isinstance(item, int) and not isinstance(item, bool):
+        print('{0} (0x{0:X})'.format(item))
+    elif isinstance(item, int):
+        print('{0} (0x{0:X})'.format(item))
+    elif item is not None:
+        print(repr(item))
+
+def flip():
+    import sys
+    if sys.displayhook==displayhook:
+        sys.displayhook=displayhook_reg
+    else:
+        sys.displayhook=displayhook
+
+
+sys.displayhook = displayhook
+
+del sys
