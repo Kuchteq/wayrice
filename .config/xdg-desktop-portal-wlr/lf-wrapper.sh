@@ -29,29 +29,30 @@ multiple="$1"
 directory="$2"
 save="$3"
 path="$4"
-out="$5"
 cmd="/usr/bin/lf"
 termcmd="/usr/bin/foot"
 lfxdgbasedir=~/.config/lf/xdg-filepicker
+termsize='-W 120x36'
+paddingsize='-o main.pad=10x10 center'
 [ -f ~/.config/fzf/fzfrc ] && source ~/.config/fzf/fzfrc
 
 if [ "$save" = "1" ]; then
 	#make the saving appear in the last path
 	set -- "$(dirname "$path")"
         FILENAME="$(basename "$path")"
-        $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+        $termcmd "$paddingsize" -a "floatermid" "$termsize" $cmd \
         -command "set user_filename '$FILENAME'" \
         -command "source $lfxdgbasedir/save" "$@"
 elif [ "$directory" = "1" ] && [ "$multiple" = "1" ] ; then
-            $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+            $termcmd "$paddingsize" -a "floatermid" "$termsize" $cmd \
             -command "source $lfxdgbasedir/selectanything" 
 elif [ "$directory" = "1" ]; then
-            $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+            $termcmd "$paddingsize" -a "floatermid" "$termsize" $cmd \
             -command "source $lfxdgbasedir/selectdir" 
 elif [ "$multiple" = "1" ]; then
-            $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+            $termcmd "$paddingsize" -a "floatermid" "$termsize" $cmd \
             -command "source $lfxdgbasedir/selectfiles"
 else
-            $termcmd -o "main.pad=10x10 center" -a "floatermid" -W "120x40" $cmd \
+            $termcmd "$paddingsize" -a "floatermid" "$termsize" $cmd \
             -command "source $lfxdgbasedir/selectfile"
 fi
