@@ -120,7 +120,7 @@ return {
         {
                 'stevearc/aerial.nvim',
                 opts = { nerd_font = true },
-                keys = { { "ś", function ()
+                keys = { { "π", function ()
                         require("aerial").toggle();
                 end }},
                 -- Optional dependencies
@@ -128,5 +128,15 @@ return {
                         "nvim-treesitter/nvim-treesitter",
                 },
         },
+        {
+                dir='/home/maniu/Projects/nvim_extensions/build.nvim',
+                dependencies = {
+                        'm00qek/baleia.nvim',
+                },
+                config = function ()
+                        require("build").setup();
+                end
+        }
+
 
 }, { defaults = { lazy = true } }

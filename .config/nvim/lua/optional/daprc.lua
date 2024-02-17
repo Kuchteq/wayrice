@@ -300,32 +300,10 @@ return {
         end
 
         local mason_registry = require("mason-registry")
-        dap.adapters.cppdbg = {
-            id = 'cppdbg',
-            type = 'executable',
-            command = mason_registry.get_package("cpptools"):get_install_path() .. '/extension/debugAdapters/bin/OpenDebugAD7',
-        }
-        dap.configurations.c = {
-            {
-                name = "Launch file",
-                type = "cppdbg",
-                request = "launch",
-                program = function()
-                    local toCompile = vim.api.nvim_buf_get_name(0)
-                    -- local checksum = vim.spl vim.fn.system({"md5sum", toCompile})
-                    local outFile = vim.fn.expand("%:t:r") .. "-debug.out"
-                    vim.fn.system({ "gcc", "-g", toCompile, "-o", vim.fn.getcwd() .. "/" .. outFile })
-                    return outFile
-                end,
-                cwd = '${workspaceFolder}',
-                externalConsole = true
-                --stopAtEntry = true,
-            } }
-        -- C section
         -- dap.configurations.c = {
         --     {
         --         name = "Launch file",
-        --         type = "gdb",
+        --         type = "cppdbg",
         --         request = "launch",
         --         program = function()
         --             local toCompile = vim.api.nvim_buf_get_name(0)
@@ -335,13 +313,36 @@ return {
         --             return outFile
         --         end,
         --         cwd = '${workspaceFolder}',
-        --         stopOnEntry = false,
-        --     },
+        --         externalConsole = true
+        --         --stopAtEntry = true,
+        --     } }
+        --
+        -- dap.adapters.cppdbg = {
+        --     id = 'cppdbg',
+        --     type = 'executable',
+        --     command = mason_registry.get_package("cpptools"):get_install_path() .. '/extension/debugAdapters/bin/OpenDebugAD7',
         -- }
-        -- dap.adapters.gdb = {
-        --     type = "executable",
-        --     command = "gdb",
-        --     args = { "-i", "dap" }
-        -- }
+        -- C section
+        dap.configurations.c = {
+            {
+                name = "Launch file",
+                type = "gdb",
+                request = "launch",
+                program = function()
+                    local toCompile = vim.api.nvim_buf_get_name(0)
+                    -- local checksum = vim.spl vim.fn.system({"md5sum", toCompile})
+                    -- local outFile = vim.fn.expand("%:t:r") .. "-debug.out"
+                    -- vim.fn.system({ "gcc", "-g", toCompile, "-o", vim.fn.getcwd() .. "/" .. outFile })
+                      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+            },
+        }
+        dap.adapters.gdb = {
+            type = "executable",
+            command = "gdb",
+            args = { "-i", "dap" }
+        }
     end
 }

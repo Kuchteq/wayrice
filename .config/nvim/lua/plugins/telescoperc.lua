@@ -20,10 +20,11 @@ return {
                 vim.keymap.set('n', 'æ', builtin.find_files, {})
                 vim.keymap.set('n', 'ŋ', builtin.live_grep, {})
                 vim.keymap.set('n', '’', builtin.resume, {})
-                vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+                vim.keymap.set('n', '→', builtin.buffers, {})
                 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
                 vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, {})
                 vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, {})
+                vim.keymap.set('n', 'ł', require('telescope.builtin').lsp_dynamic_workspace_symbols, {})
                 require('telescope').setup {
                         defaults = {
                                 mappings = {

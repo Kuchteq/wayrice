@@ -78,7 +78,7 @@ end
 local function setUpLsp()
     require("mason").setup()
     require("mason-lspconfig").setup({
-        ensure_installed = { "ltex", "pyright", "bashls", "tsserver" },
+        ensure_installed = { "ltex", "pyright", "bashls", "tsserver", "gopls" },
         automatic_installation = true
     })
 

@@ -90,7 +90,6 @@ vim.keymap.set("n", "Ä", ":vertical resize -5<CR>", {silent=true})
 vim.keymap.set("n", "<leader>c", ":w<CR>:!compiler '%:p'<CR><CR>")
 -- Compile the files for final, for groff there will be images and smaller size
 vim.keymap.set("n", "<leader>C", ":!compiler '%:p' -F<CR>")
-vim.keymap.set("n", "<leader>m", ":!make<CR>")
 vim.keymap.set("n", "<leader>p", ":!opout '%:p'<CR>")
 
 -- Save file as sudo on files that require root permission with the command w!!
