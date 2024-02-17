@@ -1,11 +1,11 @@
 profile aboveHDMI4ktv {
-  output "HDMI-iA-1" mode 3840x2160@60Hz position 0,0 scale 1
+  output "HDMI-A-1" mode 3840x2160@60Hz position 0,0 scale 1
   output eDP-1 enable position 0,2160 
 }
 
 profile aboveHDMI2k {
   output "HDMI-A-1" mode 2560x1440@60Hz position 0,0 scale 1
-  output eDP-1 enable position 0,1440 scale 1.5
+  output eDP-1 enable position 0,1440 scale 1
 }
 
 profile aboveHDMI {

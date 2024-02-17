@@ -24,7 +24,7 @@ fi
 
 # Ethernet
 if [ "$(cat /sys/class/net/e*/operstate 2>/dev/null)" = 'up' ]; then
-         ethericon="󰈀❘"
+         ethericon="󰈀"
          [ "$wifiicon" = "❌" ] && wifiicon="" || wifiicon=" $wifiicon"
 fi
 
