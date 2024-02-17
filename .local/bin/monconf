@@ -1,3 +1,5 @@
 #!/bin/sh
-wlr-randr > /tmp/available_monitors
-$EDITOR -c "map <enter> :w<CR>" -c "autocmd BufWritePost * silent !kanshictl reload && notify-send '󰍺  Config applied' || notify-send ' 󰍺  Config failed'" -c "set filetype=config"  "$XDG_CONFIG_HOME/kanshi/config" "/tmp/available_monitors" -c 'lua vim.api.nvim_buf_set_option(2, "modifiable", false)'
+wlr-randr > /tmp/monspecifics
+grep -v '^ ' /tmp/monspecifics | monexclude > /tmp/available_monitors
+
+exec nvim -u "$XDG_CONFIG_HOME/monconf.lua" "$XDG_CONFIG_HOME/kanshi/config" /tmp/available_monitors /tmp/monspecifics
