@@ -1,6 +1,7 @@
 #!/bin/sh
 
-model="base"
+model="small" # better than base but not as heavy as medium
+embedsubs=true
 while getopts "wems" OPT; do
     if [ "$OPT" = "e" ] ; then
         embedsubs=true
@@ -11,8 +12,8 @@ while getopts "wems" OPT; do
     if [ "$OPT" = "m" ]; then
         model=medium
     fi
-    if [ "$OPT" = "s" ]; then
-        model=small # better than base but not as heavy as medium
+    if [ "$OPT" = "b" ]; then
+        model=base 
     fi
 done
 

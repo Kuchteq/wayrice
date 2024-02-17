@@ -29,13 +29,13 @@ textype() { \
                 #[ "$2" = "-F" ] && gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.5 -dNOPAUSE -dQUIET -dBATCH -dPrinted=false -sOutputFile="$textarget" "$textarget.pdf"
 
 }
-if [[ -e "$dir/makefile" ]]; then
+if [ -e "$dir/makefile" ]; then
        make -B && exit 0
 fi
 case "$ext" in
 	# Try to keep these cases in alphabetical order.
 	[0-9]) preconv "$file" | refer -PS -e | groff -mandoc -T pdf > "$base".pdf ;;
-	c) cc "$file" -o "$base" && "$base" ;;
+	c) cc "$file" -o "$base" ;;
 	cpp) g++ "$file" -o "$base" && "$base" ;;
 	cs) mcs "$file" && mono "$base".exe ;;
 	go) go run "$file" ;;
@@ -73,3 +73,4 @@ case "$ext" in
 	tex) textype "$file" ;;
 	*) sed -n '/^#!/s/^#!//p; q' "$file" | xargs -r -I % "$file" ;;
 esac
+

@@ -1,5 +1,6 @@
 #!/usr/bin/python -i
 import sys
+import math
 
 RESET = '\033[0m'
 MAGENTA = '\033[95m'
@@ -32,7 +33,23 @@ def flip():
     else:
         sys.displayhook=displayhook
 
-
 sys.displayhook = displayhook
 
 del sys
+
+def genprimes(n):
+    """Generates a list of primes < n using the sieve of Eratosthenes with O(n) memory."""
+    if n < 2:
+        return []
+
+    table = [True] * n
+    sqrtn = int(math.ceil(math.sqrt(n)))
+
+    for i in range(2, sqrtn):
+        if table[i]:
+            for j in range(i * i, n, i):
+                table[j] = False
+
+    primes = [2] + [i for i in range(3, n, 2) if table[i]]
+    return primes
+
