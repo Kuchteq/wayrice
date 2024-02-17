@@ -1,4 +1,25 @@
 #!/bin/sh
 
-read -r default_host < $XDG_DATA_HOME/receivers
-$TERMINAL -a floatermid -W 82x24 -T "Pulling files from: $default_host" ssh -4 $default_host -t 'lf -command infileterm' && eval `wl-paste -p` && notify-send "Transfer completed"
+# NON SERVER VERSION
+# This complicated mess is due to the fact that clipboard
+# contents are live as long as the underlying app is living
+# since the shift from foot's server functionality to single
+# instance one, we needed to rewrite it a bit
+masterpid=$$
+termpid=$$
+
+cont() {
+        tocopy="$(wl-paste -p)"
+        kill $termpid
+        notify-send "Transfer starting" 
+        eval "$tocopy"
+}
+
+trap cont USR1
+read -r default_host < "$XDG_DATA_HOME/receivers"
+# unfortunately we need to create this other subshell
+$TERMINAL -H -a floatermid -W 82x24 -T "Pulling files from: $default_host" \
+        sh -c "ssh -4 $default_host -t 'lf -command infileterm'; kill -s USR1 $masterpid" &
+termpid=$!
+
+wait

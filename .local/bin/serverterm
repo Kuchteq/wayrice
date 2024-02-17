@@ -1,4 +1,9 @@
 #!/bin/sh
 
-read -r default_host < $XDG_DATA_HOME/receivers
-$TERMINAL ssh -4 $default_host
+if [ "$1" = -c ]; then 
+        chosen_host="$(tofi < $XDG_DATA_HOME/receivers)"
+        [ -f "$XDG_DATA_HOME/receiversargs" ] && args="$(grep "$chosen_host" $XDG_DATA_HOME/receiversargs | cut -d';' -f2)"
+else
+        read -r chosen_host < $XDG_DATA_HOME/receivers
+fi
+eval $TERMINAL ssh -4 "$chosen_host" "$args"
