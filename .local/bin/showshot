@@ -10,7 +10,11 @@ fi
 TYPE=$(wl-paste | file -)
 if ( echo "$TYPE" | grep -q "PNG" ); then
 	DATE=$(date +%Y-%m-%dT%H:%M:%S)
-	DIMENSIONS=$(wl-paste | file - | grep -o "[0-9]* x [0-9]*")
+        if [ -f "$XDG_RUNTIME_DIR/last_screenshot_size" ]; then
+                DIMENSIONS=$(grep -o "[0-9]*x[0-9]*" "$XDG_RUNTIME_DIR/last_screenshot_size")
+        else
+                DIMENSIONS=$(wl-paste | file - | grep -o "[0-9]* x [0-9]*")
+        fi
 	W=$(echo $DIMENSIONS | grep -o "^[0-9]*")
 	H=$(echo $DIMENSIONS | grep -o "[0-9]*$")
 	PREVIEWNAME="shotpreview-['$W'x'$H']-$DATE)"
