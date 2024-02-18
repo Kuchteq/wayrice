@@ -129,7 +129,10 @@ return {
                 },
         },
         {
-                dir='/home/maniu/Projects/nvim_extensions/build.nvim',
+                'Kuchteq/build.nvim',
+                keys = { {"<leader>m", function ()
+                        require('build').run_make()
+                end }},
                 dependencies = {
                         'm00qek/baleia.nvim',
                 },
