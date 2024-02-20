@@ -28,4 +28,4 @@ map [fullscreen] <Button9> navigate previous
 
 map F follow
 map [fullscreen] F follow
-map þ exec 'foot lf --command on-quit-prepare "$FILE"'
+map ó exec 'foot lf --command on-quit-prepare "$FILE"'
