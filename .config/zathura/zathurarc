@@ -1,4 +1,5 @@
 set selection-clipboard clipboard
+set selection-notification false
 
 map i recolor
 map [fullscreen] i recolor
