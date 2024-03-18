@@ -29,7 +29,7 @@ cmd open ${{
         text/*|application/json|application/javascript|inode/x-empty) $EDITOR $fx;;
 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
 	image/svg+xml) imv $f ;;
-	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|tif\|ppm\|ico\)\(_large\)*$" |
+	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|avif\|webp\|tif\|ppm\|ico\)\(_large\)*$" |
 		setsid -f imv 2>/dev/null | while read -r file; do
 			[ -z "$file" ] && continue
 			lf -remote "send select \"$file\""
@@ -42,6 +42,7 @@ cmd open ${{
 	application/pgp-encrypted) $EDITOR $fx ;;
 	application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text) setsid -f lowriter $fx >/dev/null 2>&1 ;;
 	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/octet-stream|application/vnd.oasis.opendocument.spreadsheet|application/vnd.oasis.opendocument.spreadsheet-template) setsid -f localc $fx >/dev/null 2>&1 ;;
+        application/x-sc) sc-im "$f";;
 	application/vnd.openxmlformats-officedocument.presentationml.presentation|application/vnd.oasis.opendocument.presentation-template|application/vnd.oasis.opendocument.presentation|application/vnd.ms-powerpoint) setsid -f loimpress $fx >/dev/null 2>&1 ;;
 	application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template) setsid -f lodraw $fx >/dev/null 2>&1 ;;
 	application/vnd.oasis.opendocument.formula) setsid -f lomath $fx >/dev/null 2>&1 ;;
@@ -173,6 +174,25 @@ cmd bulkrename ${{
     lf -remote "send $id unselect"
 }}
 
+cmd convertToFormat %{{
+
+extensions="jpg\npng\ngif\navif\nwebp\nheic\nppm\nico\n"
+ext="${f##*.}"
+base="${f%.*}"
+extensions=$(sed "s/$ext\\\n//" <<< "$extensions")
+if [ -z "${WAYLAND_DISPLAY+x}" ]; then
+      echo -e "Convert to: $(sed 's/\\n/ /g'  <<< $extensions): "
+      read ans
+  else 
+      ans=$(printf "$extensions" | tofi -p "Convert to: " 2>/dev/null)
+  fi
+  out="$base.$ans"
+  convert "$f" "$out"
+
+  notify-send "$out"
+  lf -remote "send $id select \"$out\""
+
+}}
 
 cmd tag-clear :tag; tag-toggle
 
@@ -196,7 +216,6 @@ map W watchInPlaylistSelected
 map Yd &echo $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to clipboard" # cd into the copied path
 map Yf &echo $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard" # cd into the copied path
 map Ya &wl-copy < $f; lf -remote "send $id echo 'Yanked all $f to clipboard'" #yank all contents 
-map T tag-clear 
 map <c-r> :reload; &killall bat
 map Su $sudo lf -command 'source "~/.config/lf/insudo"';
 
@@ -217,7 +236,7 @@ map R push :rename<enter><c-k>.
 map B bulkrename
 map Z middle
 map am $addshortcut $f
-map o &mimeopener "$f"
+map o $mimeopen -a "$f" 2>/dev/null
 map <tab> push ''
 map gcl $git clone "$(wl-paste)"
 
@@ -230,6 +249,12 @@ map <c-e> $lf -remote "send $id select \"$(FZF_DEFAULT_COMMAND='fd -td' fzf)\"" 
 map <c-g> $nvim -c ":lua startInTelescopeOnly()" # live grep files
 map <c-s> sendTo
 
+# transform functions related to files/mostly images
+map Tu $/opt/upscayl/upscayl-bin -v -n realesrgan-x4plus -i $f -o "${f%.*}-upscaled.${f##*.}"
+map Tt convertToFormat
+map Tv $vtracer --input $f --output "${f%.*}.svg"
+
+
 map C $git diff $f
 
 map e
@@ -238,5 +263,6 @@ map ei $nvim $f
 # Other tips
 # Remember ' is a special mark which saves the previous path , so by pressing double '' you get back to the previous folder, i.e. using mark-load
 cmd on-quit-prepare cmd on-quit ${{exec zsh}}
-
+map <c-w> %rmapi put $f && echo "$f received!"
+map _ &dragon-drop -x "$f"
 source "~/.config/lf/shortcutrc"
