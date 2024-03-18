@@ -1,0 +1,21 @@
+#!/bin/sh
+
+home_src=HDMI-A-1
+home_dst=eDP-1
+displays="$(wlr-randr --json | jq -r '.[].name')"
+prompt_string="What output to copy?"
+[ $(wc -l <<< "$displays") -lt 2 ] && prompt_string="There is only one output. You sure you want this?" 
+src=$(echo -e "home\n${displays}" | tofi --prompt-text "$prompt_string")
+[ -z "$src" ] && exit
+if [ "$src" = "home" ]; then
+        src=$home_src
+        dst=$home_dst
+else
+        displays_out=$(echo "$displays" | grep -x -v "$src")
+        dst=$(echo -e "${displays_out}" | tofi --prompt-text "Where do you want the output to be copied?")
+        [ -z "$dst" ] && exit
+fi
+
+# Selecting the dst unfortunately doesn't work :/, you need to run the script focused inside the monitor you want the window to appear in
+# This is left as is for the future where maybe this feature would work. This is only a problem on dwl and the script works fine on sway
+wl-mirror --fullscreen-output "$dst" "$src"
