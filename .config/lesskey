@@ -3,3 +3,6 @@
 ^W word-backspace
 ^P up
 ^N down
+#command
+h noaction 4\e(
+l noaction 4\e)
