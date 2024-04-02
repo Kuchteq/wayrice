@@ -1,0 +1,87 @@
+set ratios 3:2
+set sortby time; set info time; 
+set user_playback true
+set reverse
+set promptfmt "\033[41;1m recorder \033[0m:\033[33;1m%d\033[0m\033[1m%f\033[0m"
+
+cmd toggle-playback &{{
+        if [ "$lf_user_playback" = "true" ]; then
+                lf -remote "send $id set user_playback false"
+                lf -remote "send $id set promptfmt \"\033[41;1m recorder (NO PLAYBACK) \033[0m:\033[33;1m%d\033[0m\033[1m%f\033[0m\""
+        else
+                lf -remote "send $id set user_playback true"
+                lf -remote "send $id set promptfmt \"\033[41;1m recorder \033[0m:\033[33;1m%d\033[0m\033[1m%f\033[0m\""
+        fi
+}}
+
+map P toggle-playback
+
+cmd audio-test ${{
+        echo -e "\n\x1b[1mCurrent settings: \x1b[0m "
+        wpctl status
+        echo -e "\n\x1b[1;33mTesting! You should now hear playback.\x1b[0m "
+        arecord -f cd - | aplay -
+}}
+
+map <c-t> audio-test
+
+cmd audio-recording ${{ 
+        echo -ne "\n\x1b[1;3;34mRecording name:\x1b[0m "
+        read filename
+        if [ "$filename" = "" ]; then
+                filename=$(date +%d-%m-%YT%H:%M:%S)
+                echo -e "left blank, saved as:\x1b[3;32m $filename.wav \x1b[0m"
+        fi
+        if [ -f "$filename.wav" ]; then
+                echo -e "\x1b[1;31mRecording already exists!\x1b[0m"
+                lf -remote "send $id echo 'Recording already exists!'"
+                notify-send "Recording already exists!"
+                exit 1
+        fi
+        # stopwatch
+        { 
+                now=$(date +%s)sec
+                while true; do
+                     printf "%s\r" $(TZ=UTC date --date now-$now +%H:%M:%S.%3N)
+                     sleep 0.1
+                done
+        } &
+        if [ "$lf_user_playback" = "true" ]; then
+                arecord -f cd - | tee "./$filename.wav" | aplay -
+        else
+                arecord -f cd "$filename.wav"
+        fi
+}}
+
+map <c-r> audio-recording
+
+
+cmd video-test ${{
+        echo -e "\n\x1b[1;33mTesting! You should now see yourself.\x1b[0m "
+        ffmpeg  -y -f pulse -ac 2 -i default -f v4l2 -i /dev/video0 -vf "format=yuv420p" -f xv preview 
+}}
+
+map <c-o> video-test
+
+
+# video recording will always include audio
+cmd video-recording ${{ 
+        echo -ne "\n\x1b[1;3;31mVideo Recording name:\x1b[0m "
+        read filename
+        if [ "$filename" = "" ]; then
+                filename=$(date +%d-%m-%YT%H:%M:%S)
+                echo -e "left blank, saved as:\x1b[3;32m $filename.mp4 \x1b[0m"
+        fi
+        if [ -f "$filename.mp4" ]; then
+                echo -e "\x1b[1;31mRecording already exists!\x1b[0m"
+                lf -remote "send $id echo 'Recording already exists!'"
+                notify-send "Video Recording already exists!"
+                exit 1
+        fi
+
+        ffmpeg  -y -f pulse -ac 2 -i default -f v4l2 -i /dev/video0 "./$filename.mp4"  -vf "format=yuv420p" -f xv preview 
+        
+}}
+
+map <c-v> video-recording
+

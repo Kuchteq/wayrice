@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# set RECORDER_SINK beforehand to always force recording on particular device
+# RECORDER_SINK="Alder Lake PCH-P High Definition Audio Controller Digital Microphone"
+export basedir="$PWD"
+lfbasedir=~/.config/lf
+wrongdevice=false
+
+if [ -z "$RECORDER_SINK" ]; then
+        notify-send "Devices for recording:" "$(wpctl status | sed -n -e '/Audio/,/Streams/ p' | grep -o ' Sink\| Source\|\*.*')"
+else
+        wpctl status | grep -q "*.*$RECORDER_SINK" || wrongdevice=true
+        if $wrongdevice; then
+                notify-send "Desired recorder device not set as sink!" "Attempting to set it as the sink..."
+                sinkid=$(wpctl status | grep -o "[0-9]*. $RECORDER_SINK" | grep -o "[0-9]*\. " | tr -d ".")
+                if [ -z "$sinkid" ]; then
+                        notify-send -u "critical" "Desired recorder device is not connected!" "Make sure it is turned on and plugged correctly"
+                else
+                        wpctl set-default "$sinkid"
+                        wpctl status | grep -q "*.*$RECORDER_SINK" && notify-send "Desired recorder device set!" "All good"
+                fi
+                
+        fi
+fi
+
+lf -command "source $lfbasedir/pseudoapps/lfrecorder"
