@@ -7,6 +7,7 @@ return {
 	-- 	}
 	-- },
 	opts = {
+		highlight = { enable = true },
 		indent = { enable = false },
 		context_commentstring = { enable = true, enable_autocmd = false },
 		ensure_installed = {
@@ -19,7 +20,6 @@ return {
 			"java",
 			"lua",
 			"luap",
-			"markdown",
 			"markdown_inline",
 			"python",
 			"go",
