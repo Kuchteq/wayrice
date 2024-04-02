@@ -110,12 +110,7 @@ xkb_symbols "basic" {
     key <SPCE>	{ [     space,      space, nobreakspace, nobreakspace ]	};
     key <BKSL>	{ [     backslash,      bar, Greek_rho, nobreakspace ]	};
     key <AB10>	{ [     slash,      question, bar, Greek_rho ]	};
-    key <PRSC> {key.type[Group1]="FOUR_LEVEL",  key.symbols[Group1]=[Print, Print, XF86_Launch4, XF86_Launch4 ]  };
 
-
-//      key <FK12> {[  F12,  XF86_LAUNCH4, XF86Switch_VT_12], key.type[Group1]="THREE_LEVEL_CTRL" };
-// key <FK12> {[  F12,  a], key.type[Group1]="PC_CONTROL_LEVEL2" };
-//    key <PRSC> {[  Print,  a  ], key.type[Group1]="PC_CONTROL_LEVEL2" };
     include "kpdl(comma)"
 
     include "level3(ralt_switch)"
