@@ -1,0 +1,15 @@
+#!/bin/sh 
+
+INFO_PATH="$XDG_RUNTIME_DIR/sb-notifier-stack"
+if [ "$1" = "-m" ] && [ -n "$2" ]; then
+	echo "$2" > "$INFO_PATH"
+	pkill -47 someblocks #refresh someblocks block
+fi
+
+# d as in display
+if [ "$1" = "-d" ] && [ -s $INFO_PATH ]; then
+	cat "$INFO_PATH"
+	# ensure the previous status won't prematurely dismiss the new one
+	pkill -f "sleep 4.666" > /dev/null 2>&1
+ 	(sleep 4.666 && true > $INFO_PATH && pkill -47 someblocks) &
+fi

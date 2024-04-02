@@ -7,13 +7,13 @@ shotspath="$HOME/Pictures/Screenshots"
 
 if [ -n $WAYLAND_DISPLAY ]; then 
     #output just the path if you want it to be returned
-    if [[ "$1" == "-s" ]]; then
+    if [ "$1" = "-s" ]; then
 	pictpath="$shotspath/.Sent/screenshot_$date.png"
 	wl-paste > "$pictpath"
 	echo "$pictpath"
     else
 	wl-paste > $shotspath"/screenshot_$date.png"
-	sb-screenshot -s
+	sb-notifier -m " > saved at $(date +%d-%m\ %H:%M:%S)" 
     fi	
 fi
 

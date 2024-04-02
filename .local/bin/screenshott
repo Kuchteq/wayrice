@@ -3,4 +3,4 @@
 selection=$(slurp -d)
 echo "$selection" > $XDG_RUNTIME_DIR/last_screenshot_size
 grim -g "$selection" - | wl-copy
-sb-screenshot -m
+sb-notifier -m "  > clipboard" 
