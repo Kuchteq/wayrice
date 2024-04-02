@@ -29,7 +29,7 @@ cmd open ${{
         text/*|application/json|application/javascript|inode/x-empty) $EDITOR $fx;;
 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
 	image/svg+xml) imv $f ;;
-	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|avif\|webp\|tif\|ppm\|ico\)\(_large\)*$" |
+	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|avif\|webp\|heic\|heif\|tif\|ppm\|ico\)\(_large\)*$" |
 		setsid -f imv 2>/dev/null | while read -r file; do
 			[ -z "$file" ] && continue
 			lf -remote "send select \"$file\""

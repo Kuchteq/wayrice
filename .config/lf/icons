@@ -19,6 +19,7 @@ fi             # FILE
 *.scss          
 *.htm           
 *.html          
+*.svelte        
 *.slim          
 *.haml          
 *.ejs           
