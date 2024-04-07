@@ -1,16 +1,11 @@
 local chosenLang = "en-US"
 
 local startLtex = function()
-    -- if #vim.lsp.get_clients() > 0 then
-    --     vim.ui.input({ prompt = 'Change to some other languages todo' }, function(input)
-    --         if input == '' then
-    --             chosenLang = "de-DE"
-    --         end
-    --     end)
-    -- end
-    vim.ui.input({ prompt = '<enter> for German, e for English: ' }, function(input)
+    vim.ui.input({ prompt = '<enter> for German, e for English, p for Polish: ' }, function(input)
         if input == '' then
             chosenLang = "de-DE"
+        elseif input == "p" then
+            chosenLang = "pl-PL"
         end
     end)
 
@@ -34,16 +29,28 @@ end
 
 -- e as in error
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
-vim.keymap.set('n', ']e', vim.diagnostic.goto_next, { remap = true })
-vim.keymap.set('n', '[e', vim.diagnostic.goto_prev)
+
 vim.keymap.set('n', '<leader>d', function() if vim.diagnostic.is_disabled() then vim.diagnostic.enable() else vim.diagnostic.disable() end end)
 vim.keymap.set('n', '<leader>l', startLtex)
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
     callback = function(ev)
+
+        local ts_repeat_move = require( "nvim-treesitter.textobjects.repeatable_move" )
+        local next_diagnostic, prev_diagnostic = ts_repeat_move.make_repeatable_move_pair(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
+        vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
+        vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+        vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f)
+        vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F)
+        vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t)
+        vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T)
+
+        vim.keymap.set('n', ']e', next_diagnostic, { remap = true })
+        vim.keymap.set('n', '[e', prev_diagnostic)
+
         -- Enable completion triggered by <c-x><c-o>
-        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+        -- vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
         -- Buffer local mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -130,6 +137,7 @@ local function setUpLsp()
     require("lspconfig").bashls.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
     require("lspconfig").html.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
     require("lspconfig").tsserver.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
+    require("lspconfig").svelte.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
 end
 
 return {

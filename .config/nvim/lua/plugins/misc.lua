@@ -41,17 +41,21 @@ return {
                 dependencies = {
                         'nvim-lua/plenary.nvim',
                 },
+                branch = "harpoon2",
                 keys = {
                         { " ", function()
-                                require("harpoon.ui").toggle_quick_menu()
+                                require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
                         end },
                         { "µ", function()
-                                require("harpoon.mark").add_file()
+                                require("harpoon"):list():add()
                         end },
                 },
                 event = "VeryLazy",
                 config = function()
-                end
+                        local harpoon = require("harpoon")
+                        harpoon:setup()
+                end,
+                lazy = false
         },
         {
                 "nvim-lualine/lualine.nvim",
@@ -120,24 +124,43 @@ return {
         {
                 'stevearc/aerial.nvim',
                 opts = { nerd_font = true },
-                keys = { { "π", function ()
+                keys = { { "π", function()
                         require("aerial").toggle();
-                end }},
-                -- Optional dependencies
-                dependencies = {
-                        "nvim-treesitter/nvim-treesitter",
-                },
+                end } },
         },
         {
-                'Kuchteq/build.nvim',
-                keys = { {"<leader>m", function ()
-                        require('build').run_make()
-                end }},
+                'windwp/nvim-autopairs',
+                event = "InsertEnter",
+                opts = {}
+        },
+        {
+                "Kuchteq/build.nvim",
+                keys = { {
+                        "<F2>",
+                        mode = { "n", "i" },
+                        function()
+                                require('build').run_make()
+                        end
+                } },
                 dependencies = {
                         'm00qek/baleia.nvim',
                 },
-                config = function ()
+                config = function()
                         require("build").setup();
+                end
+        },
+        {
+                "boltlessengineer/smart-tab.nvim",
+                config = function()
+                        require('smart-tab').setup({
+                                -- default options:
+                                -- list of tree-sitter node types to filter
+                                skips = { "string_content" },
+                                -- default mapping, set `false` if you don't want automatic mapping
+                                mapping = "<tab>",
+                                -- filetypes to exclude
+                                exclude_filetypes = {}
+                        })
                 end
         }
 

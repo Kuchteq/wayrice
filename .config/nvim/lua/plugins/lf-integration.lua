@@ -50,7 +50,7 @@ return {
 
                 vim.api.nvim_create_autocmd({ "BufLeave" }, {
                     callback = function()
-                        vim.o.titlestring = nil
+                        vim.o.titlestring = ""
                     end,
                     buffer = t.bufnr
                 })

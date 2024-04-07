@@ -11,6 +11,7 @@ return {
                         }
                 },
                 'saadparwaiz1/cmp_luasnip',
+                'hrsh7th/cmp-nvim-lsp-signature-help',
                 {
                         'L3MON4D3/LuaSnip',
                         config = function()
@@ -37,8 +38,8 @@ return {
                                         require('luasnip').lsp_expand(args.body)
                                 end,
                         },
-                        sources = cmp.config.sources({ { name = 'nvim_lsp' }, { name = 'luasnip' } },
-                                { { name = 'buffer' }, }),
+                        sources = cmp.config.sources({ { name = 'nvim_lsp' }, { name = 'luasnip' }, { name = "nvim_lsp_signature_help" }, },
+                                { { name = 'buffer' },    }),
                         window = {
                                 completion = cmp.config.window.bordered(),
                                 documentation = cmp.config.window.bordered(),

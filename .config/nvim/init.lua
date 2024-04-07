@@ -1,3 +1,4 @@
+-- make api as global for convenience
 api = vim.api
 -- general settings
 vim.o.title = true
@@ -20,36 +21,46 @@ vim.opt.smartindent = true
 vim.opt.expandtab = true
 vim.opt.tabstop = 8
 vim.opt.shiftwidth = 8
+vim.opt.breakindent = true
 -- NOTE TO FUTURE SELF, some asshole might set .editorconfig file which overwrites these settings, bear this in mind!
 -- Modify the indentation levels there if they are overwrittien.
+vim.opt.inccommand = 'split'
 
+-- AUTOCMDS
 local sync_dir_with_shell = function()
-    vim.api.nvim_chan_send(2, '\x1b]7;file://' .. vim.fn.hostname() .. vim.fn.getcwd())
+        vim.api.nvim_chan_send(2, '\x1b]7;file://' .. vim.fn.hostname() .. vim.fn.getcwd())
 end
 
 vim.api.nvim_create_autocmd({ "DirChanged" }, {
-    callback = sync_dir_with_shell
+        callback = sync_dir_with_shell
 })
 
 vim.api.nvim_create_autocmd({ "VimEnter" }, {
-    callback = function()
-        -- if we are editing a shell file we don't want to sync directory with /tmp shell
-        if vim.fn.expand("%:p:h") == "/tmp" and vim.bo.filetype == "zsh" then
-            vim.keymap.set("n", "<enter>", ":wq<CR>", { buffer = true })
-            vim.o.titlestring = "Shell at: " .. vim.fn.getcwd();
-            vim.bo.filetype = "bash"
-        else
-            vim.api.nvim_command("cd %:p:h")
-            sync_dir_with_shell()
+        callback = function()
+                -- if we are editing a shell command using c-e we don't want to sync directory with /tmp shell
+                if vim.fn.expand("%:p:h") == "/tmp" and vim.bo.filetype == "zsh" then
+                        vim.keymap.set("n", "<enter>", ":wq<CR>", { buffer = true })
+                        vim.o.titlestring = "Shell at: " .. vim.fn.getcwd();
+                        vim.bo.filetype = "bash"
+                else
+                        vim.api.nvim_command("cd %:p:h")
+                        sync_dir_with_shell()
+                end
         end
-    end
 })
 
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = "/tmp/calcurse*,~/.calcurse/notes/*",
-    callback = function()
-        vim.bo.filetype = "markdown"
-    end
+        pattern = "/tmp/calcurse*,~/.calcurse/notes/*",
+        callback = function()
+                vim.bo.filetype = "markdown"
+        end
+})
+vim.api.nvim_create_autocmd('TextYankPost', {
+        desc = 'Highlight when yanking (copying) text',
+        group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+        callback = function()
+                vim.highlight.on_yank()
+        end,
 })
 
 -- disable greeting screen
@@ -73,7 +84,7 @@ vim.keymap.set("n", "–", ":split<CR>")
 vim.keymap.set("n", "©", ":%s//g<Left><Left>")
 vim.keymap.set("n", "<C-s>", ":silent update<CR>", { silent = true })
 vim.keymap.set("n", "<leader>fd", ":filetype detect<CR>")
-vim.keymap.set("i", "<C-k>", "<esc>ldei")
+-- vim.keymap.set("i", "<C-k>", "<esc>ldei")
 -- custom replace functions for visual mode
 vim.keymap.set('v', '©', '"hy:%s/<C-r>h//gc<left><left><left>', { noremap = true })
 
@@ -83,21 +94,18 @@ vim.keymap.set("n", "ä", "<C-w>h")
 vim.keymap.set("n", "ß", "<C-w>j")
 vim.keymap.set("n", "œ", "<C-w>k")
 vim.keymap.set("n", "ś", "<C-w>l")
-vim.keymap.set("n", "Ś", ":vertical resize +5<CR>", {silent=true})
-vim.keymap.set("n", "Ä", ":vertical resize -5<CR>", {silent=true})
+vim.keymap.set("n", "Ś", ":vertical resize +5<CR>", { silent = true })
+vim.keymap.set("n", "Ä", ":vertical resize -5<CR>", { silent = true })
 -- Document related mappings
 -- Compile the files for fast preview, in groff's case, they won't have images tho
 vim.keymap.set("n", "<leader>c", ":w<CR>:!compiler '%:p'<CR><CR>")
 -- Compile the files for final, for groff there will be images and smaller size
 vim.keymap.set("n", "<leader>C", ":!compiler '%:p' -F<CR>")
 vim.keymap.set("n", "<leader>p", ":!opout '%:p'<CR>")
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Save file as sudo on files that require root permission with the command w!!
 vim.cmd("cabbrev w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!")
--- Plain run and output the result
-vim.keymap.set("n", "<F2>", function()
-    require("dap").continue();
-end)
 
 -- set up undodir
 local cachePrefix = vim.env.XDG_CACHE_HOME
