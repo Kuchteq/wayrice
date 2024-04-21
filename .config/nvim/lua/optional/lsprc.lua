@@ -39,8 +39,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         local ts_repeat_move = require( "nvim-treesitter.textobjects.repeatable_move" )
         local next_diagnostic, prev_diagnostic = ts_repeat_move.make_repeatable_move_pair(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
-        vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-        vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+        vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
+        vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
         vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f)
         vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F)
         vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t)
@@ -131,7 +131,7 @@ local function setUpLsp()
         }
     })
 
-    -- require("lspconfig").pyright.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
+    require("lspconfig").pyright.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
     require("lspconfig").clangd.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
     require("lspconfig").gopls.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }
     require("lspconfig").bashls.setup { on_attach = disable_lsp_highlighting, capabilities = capabilities }

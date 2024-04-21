@@ -4,6 +4,7 @@ return {
         dependencies = {
                 {
                         "nvim-treesitter/nvim-treesitter-textobjects",
+                        "windwp/nvim-ts-autotag"
                 }
         },
         opts = {
@@ -50,6 +51,7 @@ return {
                                         ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
                                         -- You can also use captures from other query groups like `locals.scm`
                                         ['il'] = "@parameter.inner",
+                                        ['al'] = "@parameter.outer",
                                         ['ib'] = "@block.inner",
                                         ['ab'] = "@block.outer"
                                 },
@@ -72,8 +74,11 @@ return {
                                 goto_previous_start = {
                                         ['<c-h>'] = "@parameter.inner"
                                 }
-                        }
+                        },
                 },
+                autotag = {
+                        enable = true,
+                }
         },
         config = function(_, opts)
                 require("nvim-treesitter.configs").setup(opts)
