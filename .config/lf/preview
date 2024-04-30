@@ -78,7 +78,7 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
 	application/*torrent) transmission-show "$1" ;;
 	*opendocument*) odt2txt "$1" ;;
 	application/pgp-encrypted) gpg -d -- "$1" ;;
-	inode/directory) tree -C --filelimit=9 $1;;# && lf -remote "send $id reload";;
+	inode/directory) tree -C --filelimit=9 "$1";;# && lf -remote "send $id reload";;
 	*)
 
 		batorcat "$1" "$2" "$3"

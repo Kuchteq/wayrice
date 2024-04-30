@@ -7,7 +7,7 @@ if pidof -q wf-recorder; then
 else
 	date=$(date +%d-%m-%YT%H:%M:%S)
 	path=$HOME/Videos/Screenrecordings/recording_$date.mp4
-	dimensions=$(slurp -d) || exit 1
+	dimensions=$(slurp -d -b "B400B42c") || exit 1
 	wf-recorder -g "$dimensions" -f $path >/dev/null 2>&1 &
 fi
 kill -46 $(pidof someblocks)

@@ -41,6 +41,7 @@ return {
                 dependencies = {
                         'nvim-lua/plenary.nvim',
                 },
+                commit = 'e76cb03',
                 branch = "harpoon2",
                 keys = {
                         { " ", function()
@@ -53,7 +54,15 @@ return {
                 event = "VeryLazy",
                 config = function()
                         local harpoon = require("harpoon")
-                        harpoon:setup()
+                        harpoon:setup({
+                                settings = {
+                                        save_on_toggle = true,
+                                        sync_on_ui_close = true,
+                                        key = function()
+                                                return vim.loop.cwd()
+                                        end,
+                                },
+                        })
                 end,
                 lazy = false
         },
