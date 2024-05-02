@@ -4,7 +4,6 @@ width = 0
 height = 26
 horizontal = true
 font-size = 16
-prompt-text = " "
 exclusive-zone = 0
 font = "/usr/share/fonts/TTF/HackNerdFont-Regular.ttf" 
 outline-width = 0

@@ -43,7 +43,7 @@ unopenedluks="$(for drive in $allluks; do
 done | filter)"
 
 # Get all normal, non-encrypted or decrypted partitions that are not mounted.
-normalparts="$(echo "$lsblkoutput"| grep -v 'crypto_LUKS\|LVM2_member'  | grep 'part\|rom\|crypt' | sed "s/^/󰉉 /" | filter )"
+normalparts="$(echo "$lsblkoutput"| grep -v 'crypto_LUKS\|LVM2_member'  | grep 'part\|rom\|crypt\|disk' | sed "s/^/󰉉 /" | filter )"
 
 # Add all to one variable. If no mountable drives found, exit.
 alldrives="$(echo "$phones
@@ -85,7 +85,7 @@ case "$chosen" in
 		chosen="${chosen:2}"	# This is a bashism.
 		chosen="${chosen%% *}"
 		attemptmount || getmount
-		sudo -A mount "$chosen" "$mp" -o uid="$(id -u)",gid="$(id -g)"
+		sudo -A mount "$chosen" "$mp"
 		notify-send "󰉉 Drive Mounted." "$chosen mounted to $mp."
                 $TERMINAL lf --command on-quit-prepare "$mp"
 		;;
