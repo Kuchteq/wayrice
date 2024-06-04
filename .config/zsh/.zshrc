@@ -1,6 +1,5 @@
 # Luke's config for the Zoomer Shell
 # Enable colors and change prompt:
-
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 setopt autocd		# Automatically cd into typed directory.
@@ -166,4 +165,5 @@ else
 fi
 
 # Load syntax highlighting; should be last.
+[ -f ~/.config/zsh/plugins/vi-motions/motions.zsh ] && source ~/.config/zsh/plugins/vi-motions/motions.zsh
 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null

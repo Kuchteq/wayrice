@@ -1,0 +1,6 @@
+[submodule ".config/mpv/scripts/mpv-cut"]
+	path = .config/mpv/scripts/mpv-cut
+	url = https://github.com/familyfriendlymikey/mpv-cut.git
+[submodule ".config/zsh/plugins/vi-motions"]
+	path = .config/zsh/plugins/vi-motions
+	url = https://github.com/zsh-vi-more/vi-motions.git
