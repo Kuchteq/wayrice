@@ -79,13 +79,12 @@ return {
                 end
         },
         {
-                "phaazon/hop.nvim",
-                branch = 'v2',
+                "smoka7/hop.nvim",
                 config = function()
                         require("hop").setup()
                         vim.keymap.set({ 'o', 'n' }, '<c-w>', function()
                                 require("hop").hint_words({ current_line_only = true })
-                        end, { remap = true })
+                        end, { remap = true, nowait = true })
 
                         vim.keymap.set({ 'o', 'n' }, '<c-a>', function()
                                 require("hop").hint_words({ current_line_only = true, hint_position = require 'hop.hint'.HintPosition.END })

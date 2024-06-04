@@ -2,15 +2,13 @@
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+
+# Before a heavy script, just put zsh-defer before to not drag down the initial prompt
+source ~/.config/zsh/plugins/zsh-defer/zsh-defer.plugin.zsh
+
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 setopt interactive_comments
-
-# History in cache directory:
-set history-preserve-point on
-HISTSIZE=10000000
-SAVEHIST=10000000
-HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"
@@ -20,21 +18,6 @@ HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 # vi mode
 bindkey -v
 export KEYTIMEOUT=1
-
-# Basic auto/tab complete:
-export FPATH="$FPATH:${HOME}/.local/bin/completions"
-autoload -U compinit
-zstyle ':completion:*' menu select
-zmodload zsh/complist
-compinit
-_comp_options+=(globdots)		# Include hidden files.
-
-
-# Use vim keys in tab complete menu:
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
 
 # Change cursor shape for different vi modes.
 function zle-keymap-select () {
@@ -126,6 +109,7 @@ function persistent-normal-edit {
 	zle accept-and-hold 
 	export ENTERVIAFTER=1
 }
+
 zle -N persistent-normal-edit
 bindkey '^[[27;5;13~' accept-and-hold
 bindkey -M vicmd '^[[27;5;13~' persistent-normal-edit
@@ -158,12 +142,29 @@ zstyle ':completion:*:default' list-colors "${(s.:.)_ls_colors}"
 LS_COLORS+=$_ls_colors
 
 if command -v atuin &>/dev/null; then
-    eval "$(atuin init zsh)"    
+    zsh-defer eval "$(atuin init zsh)"    
 else
     bindkey '^r' history-incremental-search-backward
     bindkey '^a' history-incremental-search-forward
 fi
 
-# Load syntax highlighting; should be last.
-[ -f ~/.config/zsh/plugins/vi-motions/motions.zsh ] && source ~/.config/zsh/plugins/vi-motions/motions.zsh
-source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
+function prepare-autocompletion {
+        # Basic auto/tab complete:
+        export FPATH="$FPATH:${HOME}/.local/bin/completions"
+        autoload -Uz compinit && compinit
+        zstyle ':completion:*' menu select
+        zmodload zsh/complist
+        _comp_options+=(globdots)		# Include hidden files.
+
+        # Use vim keys in tab complete menu:
+        bindkey -M menuselect 'h' vi-backward-char
+        bindkey -M menuselect 'k' vi-up-line-or-history
+        bindkey -M menuselect 'l' vi-forward-char
+        bindkey -M menuselect 'j' vi-down-line-or-history
+}
+
+zsh-defer prepare-autocompletion
+
+# Load syntax highlighting; should be last. +12 tell us to ignore standard output and error output
+zsh-defer +12 source ~/.config/zsh/plugins/vi-motions/motions.zsh
+zsh-defer +12 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh

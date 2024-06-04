@@ -4,3 +4,6 @@
 [submodule ".config/zsh/plugins/vi-motions"]
 	path = .config/zsh/plugins/vi-motions
 	url = https://github.com/zsh-vi-more/vi-motions.git
+[submodule ".config/zsh/plugins/zsh-defer"]
+	path = .config/zsh/plugins/zsh-defer
+	url = https://github.com/romkatv/zsh-defer
