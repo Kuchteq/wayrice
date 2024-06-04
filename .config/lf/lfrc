@@ -29,7 +29,7 @@ cmd open ${{
         text/*|application/json|application/javascript|inode/x-empty) $EDITOR $fx;;
 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
 	image/svg+xml) imv $f ;;
-	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|avif\|webp\|heic\|heif\|tif\|ppm\|ico\)\(_large\)*$" |
+	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|avif\|webp\|heic\|heif\|tif\|pbm\|ppm\|ico\)\(_large\)*$" |
 		setsid -f imv 2>/dev/null | while read -r file; do
 			[ -z "$file" ] && continue
 			lf -remote "send select \"$file\""
@@ -47,6 +47,7 @@ cmd open ${{
 	application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template) setsid -f lodraw $fx >/dev/null 2>&1 ;;
 	application/vnd.oasis.opendocument.formula) setsid -f lomath $fx >/dev/null 2>&1 ;;
 	application/vnd.oasis.opendocument.database) setsid -f lobase $fx >/dev/null 2>&1 ;;
+        application/zip|application/x-xz) echo "File $fx is an archive. Would you like to unarchive it?"; read ans; [ "$ans" = "y" ] && lf -remote "send $id unarchive \"$f\"";;
         *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
     esac
 }}
@@ -175,23 +176,40 @@ cmd bulkrename ${{
 }}
 
 cmd convertToFormat %{{
+    case $(file --mime-type "$(readlink -f $f)" -b) in
+	image/*) 
+                extensions="jpg\npng\ngif\navif\nwebp\nheic\nppm\nico\n"
+                function convertcmd {
+                        convert "$1" "$2"
+                } ;;
+        audio/*)
+                extensions="aac\nau\nflac\nm4a\nmid\nmidi\nmp3\nmpc\nogg\nra\nwav\noga\nopus\nspx\nxspf\n"
+                function convertcmd {
+                        ffmpeg -i "$1" "$2"
+                } ;;
+        video/*)
+                extensions="mov\nmpg\nmpeg\nm2v\nmkv\nwebm\nogm\nmp4\nm4v\nmp4v\n"
+                function convertcmd {
+                        ffmpeg -i "$1" "$2"
+                } ;;
+        *) 
+                notify-send "No conversion possibility detected"
+                exit 1;;
+    esac
+    ext="${f##*.}"
+    base="${f%.*}"
+    extensions=$(sed "s/$ext\\\n//" <<< "$extensions")
+    if [ -z "${WAYLAND_DISPLAY+x}" ]; then
+          echo -e "Convert to: $(sed 's/\\n/ /g'  <<< $extensions): "
+          read ans
+    else 
+          ans=$(printf "$extensions" | tofi -p "Convert to: " 2>/dev/null)
+    fi
+    out="$base.$ans"
+    convertcmd "$f" "$out"
 
-extensions="jpg\npng\ngif\navif\nwebp\nheic\nppm\nico\n"
-ext="${f##*.}"
-base="${f%.*}"
-extensions=$(sed "s/$ext\\\n//" <<< "$extensions")
-if [ -z "${WAYLAND_DISPLAY+x}" ]; then
-      echo -e "Convert to: $(sed 's/\\n/ /g'  <<< $extensions): "
-      read ans
-  else 
-      ans=$(printf "$extensions" | tofi -p "Convert to: " 2>/dev/null)
-  fi
-  out="$base.$ans"
-  convert "$f" "$out"
-
-  notify-send "$out"
-  lf -remote "send $id select \"$out\""
-
+    notify-send "$out"
+    lf -remote "send $id select \"$out\""
 }}
 
 cmd tag-clear :tag; tag-toggle
@@ -206,6 +224,7 @@ map Mf mkfile
 map Me &chmod u+x $f && lf -remote "send :reload" # make executable
 map Mo makeowner 
 map Mw makeworkspace 
+map Mh $hui -c ":lua set_new_workspace('$(basename $PWD)','$PWD/.hurl')"
 map au unarchive
 map DD trash
 map Dr $trash-restore
