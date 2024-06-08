@@ -1,0 +1,63 @@
+diff --git Src/init.c Src/init.c
+index ec21521b1..65ae8edac 100644
+--- Src/init.c
++++ Src/init.c
+@@ -701,6 +701,8 @@ init_io(char *cmd)
+      */
+     mypid = (zlong)getpid();
+     if (opts[MONITOR]) {
++	opts[NOJOBPRINT] = 0;
++	opts[NOPWDPRINT] = 0;
+ 	if (SHTTY == -1)
+ 	    opts[MONITOR] = 0;
+ 	else if (!origpgrp) {
+diff --git Src/jobs.c Src/jobs.c
+index 07facc60b..542514ef2 100644
+--- Src/jobs.c
++++ Src/jobs.c
+@@ -1114,6 +1114,10 @@ printjob(Job jn, int lng, int synch)
+     int doneprint = 0, skip_print = 0;
+     FILE *fout = (synch == 2 || !shout) ? stdout : shout;
+ 
++    if(isset(NOJOBPRINT)) {
++	skip_print = 1;
++    }
++
+     if (synch > 1 && oldjobtab != NULL)
+ 	job = jn - oldjobtab;
+     else
+@@ -2587,7 +2591,7 @@ bin_fg(char *name, char **argv, Options ops, int func)
+ 		/* for bg and fg -- show the job we are operating on */
+ 		printjob(jobtab + job, (stopped) ? -1 : lng, 3);
+ 	    if (func != BIN_BG) {		/* fg or wait */
+-		if (jobtab[job].pwd && strcmp(jobtab[job].pwd, pwd)) {
++		if (!isset(NOPWDPRINT) && jobtab[job].pwd && strcmp(jobtab[job].pwd, pwd)) {
+ 		    FILE *fout = (func == BIN_JOBS || !shout) ? stdout : shout;
+ 		    fprintf(fout, "(pwd : ");
+ 		    fprintdir(jobtab[job].pwd, fout);
+diff --git Src/options.c Src/options.c
+index a0e1aa024..2ff5c9de3 100644
+--- Src/options.c
++++ Src/options.c
+@@ -207,6 +207,8 @@ static struct optname optns[] = {
+ {{NULL, "multifuncdef",	      OPT_EMULATE|OPT_ZSH},	 MULTIFUNCDEF},
+ {{NULL, "multios",	      OPT_EMULATE|OPT_ZSH},	 MULTIOS},
+ {{NULL, "nomatch",	      OPT_EMULATE|OPT_NONBOURNE},NOMATCH},
++{{NULL, "nojobprint",	      OPT_ZSH},                  NOJOBPRINT},
++{{NULL, "nopwdprint",	      OPT_ZSH},                  NOPWDPRINT},
+ {{NULL, "notify",	      OPT_ZSH},			 NOTIFY},
+ {{NULL, "nullglob",	      OPT_EMULATE},		 NULLGLOB},
+ {{NULL, "numericglobsort",    OPT_EMULATE},		 NUMERICGLOBSORT},
+diff --git Src/zsh.h Src/zsh.h
+index 090abf8f5..95071301c 100644
+--- Src/zsh.h
++++ Src/zsh.h
+@@ -2484,6 +2484,8 @@ enum {
+     MULTIFUNCDEF,
+     MULTIOS,
+     NOMATCH,
++    NOJOBPRINT,
++    NOPWDPRINT,
+     NOTIFY,
+     NULLGLOB,
+     NUMERICGLOBSORT,

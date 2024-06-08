@@ -3,7 +3,8 @@
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
-# Before a heavy script, just put zsh-defer before to not drag down the initial prompt
+# Before a heavy script, just put zsh-defer before to not drag down the initial prompt process
+# Better yet, put it in the lazy-load function as calling zsh-defer multiple times also impacts performance
 source ~/.config/zsh/plugins/zsh-defer/zsh-defer.plugin.zsh
 
 setopt autocd		# Automatically cd into typed directory.
@@ -39,15 +40,34 @@ bindkey -M vicmd 'y' vi-yank-wl
 
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
-    echo -e '\e[2F'
-    tmp="$(mktemp -uq)"
-    trap 'rm -f $tmp >/dev/null 2>&1 && trap - HUP INT QUIT TERM PWR EXIT' HUP INT QUIT TERM PWR EXIT
-    lf -last-dir-path="$tmp" "$@"
-    if [ -f "$tmp" ]; then
-        dir="$(cat "$tmp")"
-        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+    echo -e '\e[2A'
+    setopt nojobprint nopwdprint >/dev/null 2>&1
+    if jobs lfcd >/dev/null 2>&1; then
+            setsid -f lf -remote "send $LF_INSTANCE_ID cd \"$PWD\"" 
+            fg lf
+    else 
+            tmp="$(mktemp -uq)"
+            trap 'rm -f $tmp >/dev/null 2>&1 && trap - HUP INT QUIT TERM PWR EXIT' HUP INT QUIT TERM PWR EXIT
+            export LAST_DIR_PATH="$tmp"
+            tmp="$(mktemp -uq)"
+            export LF_PID="$tmp"
+            export SHELL_PID="$$"
+            export LF_SPAWNED=true
+            lf --command on-quit-freeze -last-dir-path="$tmp" "$@"
+            if [ -f "$tmp" ]; then
+                dir="$(cat "$tmp")"
+                [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+            fi
     fi
+    unsetopt nojobprint nopwdprint >/dev/null 2>&1
 }
+TRAPUSR2() {
+        # echo -en "\033[6A"
+        export LF_INSTANCE_ID="$(cut -d' ' -f1 $LAST_DIR_PATH)"
+        dir="$(cut -d' ' -f2- $LAST_DIR_PATH)"
+        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir" 
+        unsetopt nojobprint nopwdprint >/dev/null 2>&1
+} 
 
 bindkey -s '^o' '^ulfcd\n' # ctrl+o to open lf and move easily
 bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n' # use fzf and move there
@@ -141,14 +161,8 @@ _ls_colors="di=1;34:ln=1;36:so=35:pi=33:ex=1;32:bd=33:cd=33:su=30;41:sg=30;46:tw
 zstyle ':completion:*:default' list-colors "${(s.:.)_ls_colors}"
 LS_COLORS+=$_ls_colors
 
-if command -v atuin &>/dev/null; then
-    zsh-defer eval "$(atuin init zsh)"    
-else
-    bindkey '^r' history-incremental-search-backward
-    bindkey '^a' history-incremental-search-forward
-fi
 
-function prepare-autocompletion {
+function lazy-load {
         # Basic auto/tab complete:
         export FPATH="$FPATH:${HOME}/.local/bin/completions"
         autoload -Uz compinit && compinit
@@ -161,10 +175,20 @@ function prepare-autocompletion {
         bindkey -M menuselect 'k' vi-up-line-or-history
         bindkey -M menuselect 'l' vi-forward-char
         bindkey -M menuselect 'j' vi-down-line-or-history
+
+        if command -v atuin &>/dev/null; then
+            eval "$(atuin init zsh)"    
+        else
+            bindkey '^r' history-incremental-search-backward
+            bindkey '^a' history-incremental-search-forward
+        fi
+
+        # Load syntax highlighting; should be last.
+        source ~/.config/zsh/plugins/vi-motions/motions.zsh
+        source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 }
 
-zsh-defer prepare-autocompletion
+if ! [ $ZSH_NO_LAZY_LOAD ]; then
+        zsh-defer lazy-load
+fi
 
-# Load syntax highlighting; should be last. +12 tell us to ignore standard output and error output
-zsh-defer +12 source ~/.config/zsh/plugins/vi-motions/motions.zsh
-zsh-defer +12 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh

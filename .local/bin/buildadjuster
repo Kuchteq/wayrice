@@ -1,0 +1,6 @@
+#!/bin/sh
+
+case "$PKGBASE" in
+    "zathura-git") patch < ~/.local/src/patches/zathura_pkgbuild.patch ;;
+    "zsh-git") patch < ~/.local/src/patches/zsh_pkgbuild.patch ;;
+esac

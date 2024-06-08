@@ -1,0 +1,12 @@
+--- config.c	2023-12-10 19:53:13.670562909 +0100
++++ config_mine.c	2023-12-10 19:52:57.975127984 +0100
+@@ -490,7 +490,8 @@
+                          NULL);                                                                                        \
+   girara_mouse_event_add(gsession, GDK_BUTTON2_MASK, GIRARA_MOUSE_BUTTON2, sc_mouse_scroll, (mode),                    \
+                          GIRARA_EVENT_BUTTON_RELEASE, 0, NULL);                                                        \
+-  girara_mouse_event_add(gsession, GDK_BUTTON2_MASK, 0, sc_mouse_scroll, (mode), GIRARA_EVENT_MOTION_NOTIFY, 0, NULL);
++  girara_mouse_event_add(gsession, GDK_BUTTON2_MASK, 0, sc_mouse_scroll, (mode), GIRARA_EVENT_MOTION_NOTIFY, 0, NULL); \
++  girara_mouse_event_add(gsession, 0, GIRARA_MOUSE_BUTTON3, sc_exec, (mode),             GIRARA_EVENT_BUTTON_PRESS, 0,    "cliptrans"); \
+ 
+   /* Define mode-less shortcuts
+    * girara adds them only for normal mode, so passing 0 as mode is currently

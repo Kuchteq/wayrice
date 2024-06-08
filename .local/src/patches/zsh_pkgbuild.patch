@@ -1,0 +1,12 @@
+diff --git PKGBUILD PKGBUILD
+index 6e963b9..7aefbfe 100644
+--- PKGBUILD
++++ PKGBUILD
+@@ -22,6 +22,7 @@ pkgver() {
+ prepare() {
+   cd zsh
+ 
++  patch -p0 < ~/.local/src/patches/zsh.patch # apply silent jobs patch
+   # Set correct keymap path
+   sed -i 's#/usr/share/keymaps#/usr/share/kbd/keymaps#g' Completion/Unix/Command/_loadkeys
+ 

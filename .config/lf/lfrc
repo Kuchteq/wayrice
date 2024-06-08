@@ -212,6 +212,13 @@ cmd convertToFormat %{{
     lf -remote "send $id select \"$out\""
 }}
 
+cmd quitfreeze ${{
+     echo -n "$id" > "$LAST_DIR_PATH"   
+     echo -n " $PWD" >> "$LAST_DIR_PATH"   
+     setsid -f kill -USR2 $SHELL_PID
+     kill -TSTP $PPID
+}}
+
 cmd tag-clear :tag; tag-toggle
 
 # two command which get called externally
@@ -276,13 +283,13 @@ map Tv $vtracer --input $f --output "${f%.*}.svg"
 
 
 map C $git diff $f
-
 map e
 map ee $nvim -c ":lua startInDebug()"
 map ei $nvim $f
 # Other tips
 # Remember ' is a special mark which saves the previous path , so by pressing double '' you get back to the previous folder, i.e. using mark-load
 cmd on-quit-prepare cmd on-quit ${{exec zsh}}
+cmd on-quit-freeze map q quitfreeze
 map <c-w> %rmapi put $f && echo "$f received!"
 map _ &dragon-drop -x "$f"
 source "~/.config/lf/shortcutrc"

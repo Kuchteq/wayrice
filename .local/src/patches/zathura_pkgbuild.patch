@@ -1,0 +1,12 @@
+*** PKGBUILD_mine	2023-11-07 01:57:14.494113942 +0100
+--- PKGBUILD	2023-11-07 01:55:47.952465484 +0100
+*************** pkgver() {
+*** 31,36 ****
+--- 31,37 ----
+  build() {
+    cd "$pkgname"
+    arch-meson build -Dtests=disabled
++   patch -d zathura < ~/.local/src/patches/zathura.patch
+    ninja -C build
+  }
+  
