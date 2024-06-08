@@ -75,6 +75,7 @@ vim.keymap.set("n", "<C-q>", ":bd<CR>", { silent = true })
 vim.keymap.set("n", "ə", ":bn<CR>", { silent = true })
 vim.keymap.set("n", "…", ":bp<CR>", { silent = true })
 vim.keymap.set("n", "ć", ":only<CR>", { silent = true })
+vim.keymap.set("n", "•", "<c-6>", { silent = true }) -- middle of the keyboard with shift is akward to press
 vim.keymap.set("n", "≠", function() require("harpoon.ui").nav_file(1) end, { silent = true })
 vim.keymap.set("n", "²", function() require("harpoon.ui").nav_file(2) end, { silent = true })
 vim.keymap.set("n", "³", function() require("harpoon.ui").nav_file(3) end, { silent = true })

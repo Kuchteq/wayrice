@@ -110,6 +110,7 @@ xkb_symbols "basic" {
     key <SPCE>	{ [     space,      space, nobreakspace, nobreakspace ]	};
     key <BKSL>	{ [     backslash,      bar, Greek_rho, nobreakspace ]	};
     key <AB10>	{ [     slash,      question, bar, Greek_rho ]	};
+    key  <TAB> { [       Tab,  ISO_Left_Tab, U2022,       U221E       ] };
 
     include "kpdl(comma)"
 

@@ -9,3 +9,4 @@ vim.o.clipboard = "unnamedplus"
 
 --config = vim.tbl_deep_extend('force', config, opts)
 vim.api.nvim_set_hl(0, "StatusLine", {bg = nil, fg = nil, sp = nil})
+vim.api.nvim_set_hl(0, "Normal", {bg = nil})
