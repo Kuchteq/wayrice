@@ -24,8 +24,10 @@ cmd savehere %{{
    lf -remote "send $id quit"
 }}
 
-cmd saveundername ${{
+cmd saveundername %{{
     echo "What is the name you would like to save it as: "
+    ext="${lf_user_filename##*.}"
+    lf -remote "send $id push .$ext<home>"
     read ans
     printf '%s' "$PWD/$ans" > "/tmp/termfilechooser.portal"
     lf -remote "send $id quit"
@@ -45,7 +47,7 @@ cmd saveandtranscribe %{{
    lf -remote "send $id quit"
 }}
 
-map i saveundername
+map su saveundername
 map ei
 map ee
 map et saveandtranscribe # in the future I plan on having many utilities like these which automatically do something to the saved file
