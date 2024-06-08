@@ -21,6 +21,8 @@
 .local/share/nvim/mason
 .local/share/mail
 .local/share/virtualenv
+.local/share/opam
+.local/share/go/pkg
 
 .local/lib/
 .flutter
