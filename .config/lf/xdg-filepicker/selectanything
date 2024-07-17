@@ -1,9 +1,15 @@
 set promptfmt "\033[1m󱀶 Open \033[35;1m%d\033[0m\033[1m%f\033[0m"
 set rulerfmt "%a  |%p  |\033[7;31m %m \033[0m  |\033[7;33m %c \033[0m  |\033[7;35m Selected: \033[1m%s \033[0m  |\033[7;34m %f \033[0m  |%i/%t"
 
+&{{
+       # jump to latest selected thing
+       lf -remote "send $id push 's"
+}}
+
 cmd selectanything %{{
   printf '%s' "$fx" > "/tmp/termfilechooser.portal"
-   lf -remote "send $id quit" 
+  lf -remote "send $id quit" 
+  marks=~/.local/share/lf/marks; sed -i "/^s/d" "$marks"; echo "s:$PWD" >> "$marks"
 }}
 
 cmd open selectanything

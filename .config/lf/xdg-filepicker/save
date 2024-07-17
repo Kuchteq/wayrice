@@ -18,9 +18,7 @@ cmd open ${{
 
 cmd savehere %{{
    printf '%s' "$PWD/$lf_user_filename" > "/tmp/termfilechooser.portal"
-   marks=~/.local/share/lf/marks
-   [ -f "$marks" ] && sed -i "/^d/d" "$marks"
-   echo "d:$PWD" >> "$marks"
+   marks=~/.local/share/lf/marks; [ -f "$marks" ] && sed -i "/^d/d" "$marks"; echo "d:$PWD" >> "$marks"
    lf -remote "send $id quit"
 }}
 
@@ -30,6 +28,7 @@ cmd saveundername %{{
     lf -remote "send $id push .$ext<home>"
     read ans
     printf '%s' "$PWD/$ans" > "/tmp/termfilechooser.portal"
+    marks=~/.local/share/lf/marks; [ -f "$marks" ] && sed -i "/^d/d" "$marks"; echo "d:$PWD" >> "$marks"
     lf -remote "send $id quit"
 }}
 
@@ -40,11 +39,14 @@ cmd saveandtranscribe %{{
    fi
 
    printf '%s' "$PWD/$lf_user_filename" > "/tmp/termfilechooser.portal"
-   marks=~/.local/share/lf/marks
-   sed -i "/^d/d" "$marks"
-   echo "d:$PWD" >> "$marks"
+   marks=~/.local/share/lf/marks; [ -f "$marks" ] && sed -i "/^d/d" "$marks"; echo "d:$PWD" >> "$marks"
    setsid -f zsh -c '$HOME/.local/bin/vidtranscribe -m -w -e "$PWD/$lf_user_filename" >/dev/null 2>&1'
    lf -remote "send $id quit"
+}}
+
+cmd on-cd &{{
+    printf "\033]7;file://$HOSTNAME$PWD\007" > /dev/tty
+    printf "\033]0; Saving   $lf_user_filename\007" > /dev/tty
 }}
 
 map su saveundername
