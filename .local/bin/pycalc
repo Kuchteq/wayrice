@@ -1,6 +1,6 @@
 #!/usr/bin/python -i
 import sys
-import math
+from math import *
 
 RESET = '\033[0m'
 MAGENTA = '\033[95m'
@@ -75,7 +75,7 @@ def genprimes(n):
         return []
 
     table = [True] * n
-    sqrtn = int(math.ceil(math.sqrt(n)))
+    sqrtn = int(ceil(sqrt(n)))
 
     for i in range(2, sqrtn):
         if table[i]:
@@ -85,3 +85,10 @@ def genprimes(n):
     primes = [2] + [i for i in range(3, n, 2) if table[i]]
     return primes
 
+def fromhex(h:str):
+    hl = [h[i:i+2] for i in range(0, len(h), 2)]
+    return ''.join([chr(int(x, 16)) for x in hl])
+
+def tohex(h:str):
+    hl = list(h)
+    return " ".join([hex(ord(x)) for x in hl])
