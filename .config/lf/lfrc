@@ -91,7 +91,7 @@ cmd unarchive ${{
 }}
 
 # Trash bindings
-cmd trash ${{
+cmd trash %{{
   files=$(printf "$fx" | tr '\n' ';')
   while [ "$files" ]; do
     file=${files%%;*}
@@ -104,7 +104,7 @@ cmd trash ${{
   done
 }}
 
-cmd travelToSymlink ${{
+cmd travelToSymlink &{{
 	dest=$(realpath $f)
 	if [ -f "$dest" ]; then
 	 whereExactly=$(basename "$dest")
@@ -124,14 +124,6 @@ cmd symlinkSelectedHere %{{
 	  ln -s "$s" .
 	done
     fi;
-}}
-
-cmd open_terminal_here &{{ 
-  if [ -z ${TMUX+x} ]; then 
-  	setsid -f $TERMINAL >/dev/null 2>&1
-  else
-	tmux split-window -c $PWD 
-  fi
 }}
 
 cmd watchInPlaylistSelected ${{
@@ -212,10 +204,18 @@ cmd convertToFormat %{{
     lf -remote "send $id select \"$out\""
 }}
 
+cmd inspect ${{ 
+        if [ -d "$f" ]; then
+                tree -C "$f" | less
+        else
+                bat --paging always "$f" 
+        fi
+}}
+
+# on pressing q send the suspend signal to the parent shell
 cmd quitfreeze ${{
      echo -n "$id" > "$LAST_DIR_PATH"   
      echo -n " $PWD" >> "$LAST_DIR_PATH"   
-     setsid -f kill -USR2 $SHELL_PID
      kill -TSTP $PPID
 }}
 
@@ -237,7 +237,6 @@ map DD trash
 map Dr $trash-restore
 map <c-l> travelToSymlink
 map P symlinkSelectedHere
-map <c-t> open_terminal_here
 map W watchInPlaylistSelected
 map Yd &echo -n $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to clipboard" # cd into the copied path
 map Yf &echo -n $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard" # cd into the copied path
@@ -263,9 +262,13 @@ map B bulkrename
 map Z middle
 map am $addshortcut $f
 map o $mimeopen -a "$f" 2>/dev/null
+# Remember ' is a special mark which saves the previous path , so by pressing double '' 
+# you get back to the previous folder, i.e. using mark-load. This is also mapped to tab
 map <tab> push ''
 map gcl $git clone "$(wl-paste)"
 map g/ cd /
+map i inspect
+map © &lf -remote "send $id cd '$(git rev-parse --show-toplevel)'"
 
 # call qr sharing in the current folder
 map Us &setsid -f qrshare $fx >/dev/null 2>&1
@@ -280,16 +283,13 @@ map <c-s> sendTo
 map Tu $/opt/upscayl/upscayl-bin -v -n realesrgan-x4plus -i $f -o "${f%.*}-upscaled.${f##*.}"
 map Tt convertToFormat
 map Tv $vtracer --input $f --output "${f%.*}.svg"
-
-
 map C $git diff $f
 map e
 map ee $nvim -c ":lua startInDebug()"
 map ei $nvim $f
-# Other tips
-# Remember ' is a special mark which saves the previous path , so by pressing double '' you get back to the previous folder, i.e. using mark-load
-cmd on-quit-prepare cmd on-quit ${{exec zsh}}
-cmd on-quit-freeze map q quitfreeze
-map <c-w> %rmapi put $f && echo "$f received!"
 map _ &dragon-drop -x "$f"
+
+cmd on-quit-freeze map q quitfreeze 
+cmd on-quit &{{ marks=~/.local/share/lf/marks; sed -i "/^q/d" "$marks"; echo "q:$PWD" >> "$marks"; }}
+
 source "~/.config/lf/shortcutrc"

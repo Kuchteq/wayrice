@@ -30,53 +30,46 @@ function zle-keymap-select () {
 zle -N zle-keymap-select
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 
-# Yanking is saved to clipboard
-function vi-yank-wl {
-    zle vi-yank
-   echo "$CUTBUFFER" | wl-copy
-}
-zle -N vi-yank-wl
-bindkey -M vicmd 'y' vi-yank-wl
-
 # Use lf to switch directories and bind it to ctrl-o
-lfcd () {
+lfcd() {
     echo -e '\e[2A'
     setopt nojobprint nopwdprint >/dev/null 2>&1
-    if jobs lfcd >/dev/null 2>&1; then
-            setsid -f lf -remote "send $LF_INSTANCE_ID cd \"$PWD\"" 
-            fg lf
+    NEED_LFCD_SYNC=true
+    if jobs "$LFCD_JOB_ID" >/dev/null 2>&1; then
+            echo -ne "\033]0; $PWD\007"
+            lf -remote "send $LF_INSTANCE_ID cd \"$PWD\"; on-cd" 
+            fg "$LFCD_JOB_ID"
     else 
-            tmp="$(mktemp -uq)"
-            trap 'rm -f $tmp >/dev/null 2>&1 && trap - HUP INT QUIT TERM PWR EXIT' HUP INT QUIT TERM PWR EXIT
-            export LAST_DIR_PATH="$tmp"
-            tmp="$(mktemp -uq)"
-            export LF_PID="$tmp"
-            export SHELL_PID="$$"
-            export LF_SPAWNED=true
-            lf --command on-quit-freeze -last-dir-path="$tmp" "$@"
-            if [ -f "$tmp" ]; then
-                dir="$(cat "$tmp")"
-                [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-            fi
+            export LAST_DIR_PATH="$XDG_RUNTIME_DIR/lf_lastdir"
+            LFCD_JOB_ID=lf
+            lf --command on-quit-freeze -last-dir-path="$LAST_DIR_PATH" "$@"
     fi
     unsetopt nojobprint nopwdprint >/dev/null 2>&1
 }
-TRAPUSR2() {
-        # echo -en "\033[6A"
-        export LF_INSTANCE_ID="$(cut -d' ' -f1 $LAST_DIR_PATH)"
-        dir="$(cut -d' ' -f2- $LAST_DIR_PATH)"
-        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir" 
-        unsetopt nojobprint nopwdprint >/dev/null 2>&1
-} 
+# use a nice folder unicode character as an alias to lfcd so that useless lfcd calls don't pollute the prompt
+alias 󱉆=lfcd
+precmd-lf-yank() {
+       preyankbuf=${BUFFER}; preyankcur=${CURSOR}
+       BUFFER="󱉆"
+}
+postcmd-retrieve() {
+       BUFFER="${preyankbuf}"; CURSOR="${preyankcur}"
+}
+zle -N precmd-lf-yank; zle -N postcmd-retrieve 
+bindkey "^[[33~" precmd-lf-yank 
+bindkey "^[[34~" postcmd-retrieve 
+bindkey -s '^o' '^[[33~^M^[[34~' # ctrl+o to open lf and move easily
+bindkey -s -M vicmd '^o' 'i^[[33~^M^[[34~^[l' 
+# below in the precmd is the last part of what makes lfcd work
 
-bindkey -s '^o' '^ulfcd\n' # ctrl+o to open lf and move easily
+
 bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n' # use fzf and move there
-
 # make home, end and del work again
 bindkey  "^[[H"   vi-beginning-of-line
 bindkey  "^[[F"   vi-end-of-line
 bindkey -a "^[[H"   vi-beginning-of-line
 bindkey -a "^[[F"   vi-end-of-line
+bindkey "^u" backward-kill-line
 
 bindkey  "^[[1;5D"   vi-backward-word
 bindkey  "^[[1;5C"   vi-forward-word
@@ -98,19 +91,26 @@ bindkey "\e[3~" delete-char
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 bindkey -M vicmd '^[[P' vi-delete-char
-bindkey -M vicmd '^e' edit-command-line
 bindkey -M visual '^[[P' vi-delete
-
+bindkey -M vicmd '^e' edit-command-line
+bindkey -M vicmd 'Y' vi-yank-eol
 
 function precmd {
+    if [ -n "$NEED_LFCD_SYNC" ]; then
+            LF_INSTANCE_ID="$(cut -d' ' -f1 $LAST_DIR_PATH)"
+            dir="$(cut -d' ' -f2- $LAST_DIR_PATH)"
+            [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir" 
+            unset NEED_LFCD_SYNC
+    fi
     # Set window title
     print -Pn "\e]0;zsh%L %(1j,%j job%(2j|s|); ,)%~\e\\"
     print -Pn "\e]133;A\e\\"
 }
+
 function preexec {
     # Called when executing a command and sets bar title
     echo -ne '\e[5 q'
-    print -Pn "\e]0;${(q)1}\e\\"
+    echo -ne "\e]0;${(q)1}\e\\"
 }
 
 # capture the signal to allow for easy global terminal colormode switching on every opened terminal
@@ -188,7 +188,12 @@ function lazy-load {
         source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 }
 
-if ! [ $ZSH_NO_LAZY_LOAD ]; then
-        zsh-defer lazy-load
+ [ $ZSH_NO_LAZY_LOAD ] || zsh-defer lazy-load
+# Start in lfcd requires us to fetch the job number as for whatever reason it doesn't 
+# get a referencable job name like usual, so we just fetch the number of the job
+if [ $START_IN_LFCD ]; then 
+        unset START_IN_LFCD
+        󱉆 ; LFCD_JOB_ID="%${$(jobs)[2]}" 
+else 
+        LFCD_JOB_ID=lf
 fi
-
