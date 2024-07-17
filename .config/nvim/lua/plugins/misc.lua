@@ -1,5 +1,6 @@
 local intty = os.getenv("TERM") == "linux";
 local themepath = os.getenv("XDG_RUNTIME_DIR") .. "/theme";
+
 return {
         {
                 "Kuchteq/vimoblush",
@@ -24,13 +25,14 @@ return {
                                 SYSTHEME = theme
                                 local booled_systheme = SYSTHEME == "light" and true or false;
                                 if booled_systheme then
-                                        vim.api.nvim_chan_send(2, '\x1b]11;[99]#f7f7f7\a')
                                         vim.opt.background = "light"
+                                        vim.api.nvim_chan_send(2, '\x1b]11;[96]#ffffff\a') -- these are needed because when we toggle 
+                                        -- lf term or any terminal emulator inside vim for that matter, things start looking badly
                                 else
-                                        vim.api.nvim_chan_send(2, '\x1b]11;[85]#000000\a')
                                         vim.opt.background = "dark"
+                                        vim.api.nvim_chan_send(2, '\x1b]11;[85]#000000\a')
                                 end
-                                require('everblush').setup({ lightmode = booled_systheme, transparent_background = not booled_systheme })
+                                require('everblush').setup({ lightmode = booled_systheme, transparent_background = true })
                                 vim.cmd([[colorscheme everblush]])
                                 os.execute("colormodeset " .. SYSTHEME)
                         end
@@ -70,7 +72,7 @@ return {
                 "nvim-lualine/lualine.nvim",
                 config = function()
                         require('lualine').setup({
-                                sections = { lualine_c = { { function() if vim.diagnostic.is_disabled() then return " "; else return "" end end, color = { fg = "#005577", gui = "bold" } }, "filename", { "aerial" } } },
+                                sections = { lualine_c = { { function() if vim.diagnostic.is_enabled() then return ""; else return  " " end end, color = { fg = "#005577", gui = "bold" } }, "filename", { "aerial" } } },
                                 options = {
                                         section_separators = { left = '', right = '' },
                                         theme = "everblush"
@@ -143,34 +145,17 @@ return {
         },
         {
                 "Kuchteq/build.nvim",
+                lazy=false,
                 keys = { {
                         "<F2>",
                         mode = { "n", "i" },
                         function()
                                 require('build').run_make()
+                                vim.lsp.buf.format { async = true }
                         end
                 } },
-                dependencies = {
-                        'm00qek/baleia.nvim',
-                },
                 config = function()
                         require("build").setup();
                 end
-        },
-        {
-                "boltlessengineer/smart-tab.nvim",
-                config = function()
-                        require('smart-tab').setup({
-                                -- default options:
-                                -- list of tree-sitter node types to filter
-                                skips = { "string_content" },
-                                -- default mapping, set `false` if you don't want automatic mapping
-                                mapping = "<tab>",
-                                -- filetypes to exclude
-                                exclude_filetypes = {}
-                        })
-                end
         }
-
-
 }, { defaults = { lazy = true } }

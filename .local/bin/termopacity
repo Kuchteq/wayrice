@@ -1,0 +1,40 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $0 [-d <dark_value>] [-l <light_value>]"
+  echo "  -d <dark_value>    Value for dark (0-100)"
+  echo "  -l <light_value>   Value for light (0-100)"
+  exit 1
+}
+
+validate_value() {
+  [[ $1 =~ ^[0-9]+$ ]] && [ $1 -ge 0 ] && [ $1 -le 100 ] || { echo "Error: $2 value must be an integer between 0 and 100."; usage; }
+}
+
+while getopts "d:l:" opt; do
+  case $opt in
+    d) dark_value=$OPTARG ;;
+    l) light_value=$OPTARG ;;
+    *) usage ;;
+  esac
+done
+
+[ -z "$dark_value" ] && [ -z "$light_value" ] && usage
+[ -n "$dark_value" ] && validate_value "$dark_value" "Dark"
+[ -n "$light_value" ] && validate_value "$light_value" "Light"
+
+replace_values() {
+
+        smoothstep=$(printf "%.2f\n" $(echo "scale=2; $1 / 100" | bc))
+        sed -i "s/alpha=.*/alpha=$smoothstep/" "$HOME/.config/foot/foot_$3.ini"
+        sed -i "s/background=\"\[.*\]#$2\"/background=\"[$1]#$2\"/" "$HOME/.local/bin/colormodeset"
+        sed -i "s/\]11;\[.*\]#$2/\]11;[$1]#$2/" "$HOME/.config/nvim/lua/plugins/misc.lua"
+}
+
+light_background_color="ffffff"
+dark_background_color="ffffff"
+
+[ -n "$dark_value" ] && replace_values "$dark_value" "$dark_background_color" "dark"
+[ -n "$light_value" ] && replace_values "$light_value" "$light_background_color" "light"
+
+

@@ -25,6 +25,7 @@ vim.opt.breakindent = true
 -- NOTE TO FUTURE SELF, some asshole might set .editorconfig file which overwrites these settings, bear this in mind!
 -- Modify the indentation levels there if they are overwrittien.
 vim.opt.inccommand = 'split'
+vim.g.do_filetype_lua = 1
 
 -- AUTOCMDS
 local sync_dir_with_shell = function()
@@ -75,11 +76,12 @@ vim.keymap.set("n", "<C-q>", ":bd<CR>", { silent = true })
 vim.keymap.set("n", "ə", ":bn<CR>", { silent = true })
 vim.keymap.set("n", "…", ":bp<CR>", { silent = true })
 vim.keymap.set("n", "ć", ":only<CR>", { silent = true })
-vim.keymap.set("n", "•", "<c-6>", { silent = true }) -- middle of the keyboard with shift is akward to press
-vim.keymap.set("n", "≠", function() require("harpoon.ui").nav_file(1) end, { silent = true })
-vim.keymap.set("n", "²", function() require("harpoon.ui").nav_file(2) end, { silent = true })
-vim.keymap.set("n", "³", function() require("harpoon.ui").nav_file(3) end, { silent = true })
-vim.keymap.set("n", "¢", function() require("harpoon.ui").nav_file(4) end, { silent = true })
+vim.keymap.set("n", "<c-i>", "<c-i>", { silent = true, noremap=true, expr = false, desc = "FIX: Prevent TAB from behaving like <C-i>, as they share the same internal code",})
+vim.keymap.set("n", "<Tab>", "<c-6>", { silent = true, noremap=true, expr = false }) -- middle of the keyboard with shift is akward to press
+vim.keymap.set("n", "≠", function() require("harpoon"):list():select(1) end, { silent = true })
+vim.keymap.set("n", "²", function() require("harpoon"):list():select(2) end, { silent = true })
+vim.keymap.set("n", "³", function() require("harpoon"):list():select(3) end, { silent = true })
+vim.keymap.set("n", "¢", function() require("harpoon"):list():select(4) end, { silent = true })
 vim.keymap.set("n", "|", ":vsplit<CR>")
 vim.keymap.set("n", "–", ":split<CR>")
 vim.keymap.set("n", "©", ":%s//g<Left><Left>")
@@ -103,7 +105,9 @@ vim.keymap.set("n", "<leader>c", ":w<CR>:!compiler '%:p'<CR><CR>")
 -- Compile the files for final, for groff there will be images and smaller size
 vim.keymap.set("n", "<leader>C", ":!compiler '%:p' -F<CR>")
 vim.keymap.set("n", "<leader>p", ":!opout '%:p'<CR>")
+vim.keymap.set("n", "<leader>g", ":!setsid -f $TERMINAL lazygit>/dev/null 2>&1<CR><ESC>")
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set('n', '<c-9>', '%')
 
 -- Save file as sudo on files that require root permission with the command w!!
 vim.cmd("cabbrev w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!")

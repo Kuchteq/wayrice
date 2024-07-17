@@ -1,2 +1,2 @@
 #!/bin/sh
-exec nvim -u $XDG_CONFIG_HOME/primvi.lua $@
+exec nvim -u $XDG_CONFIG_HOME/primvi.lua "${@}"
