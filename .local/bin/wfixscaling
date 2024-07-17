@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if wlr-randr | grep -q 'HDMI-A-1'; then 
-  wlr-randr --output HDMI-A-1 --mode 1920x1080 --pos 0,0
-  wlr-randr --output eDP-1 --mode 2880x1800 --pos 0,1800 
-fi
-

@@ -2,4 +2,4 @@
 [ -z "$1" ] && echo -e "\033[1mNo arg passed, using clipboard as source\033[0m" && url="$(wl-paste)" || url="$1"
 
 grep -E 'https?://(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[A-Za-z0-9()]{1,6}([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)' <<< "$url"
-yt-dlp --add-header "Cookie: key=value" "$url"
+yt-dlp --add-header "Cookie: jwt=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjA5NTgzNDUsIlVzZXJJRCI6MzAwMDcyMTUsIlNhbWxTdWJqZWN0SUQiOiIzYTRlZTdmZjRlNGYxYjJlNjZmNTBkMDU4ZmQ2YWZkM0B0dW0uZGUifQ.iGVmzTac2rq3gUI280n-tkv6DRazCO8NvIMp3WFr7AOP1HfXHR_FuDqi-dfp7v4EZwbiaW_xWxk1CzmhBVysD1kRyawy78C4pYAR5hQAVkz2fIUzaWUne3ZmaC0D0vSZGJAVzDI5yltHfNv7RjW2qijO_CTrQr_uT_bW0QU966qpABqWu9tPScSF8ST5dKGNtXcW_goCY4Q9uPFifA-Kqe1nVBPUSEu_Yn7UgyRPhyQODc_gkhQPX501xJ4RHrlPovilKeSkd9oPdIA8o1aOrbNp19hjHPkWjrml6z6gsQ3chy1Sgu_jmcwegUrkX6_ot2TPMrU8jNN2WDJ5bAebtA" "$url"

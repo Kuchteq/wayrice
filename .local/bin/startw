@@ -1,6 +1,6 @@
 #!/bin/sh
 
-exec dwl -s 'dwlb | \
+exec dwl -s 'dwlb -font "Hack:size=12" | \
 (pidof pipewire || pipewire) <&- | \
 themeset <&- | \
 dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP BEMENU_OPTS <&- | \

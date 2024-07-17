@@ -1,1 +1,0 @@
-cd "~/Desktop/pfx/drive_c/Richard Burns Rally" && xinit  /usr/bin/proton-call -r "RichardBurnsRally_SSE.exe" -- :1 vt2 

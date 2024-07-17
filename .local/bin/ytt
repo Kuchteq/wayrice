@@ -1,4 +1,0 @@
-#!/bin/sh
-
-yt-dlp $1 --downloader ffmpeg --downloader-args "ffmpeg_i:-ss $2 -to $3"
-

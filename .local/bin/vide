@@ -1,2 +1,0 @@
-#!/bin/sh
-exec foot nvim -c ':call feedkeys("\<space>w")'
