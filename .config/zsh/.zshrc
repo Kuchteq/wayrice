@@ -42,7 +42,8 @@ lfcd() {
     else 
             export LAST_DIR_PATH="$XDG_RUNTIME_DIR/lf_lastdir"
             LFCD_JOB_ID=lf
-            lf --command on-quit-freeze -last-dir-path="$LAST_DIR_PATH" "$@"
+            unset LFCD_FOCUSPATH
+            lf --command on-quit-freeze -last-dir-path="$LAST_DIR_PATH" "${@}"
     fi
     unsetopt nojobprint nopwdprint >/dev/null 2>&1
 }
@@ -193,7 +194,7 @@ function lazy-load {
 # get a referencable job name like usual, so we just fetch the number of the job
 if [ $START_IN_LFCD ]; then 
         unset START_IN_LFCD
-        󱉆 ; LFCD_JOB_ID="%${$(jobs)[2]}" 
+        󱉆 "${LFCD_FOCUSPATH}"; LFCD_JOB_ID="%${$(jobs)[2]}" 
 else 
         LFCD_JOB_ID=lf
 fi

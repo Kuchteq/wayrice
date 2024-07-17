@@ -7,4 +7,5 @@ p = prev
 
 a = zoom actual
 r = reset
-<Ctrl+o> = exec foot lf --command on-quit-prepare "${imv_current_file}" & kill $imv_pid; 
+<Ctrl+o> = exec foot -o environment.START_IN_LFCD=true -o environment.LFCD_FOCUSPATH="$imv_current_file" & kill $imv_pid; 
+
