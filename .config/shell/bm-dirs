@@ -13,6 +13,7 @@ pp  ${XDG_PICTURES_DIR:-$HOME/Pictures}
 pr  ${XDG_PROJECTS_DIR:-$HOME/Projects}
 se  $HOME/.local/bin # ex as in executables and s as in source
 src $HOME/.local/src
+pat $HOME/.local/src/patches
 sa $HOME/.local/share
 lo $HOME/.local
 vv  ${XDG_VIDEOS_DIR:-$HOME/Videos}
