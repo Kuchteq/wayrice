@@ -125,6 +125,12 @@ cmd symlinkSelectedHere %{{
 	done
     fi;
 }}
+cmd rpaste !{{
+        for fi in $fs; do 
+                rsync -r --progress "$fi" "$PWD";
+        done
+        notify-send "$(wc -l <<< $fs) files transfered"
+}}
 
 cmd watchInPlaylistSelected ${{
 	mpv $fs
@@ -208,7 +214,11 @@ cmd inspect ${{
         if [ -d "$f" ]; then
                 tree -C "$f" | less
         else
-                bat --paging always "$f" 
+
+                case "$(file --dereference --brief --mime-type -- "$f")" in
+                application/gzip) tar tzf "$f" | less ;;
+                *) bat --paging always "$f"  ;;
+                esac
         fi
 }}
 
@@ -242,6 +252,7 @@ map Yd &echo -n $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to cl
 map Yf &echo -n $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard" # cd into the copied path
 map Ya &wl-copy < $f; lf -remote "send $id echo 'Yanked all $f to clipboard'" #yank all contents 
 map <c-r> :reload; &killall bat
+map x :set info size; calcdirsize # x as in examine for size
 map Su $sudo lf -command 'source "~/.config/lf/insudo"';
 
 # Other less complex binds
