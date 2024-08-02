@@ -23,6 +23,7 @@
 .local/share/virtualenv
 .local/share/opam
 .local/share/go/pkg
+.local/share/containers
 
 .local/lib/
 .flutter
