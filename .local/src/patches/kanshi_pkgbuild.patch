@@ -1,0 +1,12 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 26b243f..a0b3a96 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -30,6 +30,7 @@ pkgver() {
+ 
+ build() {
+     # arch-meson automatically sets prefix and other options
++    patch -p1 -d kanshi < ~/.local/src/patches/kanshi.patch
+     arch-meson --buildtype=release "${srcdir}/build" "${srcdir}/${pkgname%-git}"
+     # compile
+     meson compile -C "${srcdir}/build" -j 0 --verbose

@@ -1,0 +1,77 @@
+Authentication-Results: mail-a.sr.ht; dkim=pass header.d=free.fr header.i=@free.fr
+Received: from smtp5-g21.free.fr (smtp5-g21.free.fr [IPv6:2a01:e0c:1:1599::14])
+	by mail-a.sr.ht (Postfix) with ESMTPS id 3EDB12021D
+	for <~emersion/public-inbox@lists.sr.ht>; Fri, 28 Jun 2024 16:00:55 +0000 (UTC)
+Received: from tmarce-laptop.. (unknown [IPv6:2a01:cb09:b04c:5488:8a02:ef80:73bc:f])
+	(Authenticated sender: tarek.marce@free.fr)
+	by smtp5-g21.free.fr (Postfix) with ESMTPSA id B94EF60139;
+	Fri, 28 Jun 2024 18:00:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1719590455;
+	bh=Lu3WyfacwRcTUyY9MbWhGJhtqmwbiy6enXY6zVjzjCU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X3X1Du9qgWT1x+EY1XgSnm6cihplUWqPooFzelM7IJqXZZW2wgLrcfFcE+bCZ11L7
+	 0RvgJapi2iMIkTeBbJqKVVakEWdmIwLVmRZ2sbSQmEgvVos68y5ZjTIslnGFcAz7aB
+	 XAgRCKa8YPq69Dmub7IWYYMPjgzcqiUukdbiATi7Mu9Ss+SzTW0/+OruaabrCfj0ew
+	 dawwH4LSyA4J3rm7nDBZNs3EV7Ia7hU7vxiukB0++ncsKmblke01aggANNLhMABImX
+	 oun4dm+iMM6SGg6ceISWSuQV5EqRhZ2m+DA1eZT6WN5zI7OQeRnhF2Pm4UsJj6ihCY
+	 y6I6csR8kM98A==
+From: =?UTF-8?q?Tarek=20Marc=C3=A9?= <tarek.marce@free.fr>
+To: ~emersion/public-inbox@lists.sr.ht
+Cc: =?UTF-8?q?Tarek=20Marc=C3=A9?= <tarek.marce@free.fr>
+Subject: [PATCH kanshi v2] Add support for wildcard in output identifier
+Date: Fri, 28 Jun 2024 17:59:19 +0200
+Message-ID: <20240628160033.39375-1-tarek.marce@free.fr>
+X-Mailer: git-send-email 2.45.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+
+---
+This fixes the missing '\' in the man page.
+
+ doc/kanshi.5.scd | 7 ++++---
+ main.c           | 3 ++-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/doc/kanshi.5.scd b/doc/kanshi.5.scd
+index 74ada4d..8b97d6d 100644
+--- a/doc/kanshi.5.scd
++++ b/doc/kanshi.5.scd
+@@ -71,9 +71,10 @@ quoted (with *"*) if they contain spaces.
+ 	  may change across reboots (depending on kernel driver probe order) or
+ 	  creation order (typically for USB-C docks).
+ 	- A space-separated string containing the output manufacturer, model and
+-	  serial number (e.g. "Foocorp ASDF 1234"). If one of these fields is
+-	  missing, it needs to be populated with the string "Unknown" (e.g.
+-	  "Foocorp ASDF Unknown").
++	  serial number (e.g. "Foocorp ASDF 1234"). It is possible to use a shell
++	  wildcard pattern (e.g. "Foocorp ASDF 1\*") see *glob*(7).
++	  If one of these fields is missing, it needs to be populated with the
++	  string "Unknown" (e.g. "Foocorp ASDF Unknown").
+ 	- An output alias (e.g. "$work-desk3") defined by an output alias directive.
+ 	  Output aliases can only be used in profile scope.
+ 	- A wildcard "\*", to match any output.
+diff --git a/main.c b/main.c
+index f575d83..d91b031 100644
+--- a/main.c
++++ b/main.c
+@@ -1,6 +1,7 @@
+ #include <assert.h>
+ #include <errno.h>
+ #include <fcntl.h>
++#include <fnmatch.h>
+ #include <getopt.h>
+ #include <limits.h>
+ #include <signal.h>
+@@ -35,7 +36,7 @@ static bool match_profile_output(struct kanshi_profile_output *output,
+ 
+ 	return strcmp(output->name, "*") == 0 ||
+ 		strcmp(output->name, head->name) == 0 ||
+-		strcmp(output->name, identifier) == 0;
++		fnmatch(output->name, identifier, 0) == 0;
+ }
+ 
+ static bool match_profile(struct kanshi_state *state,
+-- 
+2.45.2
+
