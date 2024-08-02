@@ -16,7 +16,7 @@ setup() {
 	newGtkTheme=$PREFERRED_GTK_THEME_LIGHT && [[ $theme == "dark" ]] && newGtkTheme=$PREFERRED_GTK_THEME_DARK
 	gsettings set org.gnome.desktop.interface color-scheme "prefer-$theme"
 
- 	setsid -f swaybg --image "$HOME/Pictures/Wallpapers/wallpaper_$theme.jpg" >/dev/null 2>&1
+ 	setsid -f swaybg --image ~/.local/share/wallpapers/wallpaper_$theme.jpg >/dev/null 2>&1
  	ln -sf "$XDG_CONFIG_HOME/bat/config_$theme" "$XDG_CONFIG_HOME/bat/config"
 	# though we use footserver, we still link the theme because regular foot is used for xdg-desktop-portal. 
 	# Unfortunately that means we need to change the light theme in two places :\\
