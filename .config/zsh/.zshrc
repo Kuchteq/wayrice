@@ -61,8 +61,20 @@ bindkey "^[[33~" precmd-lf-yank
 bindkey "^[[34~" postcmd-retrieve 
 bindkey -s '^o' '^[[33~^M^[[34~' # ctrl+o to open lf and move easily
 bindkey -s -M vicmd '^o' 'i^[[33~^M^[[34~^[l' 
-# below in the precmd is the last part of what makes lfcd work
 
+up-line-or-search-ignore-lfcd() {
+        zle up-line-or-search; [ "$BUFFER" = "󱉆" ] && zle up-line-or-search
+}
+zle -N up-line-or-search-ignore-lfcd
+
+down-line-or-search-ignore-lfcd() {
+        zle down-line-or-search; [ "$BUFFER" = "󱉆" ] && zle down-line-or-search
+}
+zle -N down-line-or-search-ignore-lfcd
+
+bindkey "^P" up-line-or-search-ignore-lfcd
+bindkey "^N" down-line-or-search-ignore-lfcd
+# below in the precmd is the last part of what makes lfcd work
 
 bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n' # use fzf and move there
 # make home, end and del work again
@@ -78,8 +90,6 @@ bindkey  "^[[1;5C"   vi-forward-word
 bindkey  "^[[H"   vi-beginning-of-line
 bindkey  "^[[F"   vi-end-of-line
 
-bindkey "^P" up-line-or-search
-bindkey "^N" down-line-or-search
 # standard vi behaviour is a bit different and things like pasted content gets stuck, unable to be deleted with backspace
 bindkey -v '^?' backward-delete-char
 bindkey -v '^W' backward-delete-word
