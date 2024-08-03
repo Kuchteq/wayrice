@@ -21,7 +21,7 @@ main () { parse_opts "$@"
             lastoptwithn="$lastopt\\n"
         fi
         
-        all="$(echo -e "$lastoptwithn$(apropos .)" | bemenu -l 10 )"
+        all="$(echo -e "$lastoptwithn$(apropos .)" | bemenu -p "man" -l 10 )"
 	[ "$all" = "" ] && exit 1
         if [ "$all" = "$lastopt" ]; then
             title=$last
