@@ -124,11 +124,13 @@ cmd symlinkSelectedHere %{{
 	done
     fi;
 }}
+
 cmd delsoftlink &{{
 	for f in $fx; do 
 	  [ -h "$f" ] && rm $f
 	done
 }}
+
 cmd rpaste !{{
         for fi in $fs; do 
                 rsync -r --progress "$fi" "$PWD";
@@ -221,6 +223,7 @@ cmd inspect ${{
 
                 case "$(file --dereference --brief --mime-type -- "$f")" in
                 application/gzip) tar tzf "$f" | less ;;
+                application/zip) unzip -l "$f" | less ;;
                 *) bat --paging always "$f"  ;;
                 esac
         fi
@@ -294,6 +297,7 @@ map <c-f> $lf -remote "send $id select \"$(fzf)\"" # fuzzy find files
 map <c-e> $lf -remote "send $id select \"$(FZF_DEFAULT_COMMAND='fd -td' fzf)\"" # fuzzy find directories
 map <c-g> $nvim -c ":lua startInTelescopeOnly()" # live grep files
 map <c-s> sendTo
+map <c-space> &foot -o environment.START_IN_LFCD=true -o environment.LFCD_FOCUSPATH="$f"
 
 # transform functions related to files/mostly images
 map Tu $/opt/upscayl/upscayl-bin -v -n realesrgan-x4plus -i $f -o "${f%.*}-upscaled.${f##*.}"
@@ -304,6 +308,7 @@ map e
 map ee $nvim -c ":lua startInDebug()"
 map ei $nvim $f
 map _ &dragon-drop -x "$f"
+map • shell-async # <altgr+space> far easier to reach than &
 
 cmd on-quit-freeze map q quitfreeze 
 cmd on-quit &{{ marks=~/.local/share/lf/marks; sed -i "/^q/d" "$marks"; echo "q:$PWD" >> "$marks"; }}
