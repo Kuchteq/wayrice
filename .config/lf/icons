@@ -1,5 +1,5 @@
-ln             # LINK
-or             # ORPHAN
+ln             # LINK
+or      󰌺       # ORPHAN
 tw      t       # STICKY_OTHER_WRITABLE
 ow             # OTHER_WRITABLE
 st      t       # STICKY
@@ -339,3 +339,17 @@ Vagrantfile             
 *.pdf   
 *.tmp   󱦟
 *.kdbx  󱃬
+*.bin 
+
+.git/ 󰊢
+~/inc 󱃩
+~/med 
+~/src 
+~/edu 󰸝
+~/doc 󱔘
+~/atm 󰋱 
+
+~/med/movies 󱜐
+~/med/series 󱄥
+~/med/music 󰲹
+~/med/pics 

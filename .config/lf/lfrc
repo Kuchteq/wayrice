@@ -119,11 +119,15 @@ cmd symlinkSelectedHere %{{
     if [ -z $fs ]; then
         echo -ne "\033[41;1mNo items selected for symlinking"
     else
-	for s in $fs
-	do 
+	for s in $fs; do 
 	  ln -s "$s" .
 	done
     fi;
+}}
+cmd delsoftlink &{{
+	for f in $fx; do 
+	  [ -h "$f" ] && rm $f
+	done
 }}
 cmd rpaste !{{
         for fi in $fs; do 
@@ -244,6 +248,7 @@ map Mw makeworkspace
 map Mh $hui -c ":lua set_new_workspace('$(basename $PWD)','$PWD/.hurl')"
 map au unarchive
 map DD trash
+map Dl delsoftlink
 map Dr $trash-restore
 map <c-l> travelToSymlink
 map P symlinkSelectedHere
