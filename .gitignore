@@ -19,6 +19,7 @@
 .local/share/cargo/registry
 .local/share/gradle
 .local/share/nvim/mason
+.local/share/nvim/lazy
 .local/share/mail
 .local/share/virtualenv
 .local/share/opam
