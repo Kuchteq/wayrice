@@ -82,15 +82,17 @@ return {
         },
         {
                 "smoka7/hop.nvim",
+                keys = { {
+                        "<c-w>",
+                        mode = { "n", "o" },
+                        remap = true,
+                        nowait = true,
+                        function()
+                                require("hop").hint_words({ current_line_only = true })
+                        end
+                } },
                 config = function()
                         require("hop").setup()
-                        vim.keymap.set({ 'o', 'n' }, '<c-w>', function()
-                                require("hop").hint_words({ current_line_only = true })
-                        end, { remap = true, nowait = true })
-
-                        vim.keymap.set({ 'o', 'n' }, '<c-a>', function()
-                                require("hop").hint_words({ current_line_only = true, hint_position = require 'hop.hint'.HintPosition.END })
-                        end, { remap = true })
                 end
         },
         {
@@ -133,6 +135,7 @@ return {
         },
         {
                 'stevearc/aerial.nvim',
+                event = "VeryLazy",
                 opts = { nerd_font = true },
                 keys = { { "π", function()
                         require("aerial").toggle();
@@ -158,4 +161,4 @@ return {
                         require("build").setup();
                 end
         }
-}, { defaults = { lazy = true } }
+}
