@@ -1,0 +1,12 @@
+#!/bin/sh
+
+current="$(cpupower frequency-info -p | grep -o "powersave\|performance")"
+
+if [ "$current" = "powersave" ]; then
+        sb-notifier -m "󱀚 cpu set to performance"
+        sudo cpupower frequency-set --governor performance
+else 
+        sb-notifier -m "󰌪 cpu set to powersave"
+        sudo cpupower frequency-set --governor powersave
+fi
+pkill -37 someblocks #refresh someblocks block
