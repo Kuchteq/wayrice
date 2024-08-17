@@ -1,5 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
-if pidof -q wf-recorder; then
-	echo " REC "
+REC_STATUS_PATH="$XDG_RUNTIME_DIR/sb-recording-status"
+if [ "$1" = "-m" ] && [ -n "$2" ]; then
+	echo "$2" > "$REC_STATUS_PATH"
+	pkill -46 someblocks
+elif [ "$1" = "-c" ] && [ -n "$2" ]; then
+        (sleep "$2" && true > "$REC_STATUS_PATH" && pkill -46 someblocks) &
+elif [ "$1" = "-c" ]; then
+        true > "$REC_STATUS_PATH" && pkill -46 someblocks
+elif [ "$1" = "-d" ] && [ -s "$REC_STATUS_PATH" ]; then
+        cat "$REC_STATUS_PATH"
 fi
+

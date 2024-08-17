@@ -2,7 +2,7 @@
 
 # if passed the -d flag open up a floating lf for easy access
 if [[ "$1" == "-d" ]]; then
-	$TERMINAL -T "Screenshots folder" -a "floatermid" -W "60x16" lf -command "set sortby ctime; set reverse; set ratios 1:3" ~/Pictures/Screenshots #>/dev/null 2>&1
+	$TERMINAL -T "Screenshots folder" -a "floatermid" -W "60x16" lf -command "set sortby ctime; set reverse; set ratios 1:3" "$SCREENSHOTS_DIR" #>/dev/null 2>&1
 	exit 0
 fi
 

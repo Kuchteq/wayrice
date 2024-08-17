@@ -1,15 +1,25 @@
 #!/bin/sh
 
 if pidof -q wf-recorder; then
-	ps -p $(pidof wf-recorder) -o command | grep -o "\-f .*\.mp4" | sed  "s/\-f //" | wl-copy
-	killall -s 2 wf-recorder >/dev/null 2>&1 
-	tail --pid=$(pidof wf-recorder) -f /dev/null && kill -46 $(pidof someblocks)
+        ps -p $(pidof wf-recorder) -o command | grep -o "\-f .*\.mp4" | sed "s/\-f //" | wl-copy
+        killall -s 2 wf-recorder >/dev/null 2>&1
+        sb-recording -m "^fg(e5c76b) Saving rec^fg()"
+        tail --pid=$(pidof wf-recorder) -f /dev/null && kill -46 $(pidof someblocks)
+        sb-recording -m "^fg(8ccf7e) Saved^fg()"
+        sb-recording -c "2.001"
 else
-	date=$(date +%d-%m-%YT%H:%M:%S)
-	path=$HOME/Videos/Screenrecordings/recording_$date.mp4
-	dimensions=$(slurp -d -b "B400B42c") || exit 1
-	wf-recorder -g "$dimensions" -f $path -c h264_vaapi -d /dev/dri/renderD128 >/dev/null 2>&1 &
+        date=$(date +%d-%m-%YT%H:%M:%S)
+        path="$SCREENSHOTS_DIR/rec/recording_$date.mp4"
+        dimensions=$(slurp -d -b "B400B42c" -B "B400B42c" -o) || exit 1
+        (
+                if ! wf-recorder -g "$dimensions" -f "$path" -c h264_vaapi -d /dev/dri/renderD128 >"$XDG_RUNTIME_DIR/record_errors" 2>&1; then
+                        notify-send "   Could not start recording" "Check logs at: $XDG_RUNTIME_DIR/record_errors"
+                        sb-recording -c
+                fi
+        ) &
+
+	pkill -f "sleep 2.001" > /dev/null 2>&1
+        sb-recording -m "^fg(ff0000) REC^fg()"
 fi
-kill -46 $(pidof someblocks)
 
 # this is what you do if you want to record your screen with sound wf-recorder --audio="alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__hw_sofhdadsp__sink.monitor" -c h264_vaapi -d /dev/dri/renderD128

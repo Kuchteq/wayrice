@@ -1,7 +1,14 @@
 #!/bin/sh 
-allpids=$(pgrep -x $(basename $0))
+cmd=$(basename $0)
+allpids=$(pgrep -x $cmd)
+
 otherpids="$(echo "$allpids" | grep -v "$$")" # Don't know why I couldn't have gotten piping of pgrep to work directly, it has to be split for no reason
-[ -n "$otherpids" ] && kill -- "-$otherpids" && exec screenrecord # kill -- -$something kills a process group
+if [ -n "$otherpids" ]; then
+        kill -- "-$otherpids" 
+        grim - | wl-copy
+        sb-notifier -m "󰹑  > clipboard" 
+        exit
+fi
 
 if selection=$(slurp -d); then
         echo "$selection" > $XDG_RUNTIME_DIR/last_screenshot_size
