@@ -6,11 +6,6 @@ for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
 	alias $command="sudo $command"
 done; unset command
 
-# Temporary/project related aliases
-alias \
-	mem="$EDITOR ~pr/Memento/memento/lib" 
-
-
 # Verbosity and settings that you pretty much just always are going to want.
 alias \
 	cp="cp -iv" \
@@ -38,7 +33,7 @@ alias \
 	trem="transmission-remote" \
 	ytf="ytfzf" \
 	ytfa="ytfzf -m --url-handler-opts='--no-video'" \
-	sdn="shutdown -h now" \
+	sdn="shutdown" \
 	e="$EDITOR" \
 	v="$EDITOR" \
 	p="pacman" \
@@ -48,7 +43,8 @@ alias \
 	lg="lazygit" \
 	neomutt="ESCDELAY=0 neomutt" \
         parum="paru --fm lf -S " \
-        as="as -msyntax=intel -mnaked-reg"
+        as="as -msyntax=intel -mnaked-reg" \
+        mkp="makepkg -sif --noconfirm"
 
 #Usually some settings related stuff
 alias \

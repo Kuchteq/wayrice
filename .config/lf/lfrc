@@ -127,7 +127,12 @@ cmd symlinkSelectedHere %{{
 
 cmd delsoftlink &{{
 	for f in $fx; do 
-	  [ -h "$f" ] && rm $f
+	  if [ -h "$f" ]; then
+                  rm $f
+          else
+                  notify-send -a "lf" "󱉆 lf - delsoftlink: file not a soft link"  "file: ${f/$HOME/\~}"
+          fi
+
 	done
 }}
 
@@ -223,7 +228,7 @@ cmd inspect ${{
 
                 case "$(file --dereference --brief --mime-type -- "$f")" in
                 application/gzip) tar tzf "$f" | less ;;
-                application/zip) unzip -l "$f" | less ;;
+                application/*zip | application/java-archive) unzip -l "$f" | less ;;
                 *) bat --paging always "$f"  ;;
                 esac
         fi

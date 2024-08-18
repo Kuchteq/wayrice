@@ -150,7 +150,7 @@ fi             # FILE
 *dropbox                
 *.ds_store              
 *.gitconfig             
-*.gitignore             
+*.gitignore             
 *.gitattributes         
 *.gitlab-ci.yml         
 *.bashrc                
@@ -342,6 +342,8 @@ Vagrantfile             
 *.bin 
 
 .git/ 󰊢
+~/.config 
+~/.cache 󰃨
 ~/inc 󱃩
 ~/med 
 ~/src 
@@ -353,3 +355,5 @@ Vagrantfile             
 ~/med/series 󱄥
 ~/med/music 󰲹
 ~/med/pics 
+
+~/doc/notes 

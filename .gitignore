@@ -1,9 +1,10 @@
-# the home ones that tend to be huge
+# the home ones that tend to be huge. Also stupid flatpak implement XDG finally
 .cache
 .npm
 .mozilla
 .m2
 .pub-cache
+.var 
 
 .config/arduino15/packages
 .config/libreoffice/*/cache

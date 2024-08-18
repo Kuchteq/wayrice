@@ -108,6 +108,7 @@ vim.keymap.set("n", "<leader>p", ":!opout '%:p'<CR>")
 vim.keymap.set("n", "<leader>g", ":!setsid -f $TERMINAL lazygit>/dev/null 2>&1<CR><ESC>")
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<c-9>', '%')
+vim.keymap.set('n', '<F3>', function () vim.lsp.buf.format() end)
 
 -- Save file as sudo on files that require root permission with the command w!!
 vim.cmd("cabbrev w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!")

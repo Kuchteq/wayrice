@@ -172,7 +172,7 @@ _ls_colors="di=1;34:ln=3;1;36:so=35:pi=33:ex=1;32:bd=33:cd=33:su=30;41:sg=30;46:
 zstyle ':completion:*:default' list-colors "${(s.:.)_ls_colors}"
 LS_COLORS+=$_ls_colors
 export LS_COLORS
-export LF_COLORS='.git/=33:*.gitignore=33:*.md=00;38;5;39:*.txt=00;38;5;39:*Makefile=31;1:*Dockerfile=31;1:'
+export LF_COLORS='.git/=33:*.gitignore=33:*.md=00;38;5;39:*.txt=00;38;5;39:*Makefile=31;1:*Dockerfile=31;1:*.pdf=00;38;5;160:'
 
 function lazy-load {
         # Basic auto/tab complete:
