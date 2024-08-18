@@ -24,10 +24,8 @@ done
 [ -n "$light_value" ] && validate_value "$light_value" "Light"
 
 replace_values() {
-
         smoothstep=$(printf "%.2f\n" $(echo "scale=2; $1 / 100" | bc))
         sed -i "s/alpha=.*/alpha=$smoothstep/" "$HOME/.config/foot/foot_$3.ini"
-        sed -i "s/background=\"\[.*\]#$2\"/background=\"[$1]#$2\"/" "$HOME/.local/bin/colormodeset"
         sed -i "s/\]11;\[.*\]#$2/\]11;[$1]#$2/" "$HOME/.config/nvim/lua/plugins/misc.lua"
 }
 

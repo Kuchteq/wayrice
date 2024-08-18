@@ -1,60 +1,28 @@
 #!/bin/bash
 
-if [ "$1" = "light" ]; then
-	background="[96]#ffffff"
-	foreground=00/00/00
+# these are the boundaries within which the foot terminal colors are specified
+colors_start='\[colors\]'
+colors_end='\[text-bindings\]'
+theme_suffix="${1:-}"
+[ -n "$1" ] && theme_suffix="_$1" || theme_suffix="" # specifying no argument makes it follow the default foot.ini
+config_path="$XDG_CONFIG_HOME/foot/foot$theme_suffix.ini"
+eval $(sed -n  -e "s/#.*//" -e "/$colors_start/,/$colors_end/{//!p}" "$config_path" |
+       grep  '\(\(regular\|bright\)[0-7] *\|alpha\|background\|foreground\)=[[:alnum:]]*\.*[0-9]*'
+)
+bg_converted_alpha=$(printf "%.2f" $alpha | sed -e "s/0\.0*//" -e "s/\.//")
+bg_in_format="[$bg_converted_alpha]#$background"
 
-	regular0=000000
-	regular1=d73a49
-	regular2=28a745
-	regular3=E96A05
-	regular4=00a0e4
-	regular5=a06994
-	regular6=36A3D9
-	regular7=494542
-
-	bright0=959da5  #959da5
-	bright1=cb2431  #cb2431
-	bright2=2caf4c  #2caf4c
-	bright3=b08800  #b08800
-	bright4=005cc5  #005cc5
-	bright5=5a32a3  #5a32a3
-	bright6=3192aa  #3192aa
-	bright7=d1d5da  #d1d5da
-else
-	background="[85]#000000"
-	foreground=ff/ff/ff
-
-	regular0=000000  # black
-	regular1=ff0000  # red3
-	regular2=00ff00  # green3
-	regular3=ffff00  # yellow3
-	regular4=5c5cff  # blue2
-	regular5=ff00ff  # magenta
-	regular6=00ffff  # cyan
-	regular7=e5e5e5  # white
-
-	bright0=7f7f7f   # bright black
-	bright1=ff0000   # bright red
-	bright2=00ff00   # bright green
-	bright3=ffff00   # bright yellow
-	bright4=5c5cff   # bright blue
-	bright5=ff00ff   # bright magenta
-	bright6=00ffff   # bright cyan
-	bright7=ffffff   # bright white
-fi
 cset() {
   ANSI=$1
   RGB=$2
   R=${RGB:0:2}
   G=${RGB:2:2}
   B=${RGB:4:2}
-  printf "\x1b]4;$ANSI;rgb:$R/$G/$B\a"
+  echo -ne "\x1b]4;$ANSI;rgb:$R/$G/$B\a"
 }
 
-printf "\x1b]11;$background\a"
-printf "\x1b]10;rgb:$foreground\a"
-printf "\x1b]12;rgb:$regular7\a"
+echo -ne "\x1b]11;$bg_in_format\a"
+echo -ne "\x1b]10;rgb:${foreground:0:2}/${foreground:2:2}/${foreground:4:2}\a"
 
 cset 0 $regular0
 cset 8 $bright0
