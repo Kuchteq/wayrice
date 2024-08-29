@@ -60,9 +60,9 @@ chosen="$(echo "$alldrives" | tofi --prompt-text "Mount which drive?" )"
 
 # Function for prompting user for a mountpoint.
 getmount(){
-        mp="$(echo -e "default\n" "$(find /mnt /home -maxdepth 1 -type d 2>/dev/null)" | tofi --prompt-text "Mount this drive where?")"
-        if [ $mp = "default" ]; then
-                mp="$HOME/Desktop/Mounts/$(sed "s~/dev/~~" <<< "$chosen" )"
+        mp="$(echo -e "~atm\n" "$(find /mnt /home -maxdepth 1 -type d 2>/dev/null)" | tofi --prompt-text "Mount this drive where?")"
+        if [ $mp = "~atm" ]; then
+                mp="$HOME/atm/$(sed "s~/dev/~~" <<< "$chosen" )"
                 mkdir -p "$mp"
                 return
         fi

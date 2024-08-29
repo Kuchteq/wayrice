@@ -4,5 +4,6 @@ background='#1a1a1a'
 mainBlue='#268bd2'
 fontsize=16
 font="Hack $fontsize"
+horispacing=14
 
-export BEMENU_OPTS="-n -i --tb $background --fn \"$font\" --tf $mainBlue --fb $background --nb $background --hb $background --hf $mainBlue"
+export BEMENU_OPTS="-n -i --tb $background --fn \"$font\" --tf $mainBlue --fb $background --nb $background --hb $background --hf $mainBlue --hp $horispacing"
