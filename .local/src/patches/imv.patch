@@ -1,0 +1,26 @@
+diff --git a/src/imv.c b/src/imv.c
+index ce0c43a..6df76f1 100644
+--- a/src/imv.c
++++ b/src/imv.c
+@@ -768,6 +768,9 @@ static bool parse_initial_width(struct imv *imv, const char *width_value)
+   if(errno != 0 || *endptr != '\0' || endptr == width_value) {
+     return false;
+   }
++  if (val_x % 2) {
++      val_x++;
++  }
+   imv->initial_width = val_x;
+   return true;
+ }
+@@ -780,6 +783,11 @@ static bool parse_initial_height(struct imv *imv, const char *height_value)
+   if(errno != 0 || *endptr != '\0' || endptr == height_value) {
+     return false;
+   }
++
++  if (val_y % 2) {
++      val_y++;
++  }
++
+   imv->initial_height = val_y;
+   return true;
+ }

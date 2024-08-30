@@ -1,0 +1,10 @@
+--- PKGBUILD	2024-08-30 12:26:51.310004217 +0200
++++ PKGBUILD-patch	2024-08-30 12:30:00.860007799 +0200
+@@ -27,6 +27,7 @@
+ 
+ build() {
+     cd "$_pkgname"
++    patch -p2 -d src < ~/.local/src/patches/imv.patch
+     meson setup --prefix /usr --buildtype=plain . build
+     ninja -C build
+ }

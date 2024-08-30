@@ -3,5 +3,6 @@
 case "$PKGBASE" in
     "zathura-git") patch < ~/.local/src/patches/zathura_pkgbuild.patch ;;
     "zsh-git") patch < ~/.local/src/patches/zsh_pkgbuild.patch ;;
+    "imv-git") patch < ~/.local/src/patches/imv_pkgbuild.patch ;;
     "kanshi-git") patch < ~/.local/src/patches/kanshi_pkgbuild.patch ;;
 esac
