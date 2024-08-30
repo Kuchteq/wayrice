@@ -5,7 +5,7 @@ PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 
 # Before a heavy script, just put zsh-defer before to not drag down the initial prompt process
 # Better yet, put it in the lazy-load function as calling zsh-defer multiple times also impacts performance
-source ~/.config/zsh/plugins/zsh-defer/zsh-defer.plugin.zsh
+source /usr/share/zsh/plugins/zsh-defer/zsh-defer.plugin.zsh
 
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
