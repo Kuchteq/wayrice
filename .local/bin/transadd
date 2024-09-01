@@ -3,7 +3,16 @@
 # Mimeapp script for adding torrent to transmission-daemon, but will also start the daemon first if not running.
 
 # transmission-daemon sometimes fails to take remote requests in its first moments, hence the sleep.
+remotetorrenting=false
+remoteuser=example@example.com
 
-pidof transmission-daemon >/dev/null || (transmission-daemon && notify-send "Starting transmission daemon..." && sleep 3 && pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}")
-
-transmission-remote -a "$@" && notify-send "󰴾 Torrent added."
+if $remotetorrenting; then
+        if ssh $remoteuser transmission-remote -a "'$1'"; then
+                sb-notifier -m "󰴾 Torrent added."
+        else
+                sb-notifier -m "󱧝 Failed adding torrent"
+        fi
+else
+        pidof transmission-daemon >/dev/null || (transmission-daemon && sb-notifier -m "Starting transmission daemon..." && sleep 3)
+        transmission-remote -a "$@" && sb-notifier -m "󰴾 Torrent added."
+fi

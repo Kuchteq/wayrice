@@ -6,13 +6,15 @@ no  ${XDG_DOCUMENTS_DIR:-$HOME/doc/notes}
 ed  $HOME/edu
 in  ${XDG_DOWNLOAD_DIR:-$HOME/inc}
 me  ${XDG_MEDIA_DIR:-$HOME/med}
+pic  ${XDG_MEDIA_DIR:-$HOME/med/pics}
+mov  ${XDG_MEDIA_DIR:-$HOME/med/movies}
 so  ${XDG_PROJECTS_DIR:-$HOME/src} # so like source
 cf  ${XDG_CONFIG_HOME:-$HOME/.config}
 se  $HOME/.local/bin 
 src $HOME/.local/src
 pat $HOME/.local/src/patches
 sa $HOME/.local/share
-sc /home/maniu/.local/share/captures
+sc $HOME/.local/share/captures
 lo $HOME/.local
 cac ${XDG_CACHE_HOME:-$HOME/.cache}
 mn  /mnt
