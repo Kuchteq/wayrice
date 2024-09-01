@@ -74,6 +74,5 @@ source "$XDG_CONFIG_HOME/bemenu/bemenurc" # bemenu setting
 export PRIMARY_COLOR="B400B4"
 export PREFERRED_GTK_THEME_LIGHT="Arc"
 export PREFERRED_GTK_THEME_DARK="Arc-Dark"
-export XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$XDG_DATA_DIRS"
 # Start graphical server on user's current tty if not already running.
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s dwl >/dev/null 2>&1 && exec startw
