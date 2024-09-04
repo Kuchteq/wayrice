@@ -19,11 +19,11 @@ for battery in /sys/class/power_supply/BAT?*; do
 	[ "$status" = "d" ] && [ "$capacity" -le 50 ] && fin="  "
 	[ "$status" = "d" ] && [ "$capacity" -le 33 ] && fin="  "
 	[ "$status" = "d" ] && [ "$capacity" -le 12 ] && warn="❗ "
-
-        cpupolicy="$(cpupower frequency-info -p | grep -o "powersave\|performance")"
+        
         power=""
-        if [ "$cpupolicy" = "performance" ]; then
-                power="󱀚 "
+        if command -v cpupower >/dev/null; then
+                cpupolicy="$(cpupower frequency-info -p | grep -o "powersave\|performance")"
+                [ "$cpupolicy" = "performance" ] && power="󱀚 "
         fi
 	# Prints the info
 	printf "%s%s%s%d%%"  "$power" "$fin" "$warn" "$capacity"; unset warn
