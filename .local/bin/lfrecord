@@ -6,6 +6,12 @@ export basedir="$PWD"
 lfbasedir=~/.config/lf
 wrongdevice=false
 
+if ! command -v arecord >/dev/null; then
+        echo -e "\x1b[31;1m No arecord found, make sure to install alsa-utils package, sound recording won't work without it.\n \x1b[33mWould you like to install it? (y/n)\x1b[m"
+        read ans
+        [ "$ans" = "y" ] && sudo pacman -S alsa-utils
+fi
+
 if [ -z "$RECORDER_SINK" ]; then
         notify-send "Devices for recording:" "$(wpctl status | sed -n -e '/Audio/,/Streams/ p' | grep -o ' Sink\| Source\|\*.*')"
 else
