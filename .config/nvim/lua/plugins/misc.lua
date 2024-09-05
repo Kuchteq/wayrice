@@ -46,7 +46,7 @@ return {
                 commit = 'e76cb03',
                 branch = "harpoon2",
                 keys = {
-                        { " ", function()
+                        { "␣", function()
                                 require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
                         end },
                         { "µ", function()

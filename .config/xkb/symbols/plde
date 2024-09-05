@@ -107,7 +107,7 @@ xkb_symbols "basic" {
     key <AB08>	{ [     comma,       less, lessthanequal,    multiply ]	};
     key <AB09>	{ [    period,    greater, greaterthanequal, division ]	};
 
-    key <SPCE>	{ [     space,      space, nobreakspace, nobreakspace ]	};
+    key <SPCE>	{ [     space,      space,  U2423,           U2423    ] };
     key <BKSL>	{ [     backslash,      bar, Greek_rho, nobreakspace ]	};
     key <AB10>	{ [     slash,      question, bar, Greek_rho ]	};
     key  <TAB> { [       Tab,  ISO_Left_Tab, U2022,       U221E       ] };
