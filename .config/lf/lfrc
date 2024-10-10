@@ -212,7 +212,8 @@ cmd convertToFormat %{{
           echo -e "Convert to: $(sed 's/\\n/ /g'  <<< $extensions): "
           read ans
     else 
-          ans=$(printf "$extensions" | tofi -p "Convert to: " 2>/dev/null)
+          #ans=$(printf "$extensions" | tofi -p "Convert to: " 2>/dev/null)
+          ans=$(printf "$extensions" | tofi 2>/dev/null)
     fi
     out="$base.$ans"
     convertcmd "$f" "$out"
@@ -238,6 +239,11 @@ cmd quitfreeze ${{
      echo -n "$id" > "$LAST_DIR_PATH"   
      echo -n " $PWD" >> "$LAST_DIR_PATH"   
      kill -TSTP $PPID
+}}
+
+cmd gototmp ${{
+  [ ! -d "/tmp/$USER-tmp" ] && mkdir "/tmp/$USER-tmp" 
+  lf -remote "send $id cd \"/tmp/$USER-tmp\""
 }}
 
 cmd tag-clear :tag; tag-toggle
@@ -313,6 +319,7 @@ map ee $nvim -c ":lua startInDebug()"
 map ei $nvim $f
 map _ &dragon-drop -x "$f"
 map • shell-async # <altgr+space> far easier to reach than &
+map gtm gototmp
 
 cmd on-quit-freeze map q quitfreeze 
 cmd on-quit &{{ marks=~/.local/share/lf/marks; sed -i "/^q/d" "$marks"; echo "q:$PWD" >> "$marks"; }}
