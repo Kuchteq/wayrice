@@ -241,10 +241,11 @@ cmd quitfreeze ${{
      kill -TSTP $PPID
 }}
 
-cmd gototmp ${{
+cmd gototmp &{{
   [ ! -d "/tmp/$USER-tmp" ] && mkdir "/tmp/$USER-tmp" 
   lf -remote "send $id cd \"/tmp/$USER-tmp\""
 }}
+
 
 cmd tag-clear :tag; tag-toggle
 
@@ -320,6 +321,7 @@ map ei $nvim $f
 map _ &dragon-drop -x "$f"
 map • shell-async # <altgr+space> far easier to reach than &
 map gtm gototmp
+map at cd ~/atm # there's also gat since atm isn't we can save one keystroke
 
 cmd on-quit-freeze map q quitfreeze 
 cmd on-quit &{{ marks=~/.local/share/lf/marks; sed -i "/^q/d" "$marks"; echo "q:$PWD" >> "$marks"; }}

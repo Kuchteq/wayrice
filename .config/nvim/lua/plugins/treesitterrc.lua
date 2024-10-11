@@ -28,7 +28,7 @@ return {
                         "regex",
                         "tsx",
                         "typescript",
-                        "yaml",
+                        "yaml"
                 },
 
                 textobjects = {
@@ -76,12 +76,10 @@ return {
                                         ['<c-h>'] = "@parameter.inner"
                                 }
                         },
-                },
-                autotag = {
-                        enable = true,
                 }
         },
         config = function(_, opts)
                 require("nvim-treesitter.configs").setup(opts)
+                require('nvim-ts-autotag').setup()
         end
 }
