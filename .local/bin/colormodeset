@@ -6,19 +6,22 @@ colors_end='\[text-bindings\]'
 theme_suffix="${1:-}"
 [ -n "$1" ] && theme_suffix="_$1" || theme_suffix="" # specifying no argument makes it follow the default foot.ini
 config_path="$XDG_CONFIG_HOME/foot/foot$theme_suffix.ini"
-eval $(sed -n  -e "s/#.*//" -e "/$colors_start/,/$colors_end/{//!p}" "$config_path" |
-       grep  '\(\(regular\|bright\)[0-7] *\|alpha\|background\|foreground\)=[[:alnum:]]*\.*[0-9]*'
-)
+# first remove comments with s/#.*//, then select the range between colors and text-bindings,
+# pass to grep to make sure we are only getting the color variables and evaluate it to make them 
+# into bash vars that are used down in cset. If you try running it inside interactive shell,
+# it will most likely fail due to //!p part as ! is interpreted as history expansion.
+eval $(sed -n -e "s/#.*//" -e "/$colors_start/,/$colors_end/{//!p}" "$config_path" |
+        grep '\(\(regular\|bright\)[0-7] *\|alpha\|background\|foreground\)=[[:alnum:]]*\.*[0-9]*')
 bg_converted_alpha=$(printf "%.2f" $alpha | sed -e "s/0\.0*//" -e "s/\.//")
 bg_in_format="[$bg_converted_alpha]#$background"
 
 cset() {
-  ANSI=$1
-  RGB=$2
-  R=${RGB:0:2}
-  G=${RGB:2:2}
-  B=${RGB:4:2}
-  echo -ne "\x1b]4;$ANSI;rgb:$R/$G/$B\a"
+        ANSI=$1
+        RGB=$2
+        R=${RGB:0:2}
+        G=${RGB:2:2}
+        B=${RGB:4:2}
+        echo -ne "\x1b]4;$ANSI;rgb:$R/$G/$B\a"
 }
 
 echo -ne "\x1b]11;$bg_in_format\a"

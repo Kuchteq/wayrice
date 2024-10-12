@@ -29,10 +29,8 @@ replace_values() {
         sed -i "s/\]11;\[.*\]#$2/\]11;[$1]#$2/" "$HOME/.config/nvim/lua/plugins/misc.lua"
 }
 
-light_background_color="ffffff"
-dark_background_color="ffffff"
+light_background_color="$(grep 'background=' ~/.config/foot/foot_light.ini | cut -d = -f2)"
+dark_background_color="$(grep 'background=' ~/.config/foot/foot_dark.ini | cut -d = -f2)"
 
 [ -n "$dark_value" ] && replace_values "$dark_value" "$dark_background_color" "dark"
 [ -n "$light_value" ] && replace_values "$light_value" "$light_background_color" "light"
-
-
