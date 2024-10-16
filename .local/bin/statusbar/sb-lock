@@ -4,5 +4,5 @@ if pgrep swayidle >/dev/null 2>&1; then
   killall swayidle > /dev/null
   echo ""
 else
-  setsid -f swayidle timeout 240 sus > /dev/null 
+  setsid -f swayidle -w timeout 240 sus > /dev/null 
 fi
