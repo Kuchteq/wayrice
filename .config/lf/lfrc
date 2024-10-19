@@ -24,7 +24,7 @@ on-cd
 
 cmd open ${{
     case $(file --mime-type "$(readlink -f $f)" -b) in
-	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
+	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) setsid -f xdg-open $fx >/dev/null 2>&1 ;;
 	image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
         text/*|application/json|application/javascript|inode/x-empty) $EDITOR $fx;;
 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
@@ -318,6 +318,7 @@ map C $git diff $f
 map e
 map ee $nvim -c ":lua startInDebug()"
 map ei $nvim $f
+map ef $exiftool $f | bat --file-name "$f" --language YAML --paging always
 map _ &dragon-drop -x "$f"
 map • shell-async # <altgr+space> far easier to reach than &
 map gtm gototmp
