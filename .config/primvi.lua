@@ -6,6 +6,7 @@ vim.o.showcmd = false
 vim.o.showmode = false
 vim.o.laststatus = 1
 vim.o.clipboard = "unnamedplus"
+vim.o.cmdheight = 0
 
 vim.o.background=nil -- Set it for transparency
 vim.api.nvim_set_hl(0, "StatusLine", {bg = nil, fg = nil, sp = nil})
