@@ -35,8 +35,9 @@ lfcd() {
     echo -e '\e[2A'
     setopt nojobprint nopwdprint >/dev/null 2>&1
     NEED_LFCD_SYNC=true
+    echo -ne "\033]176;lfcd\007"
     if jobs "$LFCD_JOB_ID" >/dev/null 2>&1; then
-            echo -ne "\033]0; $PWD\007"
+            echo -ne "\033]0;$PWD\007"
             lf -remote "send $LF_INSTANCE_ID cd \"$PWD\"; on-cd" 
             fg "$LFCD_JOB_ID"
     else 
@@ -45,6 +46,7 @@ lfcd() {
             unset LFCD_FOCUSPATH
             lf --command on-quit-freeze -last-dir-path="$LAST_DIR_PATH" "${@}"
     fi
+    echo -ne "\033]176;\007"
     unsetopt nojobprint nopwdprint >/dev/null 2>&1
 }
 # use a nice folder unicode character as an alias to lfcd so that useless lfcd calls don't pollute the prompt

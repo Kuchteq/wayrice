@@ -26,6 +26,7 @@ vim.opt.breakindent = true
 -- Modify the indentation levels there if they are overwrittien.
 vim.opt.inccommand = 'split'
 vim.g.do_filetype_lua = 1
+vim.o.writebackup = false
 
 -- AUTOCMDS
 local sync_dir_with_shell = function()
@@ -44,8 +45,21 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
                         vim.o.titlestring = "Shell at: " .. vim.fn.getcwd();
                         vim.bo.filetype = "bash"
                 else
+                        vim.api.nvim_chan_send(2, '\x1b]176;nvim\x1b')
                         vim.api.nvim_command("cd %:p:h")
                         sync_dir_with_shell()
+                end
+        end
+})
+vim.api.nvim_create_autocmd("VimLeave", {
+        callback = function()
+                -- id env variable gets passed to children of lf process
+                local parent_lf_id = os.getenv("id")
+                if parent_lf_id == nil then
+                        vim.api.nvim_chan_send(2, '\x1b]176;\x1b')
+                else
+                        vim.api.nvim_chan_send(2, '\x1b]176;lfcd\x1b')
+                        os.execute("lf -remote 'send " .. parent_lf_id .. " on-cd'")
                 end
         end
 })
@@ -76,8 +90,8 @@ vim.keymap.set("n", "<C-q>", ":bd<CR>", { silent = true })
 vim.keymap.set("n", "ə", ":bn<CR>", { silent = true })
 vim.keymap.set("n", "…", ":bp<CR>", { silent = true })
 vim.keymap.set("n", "ć", ":only<CR>", { silent = true })
-vim.keymap.set("n", "<c-i>", "<c-i>", { silent = true, noremap=true, expr = false, desc = "FIX: Prevent TAB from behaving like <C-i>, as they share the same internal code",})
-vim.keymap.set("n", "<Tab>", "<c-6>", { silent = true, noremap=true, expr = false }) -- middle of the keyboard with shift is akward to press
+vim.keymap.set("n", "<c-i>", "<c-i>", { silent = true, noremap = true, expr = false, desc = "FIX: Prevent TAB from behaving like <C-i>, as they share the same internal code", })
+vim.keymap.set("n", "<Tab>", "<c-6>", { silent = true, noremap = true, expr = false }) -- middle of the keyboard with shift is akward to press
 vim.keymap.set("n", "≠", function() require("harpoon"):list():select(1) end, { silent = true })
 vim.keymap.set("n", "²", function() require("harpoon"):list():select(2) end, { silent = true })
 vim.keymap.set("n", "³", function() require("harpoon"):list():select(3) end, { silent = true })
@@ -108,7 +122,7 @@ vim.keymap.set("n", "<leader>p", ":!opout '%:p'<CR>")
 vim.keymap.set("n", "<leader>g", ":!setsid -f $TERMINAL lazygit>/dev/null 2>&1<CR><ESC>")
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<c-9>', '%')
-vim.keymap.set('n', '<F3>', function () vim.lsp.buf.format() end)
+vim.keymap.set('n', '<F3>', function() vim.lsp.buf.format() end)
 
 -- Save file as sudo on files that require root permission with the command w!!
 vim.cmd("cabbrev w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!")
