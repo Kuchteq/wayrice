@@ -1,26 +1,23 @@
 #!/bin/zsh
-text="i - Note \\ne - translate\\nh - Htop\\nb - Bluetooth\\nt - Tmux\\nn - WiFi\\ns - Server Term\\nr\\nv - Home Server\\nc - Server Files \\nm - Man \\nq - QR View\\nu - Calc"
+text="i - Note \\ne - translate\\nh - Htop\\nb - Bluetooth\\nt - Tmux\\nn - WiFi\\ns - Default SSH\\nr - Choose SSH\\nc - Server Files \\nm - Man\\nu - Calc"
 
 font_size=15
-height=$(($font_size * 4))
-width=$(($(echo -e $text | wc -m) * 10))
-selected=${$(printf $text | tofi --auto-accept-single=true  --matching-algorithm=prefix --prompt-text "Quick: " --width "$width" --height "$height" --font-size $font_size -c "$XDG_CONFIG_HOME/tofi/topPrompt.ini"):0:1}
+height=$(($font_size * 4 - 10))
+width=$(($(echo -e $text | wc -m) * 13))
+selected=${$(printf $text | tofi --auto-accept-single=true  --matching-algorithm=prefix --prompt-text "Quick: " --width "$width" --height "$height" --font-size $font_size -c "$XDG_CONFIG_HOME/tofi/quickact-prompt.ini"):0:1}
 DATE=$(date +%Y-%m-%dT%H:%M:%S)
 
 case "$selected" in
      i) $TERMINAL -o "main.pad=20x20 center" -a "floatermid" -T "Float Note on $DATE" -W "60x14" primvi -c 'startinsert' ;;
-     w) linguee ;;
      h) $TERMINAL htop ;;
      t) $TERMINAL tmux a ;;
-     b) sudo systemctl start bluetooth && $TERMINAL -a "floateright" -T "Bluetuith" -W "60x20" bluetuith ;;
+     b) sudo systemctl start bluetoothd && $TERMINAL -a "floateright" -T "Bluetuith" -W "60x20" bluetuith ;;
      e) $TERMINAL -T "Translate" -a "floateright" -W "60x20" trans -v -I ;;
      s) serverterm;;
      r) serverterm -c;;
-     v) menago ;;
      m) bman ;;
      c) serverfilesterm ;;
      n) networkmanager_dmenu ;;
      q) qrshare -c ;;
      u) $TERMINAL -o 'text-bindings.bdis()\x0a=Control+b' -o 'text-bindings.flip()\x0a=Control+f' -T "calc" -a "floateright" -W "50x20" pycalc;;
 esac
-#so times 16 it's the width
