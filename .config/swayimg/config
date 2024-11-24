@@ -1,0 +1,19 @@
+[general]
+app_id = img
+
+[viewer]
+scale = fit
+window = #000000DA
+
+[keys.viewer]
+h = step_left 10
+l = step_right 10
+k = step_up 10
+j = step_down 10
+s = zoom width
+a = zoom height
+Ctrl+a = antialiasing
+Shift+A = animation
+
+n = next_file
+p = prev_file

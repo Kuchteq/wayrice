@@ -25,16 +25,10 @@ cmd open ${{
     case $(file --mime-type "$(readlink -f $f)" -b) in
 	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) setsid -f xdg-open $fx >/dev/null 2>&1 ;;
 	image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+        text/x-shellscript) if [ "$f" = /mnt/nfs/connect ]; then ./connect; lf -remote "send $id reload"; else $EDITOR "$f"; fi;;
         text/*|application/json|application/javascript|inode/x-empty) $EDITOR $fx;;
 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
-	image/svg+xml) imv $f ;;
-	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|avif\|webp\|heic\|heif\|tif\|pbm\|ppm\|ico\)\(_large\)*$" |
-		setsid -f imv 2>/dev/null | while read -r file; do
-			[ -z "$file" ] && continue
-			lf -remote "send select \"$file\""
-			lf -remote "send toggle"
-		done &
-		;;
+	image/*) setsid -f swayimg $f /dev/null 2>&1 ;;
 	audio/*) mpv --audio-display=no $f ;;
 	video/*|application/vnd.rn-realmedia) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
 	application/pdf|application/vnd.djvu|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
@@ -46,7 +40,7 @@ cmd open ${{
 	application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template) setsid -f lodraw $fx >/dev/null 2>&1 ;;
 	application/vnd.oasis.opendocument.formula) setsid -f lomath $fx >/dev/null 2>&1 ;;
 	application/vnd.oasis.opendocument.database) setsid -f lobase $fx >/dev/null 2>&1 ;;
-	application/vnd.sqlite3) lazysql ;;
+	application/vnd.sqlite3) lazysql "$f" ;;
         application/zip|application/x-xz) echo "File $fx is an archive. Would you like to unarchive it?"; read ans; [ "$ans" = "y" ] && lf -remote "send $id unarchive \"$f\"";;
         *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
     esac
@@ -309,6 +303,7 @@ map o $mimeopen -a "$f" 2>/dev/null
 map <tab> push ''
 map gcl $git clone "$(wl-paste)"
 map g/ cd /
+map gv $lf -remote "send $id select \"$(env | fzf -i | cut -d= -f2)\"" # fuzzy cd by env variable
 map i inspect
 map © &lf -remote "send $id cd '$(git rev-parse --show-toplevel)'"
 
