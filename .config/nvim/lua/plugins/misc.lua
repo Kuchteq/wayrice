@@ -26,7 +26,7 @@ return {
                                 local booled_systheme = SYSTHEME == "light" and true or false;
                                 if booled_systheme then
                                         vim.opt.background = "light"
-                                        vim.api.nvim_chan_send(2, '\x1b]11;[96]#ffffff\a') -- these are needed because when we toggle 
+                                        vim.api.nvim_chan_send(2, '\x1b]11;[96]#ffffff\a') -- these are needed because when we toggle
                                         -- lf term or any terminal emulator inside vim for that matter, things start looking badly
                                 else
                                         vim.opt.background = "dark"
@@ -52,8 +52,11 @@ return {
                         { "µ", function()
                                 require("harpoon"):list():add()
                         end },
+                        { "≠", function() require("harpoon"):list():select(1) end, { silent = true } },
+                        { "²", function() require("harpoon"):list():select(2) end, { silent = true } },
+                        { "³", function() require("harpoon"):list():select(3) end, { silent = true } },
+                        { "¢", function() require("harpoon"):list():select(4) end, { silent = true } }
                 },
-                event = "VeryLazy",
                 config = function()
                         local harpoon = require("harpoon")
                         harpoon:setup({
@@ -66,13 +69,13 @@ return {
                                 },
                         })
                 end,
-                lazy = false
         },
         {
                 "nvim-lualine/lualine.nvim",
+                event = "VeryLazy",
                 config = function()
                         require('lualine').setup({
-                                sections = { lualine_c = { { function() if vim.diagnostic.is_enabled() then return ""; else return  " " end end, color = { fg = "#005577", gui = "bold" } }, "filename", { "aerial" } } },
+                                sections = { lualine_c = { { function() if vim.diagnostic.is_enabled() then return ""; else return " " end end, color = { fg = "#005577", gui = "bold" } }, "filename", { "aerial" } } },
                                 options = {
                                         section_separators = { left = '', right = '' },
                                         theme = "everblush"
@@ -160,5 +163,17 @@ return {
                 config = function()
                         require("build").setup();
                 end
-        }
+        },
+        {
+                "lervag/vimtex",
+                lazy = false, -- we don't want to lazy load VimTeX
+                -- tag = "v2.15", -- uncomment to pin to a specific release
+                init = function()
+                        vim.g.vimtex_view_method = "zathura"
+                        vim.g.vimtex_compiler_latexmk = {
+                                aux_dir = "/tmp/vimtex_build",
+                                out_dir = "/tmp/vimtex_build"
+                        }
+                end
+        },
 }
