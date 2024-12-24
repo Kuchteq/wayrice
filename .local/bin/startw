@@ -1,9 +1,9 @@
 #!/bin/sh
 
-exec dwl -s 'dwlb -font "Hack:size=12" | \
-(pidof pipewire || pipewire) <&- | \
-themeset <&- | \
-dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP BEMENU_OPTS <&- | \
+exec dwl -s "dwlb -font Hack:size=12 | \
+themetime <&- | \
+dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP BEMENU_OPTS <&- | \
 (pidof kanshi || kanshi) <&- | \
+(pidof pipewire || pipewire) <&- | \
 (pidof fnott || fnott) <&- | \
-(sleep 0.5 && someblocks -p | dwlb -status-stdin all)'
+(sleep 0.5 && someblocks -p | dwlb -status-stdin all)"

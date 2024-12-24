@@ -2,62 +2,41 @@
 
 #main script that takes care of theming (however it can't really be too centralized,
 #as oftentimes theming requires some workarounds. This scripts also describes those.
-hour=$(date +%H)
-
-#grab the current instance, 
 currentBgInstance=$(pgrep swaybg)
 
 setup() {
 	#the "$XDG_RUNTIME_DIR/theme" file is the one from which many programs read what is the current theme. These programs include: 
-	#nvim - reading and handling is done under lua/plugins/misc.lua in vimoblush decleration
-	#foot - needs a wrapper script called "foothe" which overrides the colors of foot.ini using --override arguments. Default config that has dark scheme defined. Because it is ran in server mode, every new instance doesn't fetch a clean foot.ini and not every app is ran with a zsh subshell so .zshrc can't trigger its colorchanging capabilities (and even if it could you would get these weird flashes of the config's first color) hence the wrapper
-	#zsh - for dynamic updates of shells the TRAPUSR1 function which reads "$XDG_RUNTIME_DIR/theme" is defined in the config that is then triggered here by special pkill (see down)
  	echo $theme > "$XDG_RUNTIME_DIR/theme"
 	newGtkTheme=$PREFERRED_GTK_THEME_LIGHT && [[ $theme == "dark" ]] && newGtkTheme=$PREFERRED_GTK_THEME_DARK
 	gsettings set org.gnome.desktop.interface color-scheme "prefer-$theme"
+        dconf write /org/gnome/desktop/interface/gtk-theme "'$newGtkTheme'"
 
  	setsid -f swaybg --image ~/.local/share/wallpapers/wallpaper_$theme.jpg >/dev/null 2>&1
  	ln -sf "$XDG_CONFIG_HOME/bat/config_$theme" "$XDG_CONFIG_HOME/bat/config"
-	# though we use footserver, we still link the theme because regular foot is used for xdg-desktop-portal. 
-	# Unfortunately that means we need to change the light theme in two places :\\
  	ln -sf "$XDG_CONFIG_HOME/foot/foot_$theme.ini" "$XDG_CONFIG_HOME/foot/foot.ini"
+
  	# if it is the first time, it won't kill anything since there's nothing
  	[ -n "$currentBgInstance" ] && kill $currentBgInstance
+
+	#zsh - for dynamic updates of shells the TRAPUSR1 function which reads "$XDG_RUNTIME_DIR/theme" is defined in the config that is then triggered here by special pkill (see down)
  	pkill -USR1 zsh
+
+	#nvim - reading and handling is done under lua/plugins/misc.lua in vimoblush decleration
 	for file in $(ls $XDG_RUNTIME_DIR/nvim.*); do
 		nvim --server "$file" --remote-send "<cmd>:lua themeset('$theme')<CR>"
-	    # Perform actions on each file here
 	done >/dev/null 2>&1
 
-	for file in $(ls $XDG_RUNTIME_DIR/hurlui.*); do
-                nvim --server "$file" --remote-send "<cmd>:lua APPLY_SYSTEM_THEME()<CR>"
-	    # Perform actions on each file here
-	done >/dev/null 2>&1
 	lf -remote "send \$colormodeset $theme"
-
-	gsettings set org.gnome.desktop.interface gtk-theme "$newGtkTheme"
-
 }
 
-# -z true if doesnt exist
-if [ -z "$1" ]; then
-	if (( ${hour#0} < 21 && ${hour#0} > 6 )); then
-		theme="light"
-	else
-		theme="dark"
-	fi
+
+# opposite theme
+if [ "$1" = "-o" ]; then		
+        lastTheme=$(< "$XDG_RUNTIME_DIR/theme")
+        theme=$([ "$lastTheme" = light ] && echo dark || echo light)
 else
-	# -o as in opposite
-	if [ "$1" = "-o" ]; then		
-		lastTheme=$(< "$XDG_RUNTIME_DIR/theme")
-		if [ $lastTheme = "light" ]; then
-			theme="dark"
-		else
-			theme="light"
-		fi
-	else
-		theme="$1"
-	fi
+        theme="$1"
+        [ "$1" = "light" ] || [ "$1" = "dark" ] || { echo "Theme can only be dark or light"; exit 1; }
 
 fi
 
