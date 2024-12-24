@@ -3,11 +3,12 @@
 for battery in /sys/class/power_supply/BAT?*; do
 	# If non-first battery, print a space separator.
 	[ -n "${capacity+x}" ] && printf " "
+        last_critical_path="$XDG_RUNTIME_DIR/last-battery-notif"
 	# Sets up the status and capacity
 	case "$(cat "$battery/status" 2>&1)" in
 		"Full") fin="󱊦 " ;;
 		"Discharging") status="d" ;;
-		"Charging") fin="🔌 " ;;
+		"Charging") fin="🔌 "; [ -f $last_critical_path ] && rm "$last_critical_path" ;;
 		"Not charging") fin="󰏝 " ;;
 		"Unknown") fin="󰂑 " ;;
 		*) exit 1 ;;
@@ -20,6 +21,18 @@ for battery in /sys/class/power_supply/BAT?*; do
 	[ "$status" = "d" ] && [ "$capacity" -le 33 ] && fin="  "
 	[ "$status" = "d" ] && [ "$capacity" -le 12 ] && warn="❗ "
         
+        if [ "$status" = "d" ] && [ "$capacity" -le 5 ]; then
+                [ -f $last_critical_path ] && previous=$(cat $last_critical_path) || previous=-1
+                case $capacity in
+                        5|2|1|-1)
+                                if [ "$previous" -ne "$capacity" ]; then
+                                        echo -n "󱃍 battery low at $capacity%" | cooltify &
+                                        echo -n "$capacity" > $last_critical_path
+                                fi
+                                ;;
+                esac
+        fi
+
         power=""
         if command -v cpupower >/dev/null; then
                 cpupolicy="$(cpupower frequency-info -p | grep -o "powersave\|performance")"
