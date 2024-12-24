@@ -1,5 +1,5 @@
-vim.keymap.set('n', '<F2>', ':VimtexCompile<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<c-f>', ':VimtexView<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<F2>', ':VimtexCompile<CR>', { noremap = true, silent = true, buffer = true })
+vim.keymap.set('n', '<c-f>', ':VimtexView<CR>', { noremap = true, silent = true, buffer = true })
 vim.api.nvim_create_autocmd("BufWinLeave", {
   pattern = "*.tex",
   callback = function()

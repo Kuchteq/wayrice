@@ -1,6 +1,5 @@
 local autocmd_id = -1
-
-vim.bo.makeprg = "pandoc % -t typst -o - \\| typst compile - '%:t:r'.pdf"
+vim.bo.makeprg = "typst compile %"
 vim.keymap.set('n', '<F2>', function()
         if autocmd_id ~= -1 then
                 vim.api.nvim_del_autocmd(autocmd_id)
@@ -8,7 +7,7 @@ vim.keymap.set('n', '<F2>', function()
                 vim.fn.jobstart({ "sb-notifier", "-m", " stopped " })
         else
                 autocmd_id = vim.api.nvim_create_autocmd("BufWritePost", {
-                        pattern = "*.md",
+                        pattern = "*.typ",
                         command = "silent make"
                 })
                 vim.fn.jobstart({ "sb-notifier", "-m", " started " })
@@ -21,4 +20,4 @@ vim.keymap.set('n', '<F2>', function()
                 })
                 vim.cmd("write")
         end
-end, { noremap = true, silent = true, buffer=true })
+end, { noremap = true, silent = true, buffer = true })
