@@ -1,5 +1,10 @@
 local autocmd_id = -1
 vim.bo.makeprg = "typst compile %"
+vim.cmd(":onoremap <silent> i$ :<c-u>normal! T$vt$<cr>")
+vim.cmd(":onoremap <silent> a$ :<c-u>normal! F$vf$<cr>")
+vim.cmd(":vnoremap i$ T$ot$<cr>")
+vim.cmd(":vnoremap a$ T$ot$<cr>")
+
 vim.keymap.set('n', '<F2>', function()
         if autocmd_id ~= -1 then
                 vim.api.nvim_del_autocmd(autocmd_id)

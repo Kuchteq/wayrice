@@ -1,0 +1,5 @@
+#!/bin/sh
+
+[ -d /tmp/vimtex_build ] || mkdir /tmp/vimtex_build
+
+exec podman run --net=none --rm -i -v "$PWD":/workdir -v /tmp/vimtex_build:/tmp/vimtex_build docker.io/texlive/texlive:latest latexmk "$@"

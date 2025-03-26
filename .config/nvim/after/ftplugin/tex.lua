@@ -1,5 +1,9 @@
+vim.opt.linebreak = true
 vim.keymap.set('n', '<F2>', ':VimtexCompile<CR>', { noremap = true, silent = true, buffer = true })
 vim.keymap.set('n', '<c-f>', ':VimtexView<CR>', { noremap = true, silent = true, buffer = true })
+vim.cmd(":onoremap <silent> i$ :<c-u>normal! T$vt$<cr>:vnoremap i$ T$ot$")
+vim.cmd(":onoremap <silent> a$ :<c-u>normal! F$vf$<cr>:vnoremap a$ F$of$")
+
 vim.api.nvim_create_autocmd("BufWinLeave", {
   pattern = "*.tex",
   callback = function()
