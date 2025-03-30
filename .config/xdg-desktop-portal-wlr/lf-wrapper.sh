@@ -38,11 +38,10 @@ paddingsize='-o main.pad=10x10 center'
 
 if [ "$save" = "1" ]; then
 	#make the saving appear in the last path
-	set -- "$(dirname "$path")"
         FILENAME="$(basename "$path")"
         $termcmd "$paddingsize" -a "floatermid" "$termsize" $cmd \
         -command "set user_filename '$FILENAME'" \
-        -command "source $lfxdgbasedir/save" "$@"
+        -command "source $lfxdgbasedir/save" "$(dirname "$path")"
 elif [ "$directory" = "1" ] && [ "$multiple" = "1" ] ; then
             $termcmd "$paddingsize" -a "floatermid" "$termsize" $cmd \
             -command "source $lfxdgbasedir/selectanything" 

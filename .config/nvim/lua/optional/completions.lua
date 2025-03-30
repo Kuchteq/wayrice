@@ -6,12 +6,10 @@ return {
         dependencies = {
                 {
                         'hrsh7th/cmp-nvim-lsp',
-                        dependencies = {
-                                'rafamadriz/friendly-snippets',
-                        }
                 },
                 'saadparwaiz1/cmp_luasnip',
                 'hrsh7th/cmp-nvim-lsp-signature-help',
+                "micangl/cmp-vimtex",
                 {
                         'L3MON4D3/LuaSnip',
                         config = function()
@@ -38,7 +36,7 @@ return {
                                         require('luasnip').lsp_expand(args.body)
                                 end,
                         },
-                        sources = cmp.config.sources({ { name = 'nvim_lsp' }, { name = 'luasnip' }, { name = "nvim_lsp_signature_help" }, },
+                        sources = cmp.config.sources({ { name = 'nvim_lsp' }, { name = 'luasnip' }, { name = "nvim_lsp_signature_help" }, { name = 'vimtex', },},
                                 { { name = 'buffer' },    }),
                         window = {
                                 completion = cmp.config.window.bordered(),

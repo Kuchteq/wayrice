@@ -131,6 +131,7 @@ fi             # FILE
 *.swift         
 *.xcplayground  
 *.tex           
+*.typ           󰰤
 *.r             
 *.rproj         
 *.sol           󰶜
@@ -350,6 +351,7 @@ Vagrantfile             
 ~/edu 󰸝
 ~/doc 󱔘
 ~/atm 󰋱 
+~/mnt 󰨣
 
 ~/med/movies 󱜐
 ~/med/series 󱄥

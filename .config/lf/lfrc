@@ -44,6 +44,7 @@ cmd open ${{
         application/zip|application/x-xz) echo "File $fx is an archive. Would you like to unarchive it?"; read ans; [ "$ans" = "y" ] && lf -remote "send $id unarchive \"$f\"";;
         *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
     esac
+    echo -ne "\033]7;file://$HOSTNAME$PWD\033\033]0;$PWD\033" > /dev/tty
 }}
 
 cmd mkdir %{{
