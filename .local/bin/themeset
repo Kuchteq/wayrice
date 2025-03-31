@@ -14,6 +14,7 @@ setup() {
  	setsid -f swaybg --image ~/.local/share/wallpapers/wallpaper_$theme.jpg >/dev/null 2>&1
  	ln -sf "$XDG_CONFIG_HOME/bat/config_$theme" "$XDG_CONFIG_HOME/bat/config"
  	ln -sf "$XDG_CONFIG_HOME/foot/foot_$theme.ini" "$XDG_CONFIG_HOME/foot/foot.ini"
+        if [ "$theme" = "dark" ]; then sed -i "s/# set recolor/set recolor/" "$XDG_CONFIG_HOME/zathura/zathurarc"; else sed -i "s/set recolor/# set recolor/" "$XDG_CONFIG_HOME/zathura/zathurarc"; fi;
 
  	# if it is the first time, it won't kill anything since there's nothing
  	[ -n "$currentBgInstance" ] && kill $currentBgInstance
