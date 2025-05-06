@@ -28,9 +28,9 @@ if ( echo "$TYPE" | grep -q "PNG" ); then
 		(( text_width > 120 )) && W=120
 		(( text_height < 12 )) && H=12
 		(( text_height > 40 )) && H=40
-		$TERMINAL -o "main.pad=20x20 center" -T "ocr-$PREVIEWNAME" -W ""$W"x"$H"" primvi =(echo -e "$OCR_OUTPUT") #>/dev/null 2>&1
+		$TERMINAL -o "main.pad=20x20 center" -T "ocr-$PREVIEWNAME" -W ""$W"x"$H"" primvi =(printf "%s" "$OCR_OUTPUT") >/dev/null 2>&1
 	else
-		wl-paste | imv -s crop -W "$W" -H "$H" -w "$PREVIEWNAME" -
+		wl-paste | swayimg -w $W,$H -a "$PREVIEWNAME"  -
 	fi
 elif (echo $TYPE | grep -q "ASCII text" && wl-paste | grep -q "/Screenrecordings/recording_"); then
 	mpv $(wl-paste)
