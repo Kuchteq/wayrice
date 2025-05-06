@@ -4,6 +4,7 @@ set user_playback true
 set reverse
 set promptfmt "\033[41;1m recorder \033[0m:\033[33;1m%d\033[0m\033[1m%f\033[0m"
 
+
 cmd toggle-playback &{{
         if [ "$lf_user_playback" = "true" ]; then
                 lf -remote "send $id set user_playback false"
@@ -58,7 +59,7 @@ map <c-r> audio-recording
 
 cmd video-test ${{
         echo -e "\n\x1b[1;33mTesting! You should now see yourself.\x1b[0m "
-        ffmpeg  -y -f pulse -ac 2 -i default -f v4l2 -i /dev/video0 -vf "format=yuv420p" -f xv preview 
+        ffmpeg -i /dev/video0 -f nut -c:v rawvideo - | ffplay -vf setpts=0 -
 }}
 
 map <c-o> video-test
@@ -84,4 +85,3 @@ cmd video-recording ${{
 }}
 
 map <c-v> video-recording
-
