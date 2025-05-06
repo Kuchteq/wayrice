@@ -7,7 +7,7 @@ set shellopts '-eu'
 set ifs "\n"
 set scrolloff 10
 set icons
-set period 1
+set watch
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml:lost+found"
 set ratios 1:2:3
 set sixel
@@ -17,22 +17,27 @@ set promptfmt "\033[33;1m%u\033[32;1m@\033[34;1m%h\033[0m:\033[35;1m%d\033[0m\03
 set previewer '~/.config/lf/preview'
 # make sure changing directories updates the titlebar
 cmd on-cd &{{
-    echo -ne "\033]7;file://$HOSTNAME$PWD\033\033]0;$PWD\033" > /dev/tty
+    lf -remote "send $id tty-write \"\033]7;file://$HOSTNAME$PWD\033\033]0;$PWD\033\""
 }}
-on-cd
+cmd on-init :{{
+    on-cd
+}}
 
-cmd open ${{
+cmd open &{{
+    editoropen() {
+        lf -remote "send $id $ $EDITOR \"$@\""
+    }
     case $(file --mime-type "$(readlink -f $f)" -b) in
 	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) setsid -f xdg-open $fx >/dev/null 2>&1 ;;
 	image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
-        text/x-shellscript) if [ "$f" = /mnt/nfs/connect ]; then ./connect; lf -remote "send $id reload"; else $EDITOR "$f"; fi;;
-        text/*|application/json|application/javascript|inode/x-empty) $EDITOR $fx;;
+        text/x-shellscript) if [ "$f" = /mnt/nfs/connect ]; then ./connect; lf -remote "send $id reload"; else editoropen "$f"; fi;;
+        text/*|application/json|application/javascript|inode/x-empty|application/x-subrip) editoropen $fx;;
 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
 	image/*) setsid -f swayimg $f /dev/null 2>&1 ;;
 	audio/*) mpv --audio-display=no $f ;;
 	video/*|application/vnd.rn-realmedia) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
 	application/pdf|application/vnd.djvu|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
-	application/pgp-encrypted) $EDITOR $fx ;;
+	application/pgp-encrypted) editoropen $fx ;;
 	application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text) setsid -f lowriter $fx >/dev/null 2>&1 ;;
 	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/octet-stream|application/vnd.oasis.opendocument.spreadsheet|application/vnd.oasis.opendocument.spreadsheet-template) setsid -f localc $fx >/dev/null 2>&1 ;;
         application/x-sc) sc-im "$f";;
@@ -40,7 +45,7 @@ cmd open ${{
 	application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template) setsid -f lodraw $fx >/dev/null 2>&1 ;;
 	application/vnd.oasis.opendocument.formula) setsid -f lomath $fx >/dev/null 2>&1 ;;
 	application/vnd.oasis.opendocument.database) setsid -f lobase $fx >/dev/null 2>&1 ;;
-	application/vnd.sqlite3) lazysql "$f" ;;
+	application/vnd.sqlite3) lf -remote "send $id $ lazysql  \"$f\"" ;;
         application/zip|application/x-xz) echo "File $fx is an archive. Would you like to unarchive it?"; read ans; [ "$ans" = "y" ] && lf -remote "send $id unarchive \"$f\"";;
         *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
     esac
@@ -226,7 +231,46 @@ cmd transformResize %{{
         base="${f%.*}"
         printf "Desired size (120x120 format): "
         read size
-        convert "$f" -resize "$size" "${base}_$size.$ext"
+        out="${base}_$size.$ext"
+        convert "$f" -resize "$size" "$out"
+        lf -remote "send $id select \"$out\""
+}}
+
+cmd transformRotate %{{
+        if [[ "$(file -b --mime-type $f)" != image/* ]]; then
+                echo -ne "\033[41;1mFile is not an image"
+                exit 1
+        fi
+        ext="${f##*.}"
+        base="${f%.*}"
+        printf "Rotation angle: "
+        read angle
+        out="${base}_${angle}_rotated.$ext"
+        convert "$f" -rotate "$angle" "$out"
+        lf -remote "send $id select \"$out\""
+}}
+
+cmd transformCompress %{{
+        for f in $fs; do
+                case $(file --mime-type "$(readlink -f $f)" -b) in
+                    image/*) 
+                            function compresscmd {
+                                    convert -quality 75 "$1" "$2"
+                            } ;;
+                    video/*)
+                            function compresscmd {
+                               ffmpeg -i "$1" -vcodec libx264 -crf 28 -preset slow -acodec aac -b:a 128k "$2"
+                            } ;;
+                    *) 
+                            notify-send "No compression possibility detected"
+                            exit 1;;
+                esac
+
+                ext="${f##*.}"
+                base="${f%.*}"
+                out="${base}_compressed.$ext"
+                compresscmd "$f" "$out"
+        done
 }}
 
 cmd inspect ${{ 
@@ -274,8 +318,9 @@ map Dr $trash-restore
 map <c-l> symlinkTravel
 map P symlinkSelectedPaste
 map W watchInPlaylistSelected
-map Yd &echo -n $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to clipboard" # cd into the copied path
-map Yf &echo -n $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard" # cd into the copied path
+map Yd &echo -n $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to clipboard'" # cd into the copied path
+map Yf &echo -n $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard'" # cd into the copied path
+map Yn &echo -n "$(basename $f)" | wl-copy; lf -remote "send $id echo 'Yanked name $f to clipboard'" # cd into the copied path
 map Ya &wl-copy < $f; lf -remote "send $id echo 'Yanked all $f to clipboard'" #yank all contents 
 map <c-r> :reload; &killall bat
 map x :set info size; calcdirsize # x as in examine for size
@@ -321,7 +366,9 @@ map <c-space> &foot -o environment.START_IN_LFCD=true -o environment.LFCD_FOCUSP
 # transform functions related to files/mostly images
 map Tu $/opt/upscayl/upscayl-bin -v -n realesrgan-x4plus -i $f -o "${f%.*}-upscaled.${f##*.}"
 map Tt convertToFormat
-map Tr transformResize
+map Ts transformResize
+map Tc transformCompress
+map Tr transformRotate
 map Tv $vtracer --input $f --output "${f%.*}.svg"
 map C $git diff $f
 map e

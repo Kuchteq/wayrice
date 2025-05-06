@@ -3,13 +3,13 @@
 # some fetched from from https://github.com/horriblename/lfimg-sixel
 
 image() {
-	geometry="$(($2-2))x$3"
 	method="sixel"
-	#if lf is in neovim 
 	if [ -n "$NVSERVER" ]; then
 		method="symbols"
 	fi
-	chafa "$1" -f "$method" -s "$geometry" --polite on --animate false | fold -w 65535
+        read -r theme < $XDG_RUNTIME_DIR/theme
+        [ "$theme" = "light" ] && bg=white || bg=black
+        chafa -f $method -s "$2x$3" --animate off --polite on -t 1 --bg $bg "$1"
 }
 
 batorcat() {
@@ -84,4 +84,3 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
 		batorcat "$1" "$2" "$3"
 		;;
 esac 
-exit 1
