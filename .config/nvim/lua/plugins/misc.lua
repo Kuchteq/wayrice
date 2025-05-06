@@ -43,7 +43,6 @@ return {
                 dependencies = {
                         'nvim-lua/plenary.nvim',
                 },
-                commit = 'e76cb03',
                 branch = "harpoon2",
                 keys = {
                         { "␣", function()
