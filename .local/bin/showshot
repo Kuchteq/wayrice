@@ -30,7 +30,7 @@ if ( echo "$TYPE" | grep -q "PNG" ); then
 		(( text_height > 40 )) && H=40
 		$TERMINAL -o "main.pad=20x20 center" -T "ocr-$PREVIEWNAME" -W ""$W"x"$H"" primvi =(printf "%s" "$OCR_OUTPUT") >/dev/null 2>&1
 	else
-		wl-paste | swayimg -w $W,$H -a "$PREVIEWNAME"  -
+		wl-paste | swayimg -w $W,$H -a "$PREVIEWNAME" -c info.viewer.top_left=none  -
 	fi
 elif (echo $TYPE | grep -q "ASCII text" && wl-paste | grep -q "/Screenrecordings/recording_"); then
 	mpv $(wl-paste)
