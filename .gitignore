@@ -27,6 +27,7 @@
 .local/share/go/pkg
 .local/share/containers
 .local/share/pnpm
+.local/share/maven/repository
 
 .local/lib/
 .flutter

@@ -46,6 +46,7 @@ export REDISCLI_RCFILE="$XDG_CONFIG_HOME"/redis/redisclirc
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 export AZURE_CONFIG_DIR=$XDG_DATA_HOME/azure 
 export UNISON="$XDG_DATA_HOME"/unison
+export MAVEN_OPTS=-Dmaven.repo.local="$XDG_DATA_HOME"/maven/repository
 
 # Program settings
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
