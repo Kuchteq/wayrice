@@ -5,6 +5,7 @@ vim.lsp.enable({
         'bashls',
         'typython',
         'ts_ls',
+        'rust_analyzer'
 })
 
 vim.keymap.set('n', 'ö', function() vim.diagnostic.jump({ count = 1, float = true }) end)
@@ -23,14 +24,7 @@ vim.lsp.buf.hover = function()
         })
 end
 
-vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function(args)
-                local client = vim.lsp.get_client_by_id(args.data.client_id)
-                if client then
-                        client.server_capabilities.semanticTokensProvider = nil
-                end
-        end,
-})
+
 vim.diagnostic.config({
         float = {
                 style = "minimal",
