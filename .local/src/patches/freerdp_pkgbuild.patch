@@ -1,0 +1,13 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 95bbc71..9bcc25f 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -7,7 +7,7 @@
+ # https://github.com/FreeRDP/FreeRDP
+ 
+ ## options
+-: ${_build_sdl3:=false}
++: ${_build_sdl3:=true}
+ 
+ _pkgname="freerdp"
+ pkgname="$_pkgname-git"

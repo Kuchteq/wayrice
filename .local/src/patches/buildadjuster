@@ -5,4 +5,5 @@ case "$PKGBASE" in
     "zsh-git") patch < ~/.local/src/patches/zsh_pkgbuild.patch ;;
     "imv-git") patch < ~/.local/src/patches/imv_pkgbuild.patch ;;
     "kanshi-git") patch < ~/.local/src/patches/kanshi_pkgbuild.patch ;;
+    "freerdp-git") patch < ~/.local/src/patches/freerdp_pkgbuild.patch ;;
 esac
