@@ -28,20 +28,22 @@ alias \
 
 # These common commands are just too long! Abbreviate them.
 alias \
-	ka="killall" \
-	g="git" \
-	trem="transmission-remote" \
-	ytf="ytfzf" \
-	ytfa="ytfzf -m --url-handler-opts='--no-video'" \
-	sdn="shutdown" \
-	e="$EDITOR" \
-	v="$EDITOR" \
-	p="pacman" \
-	z="zathura" \
-	img="imv" \
-	bs="brightnessctl set " \
-	lg="lazygit" \
-	neomutt="ESCDELAY=0 neomutt" \
+        ka="killall" \
+        g="git" \
+        trem="transmission-remote" \
+        ytf="ytfzf" \
+        ytfa="ytfzf -m --url-handler-opts='--no-video'" \
+        sdn="shutdown" \
+        e="$EDITOR" \
+        v="$EDITOR" \
+        p="pacman" \
+        z="zathura" \
+        img="imv" \
+        bs="brightnessctl set " \
+        lg="lazygit" \
+        lp='DOCKER_HOST=unix:///run/user/1000/podman/podman.sock lazydocker' \
+        lq='lazysql' \
+        neomutt="ESCDELAY=0 neomutt" \
         parum="paru --fm lf -S " \
         as="as -msyntax=intel -mnaked-reg" \
         mkp="makepkg -sif --noconfirm"
