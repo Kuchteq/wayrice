@@ -42,10 +42,12 @@ lfcd() {
             fg "$LFCD_JOB_ID"
     else 
             export LAST_DIR_PATH="$XDG_RUNTIME_DIR/lf_lastdir"
+            export LAST_FOCUSED_FILEPATH="$XDG_RUNTIME_DIR/lf_lastfocusedfile"
             LFCD_JOB_ID=lf
             unset LFCD_FOCUSPATH
             lf --command on-quit-freeze -last-dir-path="$LAST_DIR_PATH" "${@}"
     fi
+    read f < "$LAST_FOCUSED_FILEPATH"
     echo -ne "\033]176;\007"
     unsetopt nojobprint nopwdprint >/dev/null 2>&1
 }
@@ -165,11 +167,10 @@ function chpwd-osc7-pwd() {
 add-zsh-hook -Uz chpwd chpwd-osc7-pwd
 
 # These colors define how elements on tab completion look like
-_ls_colors="di=1;34:ln=3;1;36:so=35:pi=33:ex=1;32:bd=33:cd=33:su=30;41:sg=30;46:tw=30;42:ow=30;43:or=3;1;31" 
+_ls_colors="di=1;34:ln=3;1;36:so=35:pi=33:ex=1;32:bd=33:cd=33:su=30;41:sg=30;46:tw=30;42:ow=30;43:or=3;1;31:*.git=33:*.gitignore=33:*README.md=1;38;5;39:*README=1;38;5;39:*.md=0;38;5;39:*.txt=00;38;5;39:*Makefile=31;1:*meson.build=31;1:*Dockerfile=31;1:*.pdf=00;38;5;160:*.hurl=00;38;5;206:*.env=03;38;5;203:*.json=0;38;5;208:*.js=0;38;5;202:*.jsx=0;38;5;202:*.ts=0;38;5;63:*.tsx=0;38;5;63:*.java=0;38;5;166:*.xml=0;38;5;130:*.yml=0;38;5;28:*.yaml=0;38;5;28:*.py=0;38;5;33:*.png=0;38;5;104:*.jpg=0;38;5;105:*.jpeg=0;38;5;105:*.mp4=0;38;5;169:*.mkv=0;38;5;170:*.h=0;38;5;32:*.c=0;38;5;136:*.rs=0;38;5;160:*.csv=0;38;5;77:*.go=0;38;5;75:*go.mod=0;38;5;72:*PKGBUILD=1;38;5;163:*Cargo.toml=1;38;5;163" 
 zstyle ':completion:*:default' list-colors "${(s.:.)_ls_colors}"
 LS_COLORS+=$_ls_colors
 export LS_COLORS
-export LF_COLORS='.git/=33:*.gitignore=33:*.md=00;38;5;39:*.txt=00;38;5;39:*Makefile=31;1:*Dockerfile=31;1:*.pdf=00;38;5;160:'
 
 function lazy-load {
         # Basic auto/tab complete:

@@ -139,6 +139,8 @@ fi             # FILE
 *.gpg           
 *.xml           󰗀
 *.patch         󰕚
+*.hurl          
+*.env           󱙌
 
 # file names (vim-devicons) (case-insensitive not supported in lf)
 *gruntfile.coffee       
@@ -184,7 +186,6 @@ fi             # FILE
 *Gulpfile.coffee        
 *Gulpfile.js            
 *Gulpfile.ls            
-*Dropbox                
 *.DS_Store              
 *LICENSE                
 *React.jsx              
@@ -195,6 +196,7 @@ fi             # FILE
 *Gemfile                
 *Makefile               
 *CMakeLists.txt         
+*PKGBUILD               
 
 # file patterns (vim-devicons) (patterns not supported in lf)
 # .*jquery.*\.js$         

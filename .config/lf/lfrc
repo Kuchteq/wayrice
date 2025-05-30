@@ -251,7 +251,7 @@ cmd transformRotate %{{
 }}
 
 cmd transformCompress %{{
-        for f in $fs; do
+        for f in $fx; do
                 case $(file --mime-type "$(readlink -f $f)" -b) in
                     image/*) 
                             function compresscmd {
@@ -287,8 +287,8 @@ cmd inspect ${{
 
 # on pressing q send the suspend signal to the parent shell
 cmd quitfreeze ${{
-     echo -n "$id" > "$LAST_DIR_PATH"   
-     echo -n " $PWD" >> "$LAST_DIR_PATH"   
+     echo -n "$id $PWD" > "$LAST_DIR_PATH"
+     echo -n "$f" > "$LAST_FOCUSED_FILEPATH"
      kill -TSTP $PPID
 }}
 
@@ -318,10 +318,12 @@ map Dr $trash-restore
 map <c-l> symlinkTravel
 map P symlinkSelectedPaste
 map W watchInPlaylistSelected
-map Yd &echo -n $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to clipboard'" # cd into the copied path
-map Yf &echo -n $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard'" # cd into the copied path
-map Yn &echo -n "$(basename $f)" | wl-copy; lf -remote "send $id echo 'Yanked name $f to clipboard'" # cd into the copied path
+map Yd &echo -n $PWD | wl-copy; lf -remote "send $id echo 'Yanked dir $PWD to clipboard'"
+map Yf &echo -n $f | wl-copy; lf -remote "send $id echo 'Yanked file $f to clipboard'"
+map Yn &echo -n "$(basename $f)" | wl-copy; lf -remote "send $id echo 'Yanked name $f to clipboard'"
 map Ya &wl-copy < $f; lf -remote "send $id echo 'Yanked all $f to clipboard'" #yank all contents 
+map Yg &git ls-files --full-name "$f" | wl-copy; lf -remote "send $id echo 'Yanked git-relative $(wl-paste) to clipboard'"
+map YG &git rev-parse --show-prefix | wl-copy; lf -remote "send $id echo 'Yanked git-relative dir $(wl-paste) to clipboard'"
 map <c-r> :reload; &killall bat
 map x :set info size; calcdirsize # x as in examine for size
 map Su $sudo lf -command 'source "~/.config/lf/insudo"';
@@ -351,11 +353,11 @@ map gcl $git clone "$(wl-paste)"
 map g/ cd /
 map gv $lf -remote "send $id select \"$(env | fzf -i | cut -d= -f2)\"" # fuzzy cd by env variable
 map i inspect
-map © &lf -remote "send $id cd '$(git rev-parse --show-toplevel)'"
+map ę &lf -remote "send $id cd '$(git rev-parse --show-toplevel)'"
 
 # call qr sharing in the current folder
 map Us &setsid -f qrshare $fx >/dev/null 2>&1
-map Ur &setsid -f qrshare -r >/dev/null 2>&1
+map Ur $localsend-go receive
 
 map <c-f> $lf -remote "send $id select \"$(fzf)\"" # fuzzy find files
 map <c-e> $lf -remote "send $id select \"$(FZF_DEFAULT_COMMAND='fd -td' fzf)\"" # fuzzy find directories
@@ -380,6 +382,7 @@ map • shell-async # <altgr+space> far easier to reach than &
 map gtm gototmp
 map gnf cd /mnt/nfs
 map at cd ~/atm # there's also gat since atm isn't we can save one keystroke
+map → $lazygit
 
 cmd on-quit-freeze map q quitfreeze 
 cmd on-quit &{{ marks=~/.local/share/lf/marks; sed -i "/^q/d" "$marks"; echo "q:$PWD" >> "$marks"; }}
