@@ -18,7 +18,7 @@
 #define TAPPING_TERM 200
 #define HOLD_ON_OTHER_KEY_PRESS
 // This one is very important as it prevents repeting escape after pressing the key twice
-#define TAPPING_FORCE_HOLD 
+#define QUICK_TAP_TERM 0
 
 #pragma once
 
