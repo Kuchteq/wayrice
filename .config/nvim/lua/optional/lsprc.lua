@@ -13,6 +13,8 @@ vim.keymap.set('n', 'ü', function() vim.diagnostic.jump({ count = -1, float = t
 vim.keymap.set('n', 'ę', vim.lsp.buf.code_action)
 vim.keymap.set('n', 'Ę', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>o', function() vim.lsp.buf.format { async = true } end)
+vim.keymap.set('n', 'gi', function() vim.lsp.buf.implementation()  end)
+vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename)
 
 local hover = vim.lsp.buf.hover
 ---@diagnostic disable-next-line: duplicate-set-field
