@@ -37,10 +37,6 @@ fi
 CACHE="$HOME/.cache/lf/thumbnail.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | awk '{print $1}'))"
 
 case "$(file --dereference --brief --mime-type -- "$1")" in
-	image/svg*) 
-	    [ ! -f "${CACHE}.jpg" ] && \
-	      convert "$1" "${CACHE}.jpg"
-	    image "${CACHE}.jpg" "$2" "$3" "$4" "$5" ;;
 	image/x-portable-pixmap | image/x-portable-graymap) # ppm format
 		[ ! -f "$CACHE" ] && convert "$1" "${CACHE}.jpg"
 		image "${CACHE}.jpg" "$2" "$3" "$4" "$5" ;;
