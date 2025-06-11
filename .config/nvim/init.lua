@@ -84,6 +84,7 @@ vim.opt.shortmess:append({ I = true })
 vim.opt.fillchars = { eob = " " }
 
 vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 -- keymaps contain special characters produced by modified xkb_symbols files
 -- these characters are produced on holding AltGr (right alt) + something
 vim.keymap.set("n", "<C-q>", ":bd<CR>", { silent = true })
