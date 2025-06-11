@@ -1,0 +1,90 @@
+#!/bin/bash
+
+if [ "$1" = "-p" ]; then
+        to_preview="$(echo "$2" | cut -d' ' -f2)"
+        sudo fdisk -l "$to_preview"
+        exit 0
+fi
+
+display_format='\(.name) \(.type) \(.size) \(.fstype) \(if .label != null then " \(.label)" else "" end)'
+
+lsblkout=$(sudo lsblk --json -po "uuid,name,type,size,mountpoint,label,fstype")
+freely_mountable=$(echo "$lsblkout" |jq -r ".blockdevices[]
+    | recurse(.children[]?)
+    | select(.uuid != null and .mountpoint == null and .fstype != \"crypto_LUKS\")
+    | \"󰉉 $display_format\" ")
+
+# we first want to get all luks devices to later on discard onees that are already open
+allluks="$(echo "$lsblkout" | jq -r '.blockdevices[] | recurse(.children[]?)
+    | select(.fstype == "crypto_LUKS") 
+    | "\(.uuid)"')"
+decrypted="$(find /dev/disk/by-id/dm-uuid-CRYPT-LUKS2-* | sed "s|.*LUKS2-||;s|-.*||")"
+
+# Get only LUKS drives that are not decrypted.
+unopened_luks="$(for uuid in $allluks; do
+        # for some reason the find command returns it dashless
+	dashless_uuid="${uuid//-}"	# This is a bashism.
+	for open in $decrypted; do
+		[ "$dashless_uuid" = "$open" ] && break 1
+	done && continue 1
+        echo "$lsblkout" | jq -r ".blockdevices[] | recurse(.children[]?)
+            | select(.uuid == \"$uuid\") 
+            | \"󰌾 $display_format\" "
+done)"
+
+alldrives="$(echo "$unopened_luks
+$freely_mountable" | sed "/^$/d;s/ *$//")" 
+
+
+set -e
+
+test -n "$alldrives"
+
+# Function for prompting user for a mountpoint.
+getmount(){
+        mp="$(echo -e "/mnt/pendrive\n$(find /mnt -maxdepth 1 -type d 2>/dev/null)" | fzf --prompt "Mount this drive where? ")"
+	test -n "$mp"
+	if [ ! -d "$mp" ]; then
+		mkdiryn=$(printf "Yes\\nNo" | fzf --prompt "$mp does not exist. Create it?")
+		[ "$mkdiryn" = "Yes" ] && (mkdir -p "$mp" || sudo -A mkdir -p "$mp")
+	fi
+}
+
+attemptmount(){
+		# Attempt to mount without a mountpoint, to see if drive is in fstab.
+		sudo -A mount "$chosen" || return 1
+		notify-send "󰉉 Drive Mounted." "$chosen mounted."
+		exit
+}
+
+chosen="$(echo "$alldrives" | fzf --prompt "Mount which drive? " --preview "$HOME/.config/lf/lfmounter -p {}")"
+
+case "$chosen" in
+	󰉉\ *)
+                chosen=$(echo "$chosen" | cut -d' ' -f2)
+		attemptmount || getmount
+		sudo -A mount "$chosen" "$mp"
+		notify-send "󰉉 Drive Mounted." "$chosen mounted to $mp."
+		;;
+
+	󰌾\ *)
+                chosen=$(echo "$chosen" | cut -d' ' -f2)
+		# Number the drive.
+		while true; do
+			[ -f "/dev/mapper/usb$num" ] || break
+			num="$(printf "%02d" "$((num +1))")"
+		done
+
+		# Decrypt in a terminal window
+		sudo cryptsetup open "$chosen" "usb$num"
+		# Check if now decrypted.
+		test -b "/dev/mapper/usb$num"
+
+		attemptmount || getmount
+		sudo -A mount "/dev/mapper/usb$num" "$mp" -o uid="$(id -u)",gid="$(id -g)"
+		notify-send "🔓Decrypted drive Mounted." "$chosen decrypted and mounted to $mp."
+		;;
+esac
+
+
+lf -remote "send $id :cd '$mp'; reload"

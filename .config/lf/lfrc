@@ -310,7 +310,7 @@ map Mf mkfile
 map Me &chmod u+x $f && lf -remote "send :reload" # make executable
 map Mo makeowner 
 map Mw makeworkspace 
-map Mh $hui -c ":lua set_new_workspace('$(basename $PWD)','$PWD/.hurl')"
+map Mp $~/.config/lf/lfmounter
 map au unarchive
 map DD trash
 map Dl delsoftlink
