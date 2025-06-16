@@ -39,42 +39,23 @@ return {
                 end,
         },
         {
-                'ThePrimeagen/harpoon',
-                dependencies = {
-                        'nvim-lua/plenary.nvim',
-                },
-                branch = "harpoon2",
-                keys = {
-                        { "␣", function()
-                                require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
-                        end },
-                        { "µ", function()
-                                require("harpoon"):list():add()
-                        end },
-                        { "≠", function() require("harpoon"):list():select(1) end, { silent = true } },
-                        { "²", function() require("harpoon"):list():select(2) end, { silent = true } },
-                        { "³", function() require("harpoon"):list():select(3) end, { silent = true } },
-                        { "¢", function() require("harpoon"):list():select(4) end, { silent = true } }
-                },
-                config = function()
-                        local harpoon = require("harpoon")
-                        harpoon:setup({
-                                settings = {
-                                        save_on_toggle = true,
-                                        sync_on_ui_close = true,
-                                        key = function()
-                                                return vim.loop.cwd()
-                                        end,
-                                },
-                        })
-                end,
-        },
-        {
                 "nvim-lualine/lualine.nvim",
                 event = "VeryLazy",
                 config = function()
                         require('lualine').setup({
-                                sections = { lualine_c = { { function() if vim.diagnostic.is_enabled() then return ""; else return " " end end, color = { fg = "#005577", gui = "bold" } }, "filename", { "aerial" } } },
+                                sections = {
+                                        lualine_c = { {
+                                                function()
+                                                        if vim.diagnostic.is_enabled() then
+                                                                return "";
+                                                        else
+                                                                return
+                                                                " "
+                                                        end
+                                                end,
+                                                color = { fg = "#005577", gui = "bold" }
+                                        }, "filename", { "aerial" } }
+                                },
                                 options = {
                                         section_separators = { left = '', right = '' },
                                         theme = "everblush"
@@ -176,9 +157,9 @@ return {
                 end
         },
         {
-            'MagicDuck/grug-far.nvim',
-            config = function()
-              require('grug-far').setup({ });
-            end
-          },
+                'MagicDuck/grug-far.nvim',
+                config = function()
+                        require('grug-far').setup({});
+                end
+        },
 }
