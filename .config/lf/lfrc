@@ -273,6 +273,27 @@ cmd transformCompress %{{
         done
 }}
 
+cmd transformCrop ${{
+        if [[ "$(file -b --mime-type $f)" != image/* ]]; then
+                echo -ne "\033[41;1mFile is not an image"
+                exit 1
+        fi
+        ext="${f##*.}"
+        base="${f%.*}"
+        outname="$(basename "${base}_cropped.${ext}")"
+        echo "$outname"
+        cp "$f" "/tmp/$outname"
+        qimgv "/tmp/$outname"
+
+        if ! cmp -s "$f" "/tmp/$outname"; then
+            mv "/tmp/$outname" "$outname"
+            lf -remote "send $id select \"$outname\""
+        else
+            rm "/tmp/$outname"
+            notify-send "No modifications made to $base$ext"
+        fi
+}}
+
 cmd inspect ${{ 
         if [ -d "$f" ]; then
                 tree -C "$f" | less
@@ -369,8 +390,9 @@ map <c-space> &foot -o environment.START_IN_LFCD=true -o environment.LFCD_FOCUSP
 map Tu $/opt/upscayl/upscayl-bin -v -n realesrgan-x4plus -i $f -o "${f%.*}-upscaled.${f##*.}"
 map Tt convertToFormat
 map Ts transformResize
-map Tc transformCompress
+map TC transformCompress
 map Tr transformRotate
+map Tc transformCrop
 map Tv $vtracer --input $f --output "${f%.*}.svg"
 map C $git diff $f
 map e
