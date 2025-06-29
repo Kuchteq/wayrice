@@ -1,0 +1,8 @@
+#!/bin/sh
+
+f="$1"
+dims="$2"
+ext="${f##*.}"
+base="${f%.*}"
+
+magick "$f" -crop "$dims" "${base}_cropped.$ext"
