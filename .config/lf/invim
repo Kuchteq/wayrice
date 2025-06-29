@@ -1,7 +1,7 @@
 #send back the id of lf to neovim
 $nvim --server $NVSERVER --remote-send "<cmd>lua LF_CLIENT_ID=$id; lf_move_to_where_open()<CR>"
 
-cmd on-cd
+# cmd on-cd
 
 cmd open &{{
    file=$f
@@ -17,8 +17,8 @@ cmd mkfile %{{
   nvim --server $NVSERVER --remote "$PWD/$ans"
 }}
 
-map ŋ &nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send 'ŋ'
-map æ &nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send 'æ'
+map č &nvim --server $NVSERVER --remote-send 'č' && nvim --server $NVSERVER --remote-send 'č'
+map ž &nvim --server $NVSERVER --remote-send 'ž' && nvim --server $NVSERVER --remote-send 'ž'
 map <c-g> &nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send "<cmd>lua require('telescope.builtin').live_grep({cwd='$PWD'})<CR>"
 map e &nvim --server $NVSERVER --remote-send 'þ' && nvim --server $NVSERVER --remote-send "<cmd>cd $PWD<CR><CR>"
 #chande nvim's cwd on request (AltGr+d)

@@ -70,11 +70,11 @@ return {
         {
                 'nvim-telescope/telescope.nvim',
                 dependencies = { 'nvim-lua/plenary.nvim' },
-                keys = { 'æ', 'ŋ', '’', 'gr', 'gd' },
+                keys = { 'ž', 'č', '’', 'gr', 'gd' },
                 config = function()
                         local builtin = require('telescope.builtin')
-                        vim.keymap.set('n', 'æ', builtin.find_files, {})
-                        vim.keymap.set('n', 'ŋ', builtin.live_grep, {})
+                        vim.keymap.set('n', 'ž', builtin.find_files, {})
+                        vim.keymap.set('n', 'č', builtin.live_grep, {})
                         vim.keymap.set('n', '’', builtin.resume, {})
                         vim.keymap.set('n', '→', builtin.buffers, {})
                         vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
@@ -89,8 +89,8 @@ return {
                                                         ["<C-k>"] = "move_selection_previous",
                                                         ["<C-p>"] = "cycle_history_prev",
                                                         ["<C-n>"] = "cycle_history_next",
-                                                        ["ŋ"] = "close",
-                                                        ["æ"] = "close"
+                                                        ["ž"] = "close",
+                                                        ["č"] = "close"
                                                 }
                                         }
                                 } }

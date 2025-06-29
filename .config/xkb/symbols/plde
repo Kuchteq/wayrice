@@ -1,4 +1,4 @@
-// PLDE LAYOUT by Mariusz Kuchta, MORE SHORTCUTS THANKS TO SLAVIC LETTERS
+// PLDESI LAYOUT by Mariusz Kuchta, MORE SHORTCUTS THANKS TO SLAVIC LETTERS
 // For regular keyboards, this is meant to be used with a corresponding keyd config
 // For QMK firmware based keyboard, compile and use the based_layout/keymap.c
 // 
@@ -16,11 +16,11 @@
 // ┃ ~ ∨ │ ! ' │ @ " │ # ˝ │ $ ¸ │ % ˇ │ ^ ^ │ & ˘ │ * ˙ │ ( ̣  │ ) ° │ _ ¯ │ + ˛ ┃  ⌫ Back   ┃     │
 // ┃ ` ¬ │ 1 ¡ │ 2 © │ 3 • │ 4 § │ 5 € │ 6 ¢ │ 7 − │ 8 × │ 9 ÷ │ 0 ° │ - – │ = — ┃   space   ┃ PGUP│
 // ┣━━━━━┷━┱───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┺━┳━━━━━━━━━╉─────┤
-// ┃       ┃ Q Ą │ W Œ │ E Ę │ R © │ T Ω │ Y ¥ │ U ↑ │ I ↔ │ O Ó │ P Þ │ { Ü │ } Ö ┃   ? ρ   ┃     │
-// ┃Tab ↹  ┃ q ą │ w œ │ e ę │ r ® │ t π │ y ← │ u ↓ │ i → │ o ó │ p þ │ [ ü │ ] ö ┃   / |   ┃ PGDN│
+// ┃       ┃ Q Ą │ W Š │ E Ę │ R © │ T Ω │ Y ¥ │ U ↑ │ I ↔ │ O Ó │ P Þ │ { Ü │ } Ö ┃   ? ρ   ┃     │
+// ┃Tab ↹  ┃ q ą │ w š │ e ę │ r ® │ t π │ y ← │ u ↓ │ i → │ o ó │ p þ │ [ ü │ ] ö ┃   / |   ┃ PGDN│
 // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┲━━━━┻━━━━━━━━━╉─────┤
-// ┃Tap ESC ┃ A Ä │ S ß │ D ś │ F ® │ G Ŋ │ H • │ J Ə │ K / │ L Ł │ : ˝ │ " ˇ ┃   Enter      ┃     │
-// ┃Ctrl ⇬  ┃ a ä │ s ß │ d Ś │ f æ │ g ŋ │ h ’ │ j ə │ k … │ l ł │ ; ´ │ ' ^ ┃     ⏎        ┃ HOME│
+// ┃Tap ESC ┃ A Ä │ S ß │ D ś │ F Ž │ G Č │ H • │ J Ə │ K / │ L Ł │ : ˝ │ " ˇ ┃   Enter      ┃     │
+// ┃Ctrl ⇬  ┃ a ä │ s ß │ d Ś │ f ž │ g č │ h ’ │ j ə │ k … │ l ł │ ; ´ │ ' ^ ┃     ⏎        ┃ HOME│
 // ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┻━━━━━━━━┳━━━━━╃─────┤
 // ┃             ┃ Z Ż │ X Ź │ C Ć │ V ‘ │ B “ │ N Ń │ M ∞ │ < × │ > ÷ │ |   ┃         ┃     │     │
 // ┃Shift ⇧      ┃ z ż │ x ź │ c ć │ v „ │ b ” │ n ń │ m µ │ , ≤ │ . ≥ │ \ ρ ┃Shift ⇧  ┃  ↑  │ END │
@@ -41,8 +41,8 @@
 // ┃       ┃ Q Ą │ W Ę │MOUSE│MOUSE│ T ß │     │ U ↑ │ I ↔ │     │ P Þ │ { Ü │ } Ö ┃   |     ┃     │
 // ┃Tab ↹  ┃ q ą │ w œ │ LEFT│RIGHT│ t ß │ COPY│ u ↓ │ i → │PASTE│ p þ │ [ ü │ ] ö ┃   \ ρ   ┃ PGDN│
 // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┲━━━━┻━━━━━━━━━╉─────┤
-// ┃        ┃ A Ä │ S ß │ D ś │ F ® │ G Ŋ │     │ CTRL│ CTRL│     │ : ˝ │ " ˇ ┃              ┃     │
-// ┃Ctrl ⇬  ┃ a ä │ s ß │ d Ś │ f æ │ g ŋ │ HOME│  ←  │  →  │ END │ ; ´ │ ' ^ ┃              ┃ HOME│
+// ┃        ┃ A Ä │ S ß │ D ś │ F Ž │ G Č │     │ CTRL│ CTRL│     │ : ˝ │ " ˇ ┃              ┃     │
+// ┃Ctrl ⇬  ┃ a ä │ s ß │ d Ś │ f ž │ g č │ HOME│  ←  │  →  │ END │ ; ´ │ ' ^ ┃              ┃ HOME│
 // ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┻━━━━━━━━┳━━━━━╃─────┤
 // ┃             ┃ Z Ż │ X Ź │ C Ć │ V ‘ │ B “ │ N Ń │ M ∞ │ < × │ > ÷ │ |   ┃         ┃MOVE │     │
 // ┃Shift ⇧      ┃ z ż │ x ź │ c ć │ v „ │ b ” │ n ń │ m µ │ , ≤ │ . ≥ │ \ ρ ┃Shift ⇧  ┃MOUS↑│ END │
@@ -79,7 +79,7 @@ xkb_symbols "basic" {
     key <AE11>	{ [     minus, underscore,       endash,       emdash ]	};
 
     key <AD01>	{ [         q,          Q,      aogonek,      Aogonek ]	};
-    key <AD02>	{ [         w,          W,           oe,           OE ]	};
+    key <AD02>	{ [         w,          W,       scaron,       Scaron ]	};
     key <AD03>	{ [         e,          E,      eogonek,      Eogonek ]	};
     key <AD04>	{ [         r,          R,    copyright,   registered ]	};
     key <AD05>	{ [         t,          T,       Greek_pi,  Greek_OMEGA]};
@@ -89,11 +89,12 @@ xkb_symbols "basic" {
     key <AD11> {[  bracketleft,       braceleft,  udiaeresis,  Udiaeresis ]};
     key <AD12> {[  bracketright,      braceright, odiaeresis,     Odiaeresis ]};
 
-    key <AC01>	{ [         a,          A,      adiaeresis,       Adiaeresis]	};
+    key <AC01>	{ [         a,          A,      adiaeresis, Adiaeresis]	};
     key <AC02>	{ [         s,          S,       ssharp,       ssharp ]	};
     key <AC03>	{ [         d,          D,      sacute,     Sacute    ] };
-    key <AC04>	{ [         f,          F,           ae,           AE ]	};
-    key <AC06>	{ [         h,          H, rightsinglequotemark, U2022 ] };
+    key <AC04>	{ [         f,          F,      zcaron,        Zcaron ]	};
+    key <AC05>	{ [         g,          G,      ccaron,        Ccaron ]	};
+    key <AC06>	{ [         h,          H, rightsinglequotemark,U2022 ] };
     key <AC07>	{ [         j,          J,        schwa,        SCHWA ]	};
     key <AC08>	{ [         k,          K,     ellipsis,  dead_stroke ]	};
 
